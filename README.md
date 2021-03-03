@@ -1,9 +1,18 @@
 # Dazain
 Aristotle: “Art completes what nature cannot bring to finish. The artist gives us knowledge of nature's unrealized ends.”  
 
-## Getting Started
+### Cart Features
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+* Stock avalibility
+* Is the product already added to card  
+* Quantity adjustment before checkout
+* Product preference (Size, Color, ...)
+* Coupon & Discount
+* Save the card locally for faster response
+* Save cart in db for price calculation
+* Shipment details before procceding to payment
+* Create new order when product is purchased
+
 
 ### Prerequisites
 
