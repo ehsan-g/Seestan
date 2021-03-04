@@ -12,7 +12,12 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Avatar from '@material-ui/core/Avatar';
-import { Button, Box, Link, Typography } from '@material-ui/core';
+import { Button, Link, Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
+import Register from '../../pages/auth/Register';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -76,7 +81,51 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
+
+//  MOdal fade transition
+const Fade = React.forwardRef(function Fade(props, ref) {
+  const { in: open, children, onEnter, onExited, ...other } = props;
+  const style = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: open ? 1 : 0 },
+    onStart: () => {
+      if (open && onEnter) {
+        onEnter();
+      }
+    },
+    onRest: () => {
+      if (!open && onExited) {
+        onExited();
+      }
+    },
+  });
+
+  return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <animated.div ref={ref} style={style} {...other}>
+      {children}
+    </animated.div>
+  );
+});
+
+Fade.propTypes = {
+  children: PropTypes.element,
+  in: PropTypes.bool.isRequired,
+  onEnter: PropTypes.func,
+  onExited: PropTypes.func,
+};
 
 export default function Header() {
   const classes = useStyles();
@@ -162,14 +211,38 @@ export default function Header() {
     </Menu>
   );
 
+  // Modal register
+  const [rOpen, setRegOpen] = React.useState(false);
+  const registerOpen = () => {
+    setRegOpen(true);
+  };
+  const registerClose = () => {
+    setRegOpen(false);
+  };
+
+  // Modal Enter
+  const [eOpen, setEnterOpen] = React.useState(false);
+  const enterOpen = () => {
+    setEnterOpen(true);
+  };
+  const enterClose = () => {
+    setEnterOpen(false);
+  };
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button variant="contained">ثبت‌نام</Button>
-            <Button variant="outlined" className={classes.myButton}>
+            <Button variant="contained" onClick={registerOpen}>
+              ثبت‌نام
+            </Button>
+            <Button
+              variant="outlined"
+              className={classes.myButton}
+              onClick={enterOpen}
+            >
               ورود
             </Button>
             <Typography variant="subtitle1">
@@ -234,8 +307,49 @@ export default function Header() {
           </div>
         </Toolbar>
       </AppBar>
-      {}
-      {}
+      <div>
+        <Modal
+          aria-labelledby="spring-modal-title"
+          aria-describedby="spring-modal-description"
+          className={classes.modal}
+          open={rOpen}
+          onClose={registerClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={rOpen}>
+            <div className={classes.paper}>
+              <h2 id="spring-modal-title">Register</h2>
+              <p id="spring-modal-description">Register Here</p>
+              <Button>click</Button>
+              <Register />
+            </div>
+          </Fade>
+        </Modal>
+        <Modal
+          aria-labelledby="spring-modal-title"
+          aria-describedby="spring-modal-description"
+          className={classes.modal}
+          open={eOpen}
+          onClose={enterClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={eOpen}>
+            <div className={classes.paper}>
+              <h2 id="spring-modal-title">Spring modal</h2>
+              <p id="spring-modal-description">react-spring animates me.</p>
+              <Register />
+            </div>
+          </Fade>
+        </Modal>
+      </div>
     </div>
   );
 }

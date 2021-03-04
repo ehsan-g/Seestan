@@ -51,7 +51,7 @@ Fade.propTypes = {
   onExited: PropTypes.func,
 };
 
-const Register = () => {
+export default function SpringModal() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -62,9 +62,12 @@ const Register = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <div>
-      <p>Register</p>
+      <button type="button" onClick={handleOpen}>
+        react-spring
+      </button>
       <Modal
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
@@ -86,6 +89,4 @@ const Register = () => {
       </Modal>
     </div>
   );
-};
-
-export default Register;
+}
