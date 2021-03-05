@@ -2,9 +2,8 @@ import React from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
 import { Typography, Grid, Button, CssBaseline } from '@material-ui/core';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { auth } from '../../firebase';
-import 'react-toastify/dist/ReactToastify.css';
 
 const validate = (values) => {
   const errors = {};
@@ -93,7 +92,6 @@ export default function RegisterForm() {
   return (
     <div style={{ padding: 16, margin: 'auto', maxWidth: 400 }}>
       <CssBaseline />
-      <ToastContainer />
       <Typography variant="h6" align="center">
         The art world online
       </Typography>

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ToastContainer } from 'react-toastify';
 import Home from './pages/Home';
 import Header from './components/nav/Header';
 import EnterForm from './pages/auth/EnterFrom';
 import RegisterForm from './pages/auth/RegisterForm';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Override the defualt theme from here
 const theme = createMuiTheme({
@@ -62,6 +64,8 @@ const App = () => (
   <>
     <ThemeProvider theme={theme}>
       <Header />
+      {/*  use Toastontainer here to access it in the whole project */}
+      <ToastContainer />
       <React.StrictMode>
         <Switch>
           <Route exact path="/" component={Home} />
