@@ -62,11 +62,14 @@ const App = () => (
   <>
     <ThemeProvider theme={theme}>
       <Header />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={EnterForm} />
-        <Route exact path="/register" component={RegisterForm} />
-      </Switch>
+      <React.StrictMode>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/login" component={EnterForm} />
+          <Route exact path="/register" component={RegisterForm} />
+        </Switch>
+      </React.StrictMode>
+      ,
     </ThemeProvider>
   </>
 );

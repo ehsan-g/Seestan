@@ -2,12 +2,9 @@ import React from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
 import { Typography, Grid, Button, CssBaseline } from '@material-ui/core';
-
-const onSubmit = async () => {
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  await sleep(300);
-  window.alert('JSON.stringify(values, 0, 2)');
-};
+import { toast, ToastContainer } from 'react-toastify';
+import { auth } from '../../firebase';
+import 'react-toastify/dist/ReactToastify.css';
 
 const validate = (values) => {
   const errors = {};
@@ -32,7 +29,7 @@ const formFields = [
         type="email"
         label="Enter your email address"
         name="email"
-        margin="fullWidth"
+        margin="normal"
         required
       />
     ),
@@ -46,7 +43,7 @@ const formFields = [
         type="password"
         label="Enter a password"
         name="pass"
-        margin="fullWidth"
+        margin="normal"
         required
       />
     ),
@@ -59,7 +56,7 @@ const formFields = [
         type="name"
         label="Full name"
         name="name"
-        margin="fullWidth"
+        margin="normal"
         required
       />
     ),
@@ -77,9 +74,26 @@ const formFields = [
 ];
 
 export default function RegisterForm() {
+  const onSubmit = async (event) => {
+    await auth()
+      .createUserWithEmailAndPassword(event.email, event.pass)
+      .then((userCredential) => {
+        // Signed in
+
+        const { user } = userCredential;
+        toast.success(`Email is sent to ${event.email}`);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  };
   return (
     <div style={{ padding: 16, margin: 'auto', maxWidth: 400 }}>
       <CssBaseline />
+      <ToastContainer />
       <Typography variant="h6" align="center">
         The art world online
       </Typography>
@@ -94,13 +108,12 @@ export default function RegisterForm() {
                   {item.field}
                 </Grid>
               ))}
-              <Grid item xs="12" style={{ marginTop: 16 }}>
+              <Grid item xs={12} style={{ marginTop: 16 }}>
                 <Button
                   variant="contained"
-                  color="secondery"
                   type="submit"
                   disabled={submitting}
-                  fullWidth="true"
+                  fullWidth
                 >
                   ثبت‌نام
                 </Button>

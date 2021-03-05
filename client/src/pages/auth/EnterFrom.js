@@ -11,14 +11,12 @@ const onSubmit = async () => {
 
 const validate = (values) => {
   const errors = {};
-  if (!values.name) {
-    errors.name = 'Name is required.';
-  }
+
   if (!values.pass) {
-    errors.pass = 'Password is required';
+    errors.pass = 'Password is required.';
   }
   if (!values.email) {
-    errors.email = 'Please enter a valid email';
+    errors.email = 'Email is required.';
   }
   return errors;
 };
@@ -32,7 +30,7 @@ const formFields = [
         type="email"
         label="Enter your email address"
         name="email"
-        margin="fullWidth"
+        margin="normal"
         required
       />
     ),
@@ -45,7 +43,7 @@ const formFields = [
         type="password"
         label="Enter a password"
         name="pass"
-        margin="fullWidth"
+        margin="normal"
         required
       />
     ),
@@ -70,7 +68,7 @@ export default function RegisterForm() {
                   {item.field}
                 </Grid>
               ))}
-              <Grid item xs="12" style={{ marginTop: 0 }}>
+              <Grid item xs={12} style={{ marginTop: 0 }}>
                 <Typography
                   variant="subtitle1"
                   align="right"
@@ -80,10 +78,9 @@ export default function RegisterForm() {
                 </Typography>
                 <Button
                   variant="contained"
-                  color="secondery"
                   type="submit"
                   disabled={submitting}
-                  fullWidth="true"
+                  fullWidth
                 >
                   ورود
                 </Button>

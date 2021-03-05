@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -214,21 +214,7 @@ export default function Header() {
 
   // Modal register
   const [rOpen, setRegOpen] = React.useState(false);
-  const registerOpen = () => {
-    setRegOpen(true);
-  };
-  const registerClose = () => {
-    setRegOpen(false);
-  };
-
-  // Modal Enter
   const [eOpen, setEnterOpen] = React.useState(false);
-  const enterOpen = () => {
-    setEnterOpen(true);
-  };
-  const enterClose = () => {
-    setEnterOpen(false);
-  };
 
   return (
     <div className={classes.grow}>
@@ -236,13 +222,13 @@ export default function Header() {
         <Toolbar>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button variant="contained" onClick={registerOpen}>
+            <Button variant="contained" onClick={() => setRegOpen(true)}>
               ثبت‌نام
             </Button>
             <Button
               variant="outlined"
               className={classes.myButton}
-              onClick={enterOpen}
+              onClick={() => setEnterOpen(true)}
             >
               ورود
             </Button>
@@ -314,7 +300,7 @@ export default function Header() {
           aria-describedby="spring-modal-description"
           className={classes.modal}
           open={rOpen}
-          onClose={registerClose}
+          onClose={() => setRegOpen(false)}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
@@ -328,11 +314,11 @@ export default function Header() {
           </Fade>
         </Modal>
         <Modal
-          aria-labelledby="spring-modal-title"
-          aria-describedby="spring-modal-description"
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
           className={classes.modal}
           open={eOpen}
-          onClose={enterClose}
+          onClose={() => setEnterOpen(false)}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
@@ -341,7 +327,10 @@ export default function Header() {
         >
           <Fade in={eOpen}>
             <div className={classes.paper}>
-              <EnterForm />
+              <h2 id="transition-modal-title">Transition modal</h2>
+              <p id="transition-modal-description">
+                react-transition-group animates me.
+              </p>
             </div>
           </Fade>
         </Modal>
