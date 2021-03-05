@@ -17,7 +17,8 @@ import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-import Register from '../../pages/auth/Register';
+import RegisterForm from '../../pages/auth/RegisterForm';
+import EnterForm from '../../pages/auth/EnterFrom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -322,10 +323,7 @@ export default function Header() {
         >
           <Fade in={rOpen}>
             <div className={classes.paper}>
-              <h2 id="spring-modal-title">Register</h2>
-              <p id="spring-modal-description">Register Here</p>
-              <Button>click</Button>
-              <Register />
+              <RegisterForm />
             </div>
           </Fade>
         </Modal>
@@ -343,9 +341,7 @@ export default function Header() {
         >
           <Fade in={eOpen}>
             <div className={classes.paper}>
-              <h2 id="spring-modal-title">Spring modal</h2>
-              <p id="spring-modal-description">react-spring animates me.</p>
-              <Register />
+              <EnterForm />
             </div>
           </Fade>
         </Modal>

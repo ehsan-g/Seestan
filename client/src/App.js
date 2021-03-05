@@ -1,11 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
 import Home from './pages/Home';
 import Header from './components/nav/Header';
+import EnterForm from './pages/auth/EnterFrom';
+import RegisterForm from './pages/auth/RegisterForm';
 
 // Override the defualt theme from here
 const theme = createMuiTheme({
@@ -65,8 +64,8 @@ const App = () => (
       <Header />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={EnterForm} />
+        <Route exact path="/register" component={RegisterForm} />
       </Switch>
     </ThemeProvider>
   </>
