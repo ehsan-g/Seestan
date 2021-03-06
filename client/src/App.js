@@ -2,11 +2,13 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
+import Divider from '@material-ui/core/Divider';
 import Home from './pages/Home';
 import Header from './components/nav/Header';
 import EnterForm from './pages/auth/EnterFrom';
 import RegisterForm from './pages/auth/RegisterForm';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from './components/nav/Footer';
 
 // Override the defualt theme from here
 const theme = createMuiTheme({
@@ -18,7 +20,7 @@ const theme = createMuiTheme({
         // Some CSS
         color: 'black',
         '&:hover': {
-          color: 'blue',
+          color: 'black',
           textDecoration: 'none',
         },
       },
@@ -33,10 +35,14 @@ const theme = createMuiTheme({
       root: {
         alignContent: 'center',
         padding: '2px',
+        color: 'secondery',
       },
       subtitle1: {
         fontSize: '14px',
         padding: '5px',
+      },
+      colorPrimary: {
+        color: '#6c757d',
       },
     },
     MuiButton: {
@@ -73,7 +79,8 @@ const App = () => (
           <Route exact path="/register" component={RegisterForm} />
         </Switch>
       </React.StrictMode>
-      ,
+      <Divider />
+      <Footer />
     </ThemeProvider>
   </>
 );
