@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
 import Divider from '@material-ui/core/Divider';
-import Home from './pages/Home';
+import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';
 import EnterForm from './pages/auth/EnterFrom';
 import RegisterForm from './pages/auth/RegisterForm';
@@ -12,30 +12,36 @@ import Footer from './components/nav/Footer';
 
 // Override the defualt theme from here
 const theme = createMuiTheme({
-  overrides: {
+  components: {
     // Style sheet name => example Link component ⚛️
     MuiLink: {
-      // Name of the rule
-      underlineNone: {
-        // Some CSS
-        color: 'black',
-        '&:hover': {
+      styleOverrides: {
+        // Name of the rule
+        underlineNone: {
+          // Some CSS
           color: 'black',
-          textDecoration: 'none',
+          '&:hover': {
+            color: 'black',
+            textDecoration: 'none',
+          },
         },
       },
     },
     MuiAppBar: {
-      colorPrimary: {
-        backgroundColor: 'white',
-        color: 'black',
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: 'white',
+          color: 'black',
+        },
       },
     },
     MuiTypography: {
-      root: {
-        alignContent: 'center',
-        padding: '2px',
-        color: 'secondery',
+      styleOverrides: {
+        root: {
+          alignContent: 'center',
+          padding: '2px',
+          color: 'secondary',
+        },
       },
       subtitle1: {
         fontSize: '14px',
@@ -46,20 +52,22 @@ const theme = createMuiTheme({
       },
     },
     MuiButton: {
-      contained: {
-        backgroundColor: 'black',
-        color: 'white',
-        minWidth: '41px',
-        '&:hover': {
+      styleOverrides: {
+        contained: {
+          backgroundColor: 'black',
           color: 'white',
-          backgroundColor: '#b77990',
-          textDecoration: 'none',
+          minWidth: '41px',
+          '&:hover': {
+            color: 'white',
+            backgroundColor: '#b77990',
+            textDecoration: 'none',
+          },
         },
-      },
-      outlined: {
-        minWidth: '41px',
-        '&:hover': {
-          borderColor: 'black',
+        outlined: {
+          minWidth: '41px',
+          '&:hover': {
+            borderColor: 'black',
+          },
         },
       },
     },
@@ -74,7 +82,7 @@ const App = () => (
       <ToastContainer />
       <React.StrictMode>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={ArtWorks} />
           <Route exact path="/login" component={EnterForm} />
           <Route exact path="/register" component={RegisterForm} />
         </Switch>
