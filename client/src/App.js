@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
 import Divider from '@material-ui/core/Divider';
+import Container from '@material-ui/core/Container';
 import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';
 import EnterForm from './pages/auth/EnterFrom';
@@ -42,19 +43,22 @@ const theme = createMuiTheme({
           padding: '2px',
           color: 'secondary',
         },
-      },
-      subtitle1: {
-        fontSize: '14px',
-        padding: '5px',
-      },
-      colorPrimary: {
-        color: '#6c757d',
+
+        subtitle1: {
+          fontSize: '12px',
+          margin: '2px',
+        },
+        colorPrimary: {
+          color: '#6c757d',
+        },
       },
     },
     MuiButton: {
       styleOverrides: {
         contained: {
           backgroundColor: 'black',
+          padding: '0px 15px 0px 15px',
+          margin: 2,
           color: 'white',
           minWidth: '41px',
           '&:hover': {
@@ -64,10 +68,20 @@ const theme = createMuiTheme({
           },
         },
         outlined: {
+          margin: 2,
+          padding: '0px 15px 0px 15px',
           minWidth: '41px',
           '&:hover': {
             borderColor: 'black',
+            textDecoration: 'none',
           },
+        },
+      },
+    },
+    MuiImageList: {
+      styleOverrides: {
+        root: {
+          overflowY: '-moz-hidden-unscrollable',
         },
       },
     },
@@ -80,15 +94,17 @@ const App = () => (
       <Header />
       {/*  use Toastontainer here to access it in the whole project */}
       <ToastContainer />
-      <React.StrictMode>
-        <Switch>
-          <Route exact path="/" component={ArtWorks} />
-          <Route exact path="/login" component={EnterForm} />
-          <Route exact path="/register" component={RegisterForm} />
-        </Switch>
-      </React.StrictMode>
-      <Divider />
-      <Footer />
+      <Container maxWidth="lg">
+        <React.StrictMode>
+          <Switch>
+            <Route exact path="/" component={ArtWorks} />
+            <Route exact path="/login" component={EnterForm} />
+            <Route exact path="/register" component={RegisterForm} />
+          </Switch>
+        </React.StrictMode>
+        <Divider />
+        <Footer />
+      </Container>
     </ThemeProvider>
   </>
 );

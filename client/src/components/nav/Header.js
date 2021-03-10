@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Avatar from '@material-ui/core/Avatar';
 import { Button, Link, Typography } from '@material-ui/core';
@@ -17,8 +14,8 @@ import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
+import SearchIcon from '@material-ui/icons/Search';
 import RegisterForm from '../../pages/auth/RegisterForm';
-import EnterForm from '../../pages/auth/EnterFrom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -31,15 +28,8 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
   search: {
     position: 'relative',
-    direction: 'rtl',
     borderRadius: '0',
     border: '1px solid rgb(229, 229, 229)',
     backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -54,21 +44,42 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
       width: '100%',
+      fontSize: 1,
     },
   },
+  searchIcon: {
+    padding: theme.spacing(0, 1),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   inputRoot: {
     color: 'inherit',
     width: '100%',
     '& input::placeholder': {
-      fontSize: '14px',
+      fontSize: '10px',
+    },
+    direction: 'rtl',
+    [theme.breakpoints.up('sm')]: {
+      '& input::placeholder': {
+        fontSize: '14px',
+      },
     },
   },
   inputInput: {
-    padding: theme.spacing(2, 1, 1, 0),
+    padding: theme.spacing(1, 1, 1, 0),
+    margin: '5px !important',
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(0.2)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
+    // paddingLeft: `calc(1em + ${theme.spacing(1)})`,
+    // transition: theme.transitions.create('width'),
+    width: '80% !important',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
   },
   sectionDesktop: {
     display: 'none',
@@ -78,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionMobile: {
     display: 'flex',
+    fontSize: '0.8rem',
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
@@ -130,7 +142,6 @@ Fade.propTypes = {
 
 export default function Header() {
   const classes = useStyles();
-
   const preventDefault = (event) => event.preventDefault();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -156,58 +167,102 @@ export default function Header() {
   };
 
   const menuId = 'primary-search-account-menu';
+
+  // the inside menu in mobile view
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link href="/login" component="a" underline="none" target="_self">
+          ورود
+        </Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link href="/register" component="a" underline="none" target="_self">
+          ثبت‌نام
+        </Link>
+      </MenuItem>
     </Menu>
   );
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
+        <Typography variant="subtitle1">
+          <Link
+            href="#"
+            component="a"
+            onClick={preventDefault}
+            underline="none"
+          >
+            گزینش‌شده
+          </Link>
+        </Typography>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+        <Typography variant="subtitle1">
+          <Link
+            href="#"
+            component="a"
+            onClick={preventDefault}
+            underline="none"
+          >
+            فروش
+          </Link>
+        </Typography>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem>
+        <Typography variant="subtitle1">
+          <Link
+            href="#"
+            component="a"
+            onClick={preventDefault}
+            underline="none"
+          >
+            خرید
+          </Link>
+        </Typography>
+      </MenuItem>
+      <MenuItem>
         <IconButton
+          edge="end"
           aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
+          aria-controls={menuId}
           aria-haspopup="true"
+          onClick={handleProfileMenuOpen}
           color="inherit"
         >
+          <Typography variant="subtitle1">حساب کاربری</Typography>
+
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -219,10 +274,15 @@ export default function Header() {
   return (
     <div className={classes.grow}>
       <AppBar position="static">
+        {renderMobileMenu}
         <Toolbar>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button variant="contained" onClick={() => setRegOpen(true)}>
+            <Button
+              variant="contained"
+              className={classes.myButton}
+              onClick={() => setRegOpen(true)}
+            >
               ثبت‌نام
             </Button>
             <Button
@@ -275,8 +335,11 @@ export default function Header() {
             </IconButton>
           </div>
           <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
             <InputBase
-              placeholder="جستجو با نام هنرمند، گالری، اثر، استایل و غیره"
+              placeholder="جستجو نام هنرمند، گالری، اثر، استایل و غیره"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -294,6 +357,7 @@ export default function Header() {
           </div>
         </Toolbar>
       </AppBar>
+      {renderMenu}
       <div>
         <Modal
           aria-labelledby="spring-modal-title"
