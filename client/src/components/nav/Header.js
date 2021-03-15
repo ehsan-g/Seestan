@@ -16,6 +16,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import SearchIcon from '@material-ui/icons/Search';
 import RegisterForm from '../../pages/auth/RegisterForm';
+import EnterForm from '../../pages/auth/EnterFrom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -391,10 +392,7 @@ export default function Header() {
         >
           <Fade in={eOpen}>
             <div className={classes.paper}>
-              <h2 id="transition-modal-title">Transition modal</h2>
-              <p id="transition-modal-description">
-                react-transition-group animates me.
-              </p>
+              <EnterForm />
             </div>
           </Fade>
         </Modal>
