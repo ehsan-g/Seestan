@@ -4,6 +4,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
+import ArtWork from './pages/ArtWork';
 import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';
 import EnterForm from './pages/auth/EnterFrom';
@@ -98,6 +99,7 @@ const App = () => (
         <React.StrictMode>
           <Switch>
             <Route exact path="/" component={ArtWorks} />
+            <Route exact path="/product/:id" component={ArtWork} />
             <Route exact path="/login" component={EnterForm} />
             <Route exact path="/register" component={RegisterForm} />
           </Switch>

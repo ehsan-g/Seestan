@@ -4,7 +4,7 @@ import React from 'react';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 
 class Card extends React.Component {
@@ -20,14 +20,16 @@ class Card extends React.Component {
         <ImageListItemBar
           title={this.props.product.title}
           position="bottom"
+          style={{ background: 'transparent' }}
           actionIcon={
             <IconButton aria-label={`star ${this.props.product.title}`}>
-              <StarBorderIcon />
+              <FavoriteBorder style={{ color: 'white' }} />
             </IconButton>
           }
           actionPosition="right"
         />
-        <Typography>{this.props.product.name}</Typography>
+        <Typography variant="subtitle1">{this.props.product.name}</Typography>
+        <Typography>${this.props.product.price}</Typography>
       </ImageListItem>
     );
   }

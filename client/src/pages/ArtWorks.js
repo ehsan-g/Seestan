@@ -8,6 +8,9 @@ import ArtCard from '../components/ArtCard';
 const useStyles = makeStyles({
   root: {
     width: '70%',
+    marginTop: 100,
+    marginBottom: 100,
+    paddingBottom: '20px !important',
   },
 });
 
