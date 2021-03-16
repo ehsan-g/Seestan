@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   root: {
     width: '70%',
     marginTop: 100,
-    marginBottom: 100,
+    marginBottom: 150,
     paddingBottom: '20px !important',
   },
 });

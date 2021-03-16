@@ -6,12 +6,12 @@ import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
+import { Link } from 'react-router-dom';
 
 class Card extends React.Component {
   render() {
-    console.log(this.props.product);
     return (
-      <ImageListItem>
+      <ImageListItem component={Link} to={`/product/${this.props.product._id}`}>
         <img
           srcSet={`${this.props.product.image}?w=161&fit=crop&auto=format 1x,
                   ${this.props.product.image}?w=161&fit=crop&auto=format&dpr=2 2x`}

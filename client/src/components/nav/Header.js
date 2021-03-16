@@ -9,12 +9,13 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Avatar from '@material-ui/core/Avatar';
-import { Button, Link, Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import SearchIcon from '@material-ui/icons/Search';
+import { BrowserRouter as Link } from 'react-router-dom';
 import RegisterForm from '../../pages/auth/RegisterForm';
 import EnterForm from '../../pages/auth/EnterFrom';
 
@@ -187,12 +188,12 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link href="/login" component="a" underline="none" target="_self">
+        <Link to="/login" component="a" underline="none" target="_self">
           ورود
         </Link>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
-        <Link href="/register" component="a" underline="none" target="_self">
+        <Link to="/register" component="a" underline="none" target="_self">
           ثبت‌نام
         </Link>
       </MenuItem>
@@ -217,36 +218,21 @@ export default function Header() {
     >
       <MenuItem>
         <Typography variant="subtitle1">
-          <Link
-            href="#"
-            component="a"
-            onClick={preventDefault}
-            underline="none"
-          >
+          <Link to="#" component="a" onClick={preventDefault} underline="none">
             گزینش‌شده
           </Link>
         </Typography>
       </MenuItem>
       <MenuItem>
         <Typography variant="subtitle1">
-          <Link
-            href="#"
-            component="a"
-            onClick={preventDefault}
-            underline="none"
-          >
+          <Link to="#" component="a" onClick={preventDefault} underline="none">
             فروش
           </Link>
         </Typography>
       </MenuItem>
       <MenuItem>
         <Typography variant="subtitle1">
-          <Link
-            href="#"
-            component="a"
-            onClick={preventDefault}
-            underline="none"
-          >
+          <Link to="#" component="a" onClick={preventDefault} underline="none">
             خرید
           </Link>
         </Typography>
@@ -295,7 +281,7 @@ export default function Header() {
             </Button>
             <Typography variant="subtitle1">
               <Link
-                href="#"
+                to="#"
                 component="a"
                 onClick={preventDefault}
                 underline="none"
@@ -305,7 +291,7 @@ export default function Header() {
             </Typography>
             <Typography variant="subtitle1">
               <Link
-                href="#"
+                to="#"
                 component="a"
                 onClick={preventDefault}
                 underline="none"
@@ -315,7 +301,7 @@ export default function Header() {
             </Typography>
             <Typography variant="subtitle1">
               <Link
-                href="#"
+                to="#"
                 component="a"
                 onClick={preventDefault}
                 underline="none"
