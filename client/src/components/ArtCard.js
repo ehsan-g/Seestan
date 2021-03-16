@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import { Link } from 'react-router-dom';
+import EnterForm from '../pages/auth/EnterFrom';
 
 class Card extends React.Component {
   render() {
@@ -17,17 +18,23 @@ class Card extends React.Component {
                   ${this.props.product.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
           alt={this.props.product.name}
         />
-        <ImageListItemBar
-          title={this.props.product.title}
-          position="bottom"
-          style={{ background: 'transparent' }}
-          actionIcon={
-            <IconButton aria-label={`star ${this.props.product.title}`}>
-              <FavoriteBorder style={{ color: 'white' }} />
-            </IconButton>
-          }
-          actionPosition="right"
-        />
+        <div>
+          <ImageListItemBar
+            title={this.props.product.title}
+            position="bottom"
+            style={{ background: 'transparent' }}
+            actionIcon={
+              <IconButton
+                onClick={() => alert(<EnterForm />)}
+                aria-label={`star ${this.props.product.title}`}
+              >
+                <FavoriteBorder style={{ color: 'white' }} />
+              </IconButton>
+            }
+            actionPosition="right"
+          />
+        </div>
+
         <Typography variant="subtitle1">{this.props.product.name}</Typography>
         <Typography>${this.props.product.price}</Typography>
       </ImageListItem>

@@ -1,0 +1,79 @@
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const customTheme = createMuiTheme({
+  components: {
+    // Style sheet name => example Link component ⚛️
+    MuiLink: {
+      styleOverrides: {
+        // Name of the rule
+        underlineNone: {
+          // Some CSS
+          color: 'black',
+          '&:hover': {
+            color: 'black',
+            textDecoration: 'none',
+          },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: 'white',
+          color: 'black',
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          alignContent: 'center',
+          padding: '2px',
+          color: 'secondary',
+        },
+
+        subtitle1: {
+          fontSize: '12px',
+          margin: '2px',
+        },
+        colorPrimary: {
+          color: '#6c757d',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          backgroundColor: 'black',
+          padding: '0px 15px 0px 15px',
+          margin: 2,
+          color: 'white',
+          minWidth: '41px',
+          '&:hover': {
+            color: 'white',
+            backgroundColor: '#b77990',
+            textDecoration: 'none',
+          },
+        },
+        outlined: {
+          margin: 2,
+          padding: '0px 15px 0px 15px',
+          minWidth: '41px',
+          '&:hover': {
+            borderColor: 'black',
+            textDecoration: 'none',
+          },
+        },
+      },
+    },
+    MuiImageList: {
+      styleOverrides: {
+        root: {
+          overflowY: '-moz-hidden-unscrollable',
+        },
+      },
+    },
+  },
+});
+
+export default customTheme;

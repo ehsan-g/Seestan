@@ -1,14 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
+import reduxThunk from 'redux-thunk';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import reducers from './reducers';
+import customTheme from './styles/customTheme';
 
+// Dev Tools
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  reducers,
+  composeEnhancers(applyMiddleware(reduxThunk))
+);
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-
+  <Provider store={store}>
+    <ThemeProvider theme={customTheme}>
+      <App />
+    </ThemeProvider>
+  </Provider>,
   document.getElementById('root')
 );
 

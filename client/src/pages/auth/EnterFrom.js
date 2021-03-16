@@ -50,7 +50,7 @@ const formFields = [
   },
 ];
 
-export default function RegisterForm() {
+export default function EnterForm() {
   return (
     <div style={{ padding: 16, margin: 'auto', maxWidth: 400 }}>
       <CssBaseline />
