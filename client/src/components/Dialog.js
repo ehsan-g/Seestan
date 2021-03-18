@@ -20,7 +20,9 @@ export default function AlertDialog() {
 
   return (
     <div>
-      <Link onClick={handleClickOpen}>Certificate of authenticity</Link>
+      <Link to="/" onClick={handleClickOpen}>
+        Certificate of authenticity
+      </Link>
       <Dialog
         open={open}
         onClose={handleClose}
