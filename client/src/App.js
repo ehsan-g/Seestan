@@ -28,9 +28,9 @@ const App = () => (
             <Route exact path="/register" component={RegisterForm} />
           </Switch>
         </React.StrictMode>
-        <Divider />
-        <Footer />
       </Container>
+      <Divider />
+      <Footer />
     </BrowserRouter>
   </>
 );

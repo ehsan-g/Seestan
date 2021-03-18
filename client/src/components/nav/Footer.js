@@ -15,7 +15,14 @@ const Footer = () => (
     spacing={10}
     style={{ top: 0 }}
   >
-    <Grid item xs container direction="row" justify="flex-end">
+    <Grid
+      item
+      xs
+      container
+      direction="row"
+      justify="flex-end"
+      position="static"
+    >
       <Avatar
         alt="Logo"
         variant="square"

@@ -10,7 +10,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = (theme) => ({
   paper: {
-    padding: theme.spacing(2),
     color: theme.palette.text.secondary,
     width: '100%',
   },
@@ -57,7 +56,6 @@ class TheTab extends React.Component {
           >
             <Tab value="one" label="Item One" />
             <Tab value="two" label="Item Two" />
-            <Tab value="three" label="Item Three" />
           </Tabs>
         </Box>
       </Paper>

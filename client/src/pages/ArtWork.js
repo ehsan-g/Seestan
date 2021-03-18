@@ -21,21 +21,15 @@ import TheTabe from '../components/TheTab';
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    height: '100vh',
     marginTop: 100,
     marginBottom: 100,
-    paddingBottom: '20px !important',
   },
   container: {
     display: 'grid',
   },
   paper: {
     padding: theme.spacing(2),
-    color: theme.palette.text.secondary,
-    width: '100%',
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
+    marginLeft: theme.spacing(2),
   },
 });
 
@@ -57,84 +51,95 @@ class ArtWork extends React.Component {
 
       return (
         <>
-          <Grid item xs={4} container>
-            <Paper className={classes.paper} elevation={1}>
-              <Grid item xs={12}>
-                <Link to="/" variant="subtitle1">
-                  {theArt.artist}
-                </Link>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                justifyContent="flex-start"
-                alignItems="flex-start"
-              >
+          <Grid container direction="row-reverse">
+            <Grid item sm={8} align="center">
+              <Paper className={classes.paper} elevation={1}>
+                <img
+                  src={`${theArt.image}`}
+                  alt="Art work"
+                  style={{ maxWidth: '100%', height: 'auto' }}
+                />
+              </Paper>
+              <Paper className={classes.paper} elevation={1}>
                 <IconButton>
-                  <AddCircleOutlineIcon style={{ color: 'black' }} />
-                  <Link to="/">
-                    <Typography variant="body2" style={{ fontSize: '0.75rem' }}>
-                      Follow
-                    </Typography>
-                  </Link>
+                  <FavoriteBorder style={{ color: 'black' }} />
                 </IconButton>
-                <Typography color="#666666" variant="body1">
-                  {theArt.colors}
-                </Typography>
-                <Typography color="#666666" variant="body1">
-                  {theArt.material}
-                </Typography>
-                <Typography color="/#666666" variant="body1">
-                  {theArt.width} x {theArt.height} in
-                </Typography>
-              </Grid>
-              <Divider
-                className={classes.divider}
-                style={{ marginTop: 20, marginBottom: 20 }}
-              />
+              </Paper>
+            </Grid>
+            <Grid item xs>
+              <Paper className={classes.paper} elevation={1}>
+                <Grid item xs={12}>
+                  <Link to="/" variant="subtitle1">
+                    {theArt.artist}
+                  </Link>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                >
+                  <IconButton>
+                    <AddCircleOutlineIcon style={{ color: 'black' }} />
+                    <Link to="/">
+                      <Typography
+                        variant="body2"
+                        style={{ fontSize: '0.75rem' }}
+                      >
+                        Follow
+                      </Typography>
+                    </Link>
+                  </IconButton>
+                  <Typography color="#666666" variant="body1">
+                    {theArt.colors}
+                  </Typography>
+                  <Typography color="#666666" variant="body1">
+                    {theArt.material}
+                  </Typography>
+                  <Typography color="/#666666" variant="body1">
+                    {theArt.width} x {theArt.height} in
+                  </Typography>
+                </Grid>
+                <Divider
+                  className={classes.divider}
+                  style={{ marginTop: 20, marginBottom: 20 }}
+                />
 
-              <Typography
-                variant="subtitle2"
-                style={{ marginTop: 30, marginBottom: 30 }}
-              >
-                ${theArt.price}
-              </Typography>
-              <Button variant="contained" type="submit" fullWidth>
-                تماس با گالری
-              </Button>
-              <Link to="/">
-                <Typography variant="subtitle2">
-                  {theArt.gallery.name}
+                <Typography
+                  variant="subtitle2"
+                  style={{ marginTop: 30, marginBottom: 30 }}
+                >
+                  ${theArt.price}
                 </Typography>
-              </Link>
-              <Typography variant="subtitle1" color="#666666">
-                <RoomOutlinedIcon />
-                {theArt.gallery.location}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="#666666"
-                style={{ display: 'flex' }}
-              >
-                <MilitaryTechOutlinedIcon />
-                <Dialog />
-              </Typography>
-            </Paper>
+                <Button variant="contained" type="submit" fullWidth>
+                  تماس با گالری
+                </Button>
+                <Link to="/">
+                  <Typography variant="subtitle2">
+                    {theArt.gallery.name}
+                  </Typography>
+                </Link>
+                <Typography variant="subtitle1" color="#666666">
+                  <RoomOutlinedIcon />
+                  {theArt.gallery.location}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  color="#666666"
+                  style={{ display: 'flex' }}
+                >
+                  <MilitaryTechOutlinedIcon />
+                  <Dialog />
+                </Typography>
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={8} align="center">
-            <Paper className={classes.paper} elevation={1}>
-              <img
-                src={`${theArt.image}`}
-                alt="Art work"
-                style={{ maxWidth: '100%', height: 'auto' }}
-              />
-            </Paper>
-            <Paper className={classes.paper} elevation={1}>
-              <IconButton>
-                <FavoriteBorder style={{ color: 'black' }} />
-              </IconButton>
-            </Paper>
-            <TheTabe />
+          <Grid container justifyContent="flex-end" alignItems="flex-end">
+            <Grid item xs sm={8}>
+              <Paper className={classes.paper} elevation={1}>
+                <TheTabe />
+              </Paper>
+            </Grid>
           </Grid>
         </>
       );
