@@ -21,17 +21,16 @@ const styles = () => ({
 class ArtWorks extends React.Component {
   componentDidMount = async () => {
     await this.props.fetchAllArtWorks();
-    console.log(this.props.allFetchedWorks.all);
   };
 
   render() {
     const { classes } = this.props;
-    if (this.props.allFetchedWorks.all[1]) {
-      const products = this.props.allFetchedWorks.all;
+    if (this.props.fetchedWorks[1]) {
+      const allWorks = this.props.fetchedWorks;
       return (
         <ImageList variant="woven" cols={3} gap={25} className={classes.root}>
-          {products.map((item) => (
-            <ArtCard key={item._id} product={item} />
+          {allWorks.map((item) => (
+            <ArtCard key={item._id} artWork={item} />
           ))}
         </ImageList>
       );
@@ -45,7 +44,7 @@ ArtWorks.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  allFetchedWorks: state.artworks,
+  fetchedWorks: state.artworks.all,
 });
 
 export default connect(mapStateToProps, {

@@ -23,7 +23,7 @@ const App = () => (
         <React.StrictMode>
           <Switch>
             <Route exact path="/" component={ArtWorks} />
-            <Route exact path="/product/:id" component={ArtWork} />
+            <Route path="/artWork/:workId" component={ArtWork} />
             <Route exact path="/login" component={EnterForm} />
             <Route exact path="/register" component={RegisterForm} />
           </Switch>

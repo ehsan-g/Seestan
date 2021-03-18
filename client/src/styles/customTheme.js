@@ -3,19 +3,6 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const customTheme = createMuiTheme({
   components: {
     // Style sheet name => example Link component ⚛️
-    MuiLink: {
-      styleOverrides: {
-        // Name of the rule
-        underlineNone: {
-          // Some CSS
-          color: 'black',
-          '&:hover': {
-            color: 'black',
-            textDecoration: 'none',
-          },
-        },
-      },
-    },
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {
@@ -31,13 +18,28 @@ const customTheme = createMuiTheme({
           padding: '2px',
           color: 'secondary',
         },
+        underlineNone: {
+          // Some CSS
+          color: 'black',
+          '&:hover': {
+            color: 'black',
+            textDecoration: 'none',
+          },
+        },
 
         subtitle1: {
           fontSize: '12px',
           margin: '2px',
         },
+        subtitle2: {
+          margin: '10px',
+        },
         colorPrimary: {
-          color: '#6c757d',
+          color: 'white',
+        },
+
+        body1: {
+          fontSize: '11px',
         },
       },
     },
@@ -45,7 +47,7 @@ const customTheme = createMuiTheme({
       styleOverrides: {
         contained: {
           backgroundColor: 'black',
-          padding: '0px 15px 0px 15px',
+          padding: '5px 15px 5px 15px',
           margin: 2,
           color: 'white',
           minWidth: '41px',

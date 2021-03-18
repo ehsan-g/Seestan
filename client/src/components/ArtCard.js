@@ -7,26 +7,44 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import EnterForm from '../pages/auth/EnterFrom';
+import { fetchOneArtWork } from '../actions';
 
-class Card extends React.Component {
+class ArtCard extends React.Component {
+  fetchTheWork = async (id) => {
+    await this.props.fetchOneArtWork(id);
+    console.log(this.props);
+  };
+
   render() {
     return (
-      <ImageListItem component={Link} to={`/product/${this.props.product._id}`}>
+      <ImageListItem
+        component={Link}
+        to={`/artWork/${this.props.artWork._id}`}
+        onClick={async () => this.fetchTheWork(this.props.artWork._id)}
+        style={{
+          color: '#666666',
+          width: '300px',
+          minHeight: '200px',
+          hover: 'none',
+          textDecoration: 'none',
+        }}
+      >
         <img
-          srcSet={`${this.props.product.image}?w=161&fit=crop&auto=format 1x,
-                  ${this.props.product.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
-          alt={this.props.product.name}
+          srcSet={`${this.props.artWork.image}?w=161&fit=crop&auto=format 1x,
+                  ${this.props.artWork.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
+          alt={this.props.artWork.name}
         />
         <div>
           <ImageListItemBar
-            title={this.props.product.title}
+            title={this.props.artWork.title}
             position="bottom"
             style={{ background: 'transparent' }}
             actionIcon={
               <IconButton
                 onClick={() => alert(<EnterForm />)}
-                aria-label={`star ${this.props.product.title}`}
+                aria-label={`star ${this.props.artWork.title}`}
               >
                 <FavoriteBorder style={{ color: 'white' }} />
               </IconButton>
@@ -35,11 +53,17 @@ class Card extends React.Component {
           />
         </div>
 
-        <Typography variant="subtitle1">{this.props.product.name}</Typography>
-        <Typography>${this.props.product.price}</Typography>
+        <Typography variant="subtitle1">{this.props.artWork.artist}</Typography>
+        <Typography>${this.props.artWork.price}</Typography>
       </ImageListItem>
     );
   }
 }
 
-export default Card;
+const mapStateToProps = (state) => ({
+  fetchedWork: state.artworks.one,
+});
+
+export default connect(mapStateToProps, {
+  fetchOneArtWork,
+})(ArtCard);

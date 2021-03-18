@@ -1,9 +1,7 @@
-// import randomNeed from '../apis/randomNeed';
-// import etherPrice from '../apis/EtherPrice';
 import products from '../apis/products';
 
-export const fetchOneArtWork = (_id) => {
-  const oneArtwork = products._id;
+export const fetchOneArtWork = (workId) => {
+  const oneArtwork = products.find((p) => p._id === workId);
   return {
     type: 'FETCH_THE_ARTWORK',
     payload: oneArtwork,
@@ -13,7 +11,7 @@ export const fetchOneArtWork = (_id) => {
 export const fetchAllArtWorks = () => {
   const allArtworks = products;
   return {
-    type: 'FETCH_ALL_ARTWORK',
+    type: 'FETCH_ALL_ARTWORKS',
     payload: allArtworks,
   };
 };
