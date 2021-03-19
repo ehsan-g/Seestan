@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unused-state */
@@ -5,8 +6,9 @@ import * as React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) => ({
   paper: {
@@ -32,35 +34,72 @@ const styles = (theme) => ({
   },
 });
 
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 class TheTab extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: 'one' };
+    this.state = { value: 0 };
   }
 
   render() {
     const handleChange = (event, newValue) => {
+      console.log(newValue);
       this.setState({ value: newValue });
     };
 
-    const { classes } = this.props;
-
     return (
-      <Paper className={classes.paper} elevation={1}>
-        <Box sx={{ width: '100%', direction: 'rtl' }}>
+      <Box sx={{ width: '100%', direction: 'rtl' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
-            className={classes.tabs}
             value={this.state.value}
             onChange={handleChange}
-            aria-label="secondary tabs example"
+            aria-label="basic tabs example"
           >
-            <Tab value="one" label="Item One" />
-            <Tab value="two" label="Item Two" />
+            <Tab label="در مورد اثر" {...a11yProps(0)} />
+            <Tab label="پیشنه" {...a11yProps(1)} />
           </Tabs>
         </Box>
-      </Paper>
+        <TabPanel value={this.state.value} index={0}>
+          در مورد اثر
+        </TabPanel>
+        <TabPanel value={this.state.value} index={1}>
+          پیشنه
+        </TabPanel>
+      </Box>
     );
   }
 }
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
 
 export default withStyles(styles)(TheTab);
