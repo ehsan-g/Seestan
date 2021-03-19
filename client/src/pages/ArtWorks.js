@@ -6,15 +6,34 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import ImageList from '@material-ui/core/ImageList';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Grid } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Hidden from '@material-ui/core/Hidden';
 import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks } from '../actions';
 
-const styles = () => ({
+const styles = (theme) => ({
   root: {
     width: '70%',
     marginTop: 100,
-    marginBottom: 150,
     paddingBottom: '20px !important',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
+  },
+
+  responsive: {
+    // width: '70%',
+    marginTop: 100,
+    padding: 20,
+    // [theme.breakpoints.up('md')]: {
+    //   display: 'none',
+    //   innerHeight: 0,
+    // },
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
   },
 });
 
@@ -25,16 +44,46 @@ class ArtWorks extends React.Component {
 
   render() {
     const { classes } = this.props;
-    if (this.props.fetchedWorks[1]) {
+    if (this.props.fetchedWorks.map) {
       const allWorks = this.props.fetchedWorks;
       return (
-        <ImageList variant="woven" cols={3} gap={25} className={classes.root}>
-          {allWorks.map((item) => (
-            <ArtCard key={item._id} artWork={item} />
-          ))}
-        </ImageList>
+        <>
+          <div className={classes.root}>
+            <ImageList
+              className={classes.imageList}
+              variant="woven"
+              cols={3}
+              gap={25}
+            >
+              {allWorks.map((item) => (
+                <ArtCard key={item._id} artWork={item} />
+              ))}
+            </ImageList>
+          </div>
+
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={5}
+          >
+            <Paper className={classes.responsive} elevation={0}>
+              {allWorks.map((item) => (
+                <Hidden mdUp>
+                  <Grid item>
+                    <Paper className={classes.paper}>
+                      <ArtCard key={item._id} artWork={item} />
+                    </Paper>
+                  </Grid>
+                </Hidden>
+              ))}
+            </Paper>
+          </Grid>
+        </>
       );
     }
+
     return <div>Loading...</div>;
   }
 }
