@@ -16,20 +16,15 @@ const styles = (theme) => ({
   root: {
     width: '70%',
     marginTop: 100,
-    paddingBottom: '20px !important',
+    // paddingBottom: '20px !important',
     [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
 
   responsive: {
-    // width: '70%',
     marginTop: 100,
     padding: 20,
-    // [theme.breakpoints.up('md')]: {
-    //   display: 'none',
-    //   innerHeight: 0,
-    // },
   },
   paper: {
     padding: theme.spacing(2),
@@ -70,10 +65,10 @@ class ArtWorks extends React.Component {
           >
             <Paper className={classes.responsive} elevation={0}>
               {allWorks.map((item) => (
-                <Hidden mdUp>
-                  <Grid item>
+                <Hidden mdUp key={item._id}>
+                  <Grid>
                     <Paper className={classes.paper}>
-                      <ArtCard key={item._id} artWork={item} />
+                      <ArtCard artWork={item} />
                     </Paper>
                   </Grid>
                 </Hidden>
@@ -84,7 +79,7 @@ class ArtWorks extends React.Component {
       );
     }
 
-    return <div>Loading...</div>;
+    return <div className={classes.root}>Loading...</div>;
   }
 }
 

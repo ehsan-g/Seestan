@@ -9,11 +9,16 @@ import Box from '@material-ui/core/Box';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+import Paper from '@material-ui/core/Paper';
+import { fetchOneArtWork } from '../actions/index.js';
 
 const styles = (theme) => ({
   paper: {
     color: theme.palette.text.secondary,
     width: '100%',
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
   },
   tabs: {
     borderBottom: '1px solid #666666',
@@ -52,6 +57,7 @@ class TheTab extends React.Component {
       console.log(newValue);
       this.setState({ value: newValue });
     };
+    const { classes } = this.props;
 
     return (
       <Box sx={{ width: '100%', direction: 'rtl' }}>
@@ -66,7 +72,7 @@ class TheTab extends React.Component {
           </Tabs>
         </Box>
         <TabPanel value={this.state.value} index={0}>
-          در مورد اثر
+          {this.props.fetchedWork.aboutWork}
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
           پیشنه
@@ -102,4 +108,10 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default withStyles(styles)(TheTab);
+const mapStateToProps = (state) => ({
+  fetchedWork: state.artworks.one,
+});
+
+export default connect(mapStateToProps, {
+  fetchOneArtWork,
+})(withStyles(styles)(TheTab));

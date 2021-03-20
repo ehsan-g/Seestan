@@ -14,15 +14,11 @@ import { fetchOneArtWork } from '../actions';
 class ArtCard extends React.Component {
   fetchTheWork = async (id) => {
     await this.props.fetchOneArtWork(id);
-    console.log(this.props);
   };
 
   render() {
     return (
       <ImageListItem
-        component={Link}
-        to={`/artWork/${this.props.artWork._id}`}
-        onClick={async () => this.fetchTheWork(this.props.artWork._id)}
         style={{
           color: '#666666',
           width: '300px',
@@ -31,27 +27,31 @@ class ArtCard extends React.Component {
           textDecoration: 'none',
         }}
       >
+        <Link
+          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          to={`/artWork/${this.props.artWork._id}`}
+          onClick={async () => this.fetchTheWork(this.props.artWork._id)}
+        />
         <img
           srcSet={`${this.props.artWork.image}?w=161&fit=crop&auto=format 1x,
                   ${this.props.artWork.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
           alt={this.props.artWork.name}
         />
-        <div>
-          <ImageListItemBar
-            title={this.props.artWork.title}
-            position="bottom"
-            style={{ background: 'transparent' }}
-            actionIcon={
-              <IconButton
-                onClick={() => alert(<EnterForm />)}
-                aria-label={`star ${this.props.artWork.title}`}
-              >
-                <FavoriteBorder style={{ color: 'white' }} />
-              </IconButton>
-            }
-            actionPosition="right"
-          />
-        </div>
+
+        <ImageListItemBar
+          title={this.props.artWork.title}
+          position="bottom"
+          style={{ background: 'transparent' }}
+          actionIcon={
+            <IconButton
+              onClick={() => alert(<EnterForm />)}
+              aria-label={`star ${this.props.artWork.title}`}
+            >
+              <FavoriteBorder style={{ color: 'white' }} />
+            </IconButton>
+          }
+          actionPosition="right"
+        />
 
         <Typography variant="subtitle1">{this.props.artWork.artist}</Typography>
         <Typography>${this.props.artWork.price}</Typography>
