@@ -60,11 +60,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-MERN
-* [MangoDB](https://www.mongodb.com/3)
-* [Express](https://expressjs.com/) 
-* [React](https://reactjs.org/)
-* [Node](https://nodejs.org)
+Django - React - Postgres - Material UI
 
 
 ## Versioning
