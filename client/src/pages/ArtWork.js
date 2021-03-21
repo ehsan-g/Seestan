@@ -45,7 +45,6 @@ class ArtWork extends React.Component {
 
   renderElement() {
     if (this.props.fetchedWork.gallery) {
-      this.fetchTheWork();
       const theArt = this.props.fetchedWork;
       const { classes } = this.props;
 

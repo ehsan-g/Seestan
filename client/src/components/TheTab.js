@@ -54,7 +54,6 @@ class TheTab extends React.Component {
 
   render() {
     const handleChange = (event, newValue) => {
-      console.log(newValue);
       this.setState({ value: newValue });
     };
     const { classes } = this.props;
