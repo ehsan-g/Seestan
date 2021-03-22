@@ -37,7 +37,9 @@ class Artwork(models.Model):
     caption = models.CharField(max_length=200, null=True, blank=True)
     classifications = models.CharField(
         max_length=20, choices=CLASSIFICATION, default="cm")
-    image = models.ImageField( height_field=None, width_field=None, max_length=100, null=True) # uploads to MEDIA_ROOT in setting
+    # uploads to MEDIA_ROOT in setting
+    image = models.ImageField(
+        height_field=None, width_field=None, max_length=100, null=True)
     color = models.CharField(max_length=200, null=True, blank=True)
     material = models.CharField(max_length=200, null=True, blank=True)
     width = models.IntegerField(null=True)

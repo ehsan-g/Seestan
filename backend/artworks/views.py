@@ -3,8 +3,11 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .products import products
+from .serializer import ArtworkSerializer
 
+from .models import Artwork
 # Create your views here.
+
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -19,16 +22,21 @@ def getRoutes(request):
     ]
     return Response(routes)
 
+
 @api_view(['GET'])
 def getArtWorks(request):
-    return Response(products)
+    artworks = Artwork.objects.all()
+    print(artworks)
+    serializer = ArtworkSerializer(artworks, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getTheArtWork(request, pk):
-    product = None
+    artwork = None
     for theArtWork in products:
         if theArtWork['_id'] == pk:
-            product = theArtWork
+            artwork = theArtWork
             break
 
-    return Response(product)
+    return Response(artwork)
