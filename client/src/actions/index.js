@@ -1,4 +1,3 @@
-import products from '../apis/products';
 import artworksBase from '../apis/artworksBase';
 
 // export const fetchOneArtWork = (workId) => {

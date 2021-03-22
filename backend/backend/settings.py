@@ -126,4 +126,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# render image by link
+MEDIA_URL = '/images/'
+
+# static path
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+# upload image path config
+MEDIA_ROOT = 'static/images'
+
 CORS_ALLOW_ALL_ORIGINS = True

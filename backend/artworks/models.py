@@ -1,32 +1,68 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
+from django.utils.translation import gettext as _
 
 # Create your models here.
 
 
 class Artwork(models.Model):
+    UNITS = (
+        ('US', 'in'),
+        ('UK', 'cm'),
+    )
+    CLASSIFICATION = (
+        ('1', 'Unique'),
+        ('2', 'Limited edition'),
+        ('3', 'Open edition'),
+        ('4', 'Unknown edition'),
+    )
+
+    def year_choices():
+        return [(str(r), str(r)) for r in range(1984, datetime.date.today().year+1)]
+
+    def current_year():
+        return str((datetime.date.today().year))
+
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200, null=True, blank=True)
-    artist = models.IntegerField(null=False)
-    biography = models.CharField(max_length=200, null=True, blank=True)
-    # image =
-    caption = models.CharField(max_length=200, null=True, blank=True)
-    description = models.CharField(max_length=1200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    workName = models.CharField(max_length=200, null=True, blank=True)
+    year = models.CharField(
+        _('year'), choices=year_choices(), default=current_year, max_length=200)
+    aboutWork = models.CharField(max_length=200, null=True, blank=True)
+    provenance = models.CharField(max_length=200, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
+    medium = models.CharField(max_length=200, null=True, blank=True)
+    caption = models.CharField(max_length=200, null=True, blank=True)
+    classifications = models.CharField(
+        max_length=20, choices=CLASSIFICATION, default="cm")
+    image = models.ImageField( height_field=None, width_field=None, max_length=100, null=True) # uploads to MEDIA_ROOT in setting
     color = models.CharField(max_length=200, null=True, blank=True)
     material = models.CharField(max_length=200, null=True, blank=True)
-    width = models.IntegerField(null=False)
-    height = models.IntegerField(null=False)
-    frame = models.BooleanField(null=False)
+    width = models.IntegerField(null=True)
+    height = models.IntegerField(null=True)
+    depth = models.IntegerField(null=True)
+    unit = models.CharField(max_length=2, choices=UNITS, default="")
+    # gallery =
+    isAnEdition = models.BooleanField(null=False, default=False)
+    editionNum = models.IntegerField(default=0, null=False)
+    editionSize = models.IntegerField(default=0, null=False)
+    isSigned = models.BooleanField(null=False, default=False)
+    isAuthenticated = models.BooleanField(null=False, default=False)
+    frame = models.CharField(max_length=200, null=True, blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=0)
     stockCount = models.IntegerField(null=False, default=0)
-    # gallery =
-    # automatically add this field
     createdAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.title
+
+
+class Favorite(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    artwork = models.ForeignKey(Artwork, on_delete=models.SET_NULL, null=True)
 
 
 class Order(models.Model):
@@ -36,9 +72,9 @@ class Order(models.Model):
     isPaid = models.BooleanField(default=False)
     paidAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     shippigDesc = models.CharField(max_length=1200, null=True, blank=True)
-    shippigPrice = models.DecimalField(
-        max_digits=7, decimal_places=0, null=True, blank=True)
     feePrice = models.DecimalField(
+        max_digits=7, decimal_places=0, null=True, blank=True)
+    taxPrice = models.DecimalField(
         max_digits=7, decimal_places=0, null=True, blank=True)
     totalPrice = models.DecimalField(
         max_digits=7, decimal_places=0, null=True, blank=True)
@@ -49,7 +85,8 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.createAt)
-    
+
+
 # cart
 class OrderItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
@@ -60,14 +97,21 @@ class OrderItem(models.Model):
     price = models.DecimalField(
         max_digits=7, decimal_places=0, null=True, blank=True)
     image = models.CharField(max_length=200, null=True, blank=True)
-    
+
     def __str__(self):
         return self.name
-    
 
 
 class ShippingAddress(models.Model):
-    _id =
-    order =
-    address =
-    
+    _id = models.AutoField(primary_key=True, editable=False)
+    order = models.OneToOneField(
+        Order, on_delete=models.CASCADE, null=True, blank=True)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
+    postalcode = models.CharField(max_length=200, null=True, blank=True)
+    country = models.CharField(max_length=200, null=True, blank=True)
+    shippingPrice = models.DecimalField(
+        max_digits=7, decimal_places=0, null=True, blank=True)
+
+    def __str__(self):
+        return self.address
