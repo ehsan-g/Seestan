@@ -138,3 +138,7 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = 'static/images'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+print('-------------------------------------')
+print('base path: ', BASE_DIR)
+print('-------------------------------------')

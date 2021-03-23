@@ -44,9 +44,10 @@ class ArtWork extends React.Component {
   };
 
   renderElement() {
-    if (this.props.fetchedWork.gallery) {
+    if (this.props.fetchedWork) {
       const theArt = this.props.fetchedWork;
       const { classes } = this.props;
+      console.log('theArt');
 
       return (
         <>
@@ -114,13 +115,11 @@ class ArtWork extends React.Component {
                   تماس با گالری
                 </Button>
                 <Link to="/">
-                  <Typography variant="subtitle2">
-                    {theArt.gallery.name}
-                  </Typography>
+                  <Typography variant="subtitle2">{theArt.name}</Typography>
                 </Link>
                 <Typography variant="subtitle1" color="#666666">
                   <RoomOutlinedIcon />
-                  {theArt.gallery.location}
+                  {theArt.workName}
                 </Typography>
                 <Typography
                   variant="subtitle1"
@@ -148,6 +147,7 @@ class ArtWork extends React.Component {
 
   render() {
     const { classes } = this.props;
+
     return (
       <div className={classes.root}>
         <Grid container spacing={3}>

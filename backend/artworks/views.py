@@ -33,10 +33,7 @@ def getArtWorks(request):
 
 @api_view(['GET'])
 def getTheArtWork(request, pk):
-    artwork = None
-    for theArtWork in products:
-        if theArtWork['_id'] == pk:
-            artwork = theArtWork
-            break
+    artwork = Artwork.objects.get(_id=pk)
+    serializer = ArtworkSerializer(artwork, many=False)
 
-    return Response(artwork)
+    return Response(serializer.data)

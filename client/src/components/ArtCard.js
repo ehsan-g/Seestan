@@ -17,6 +17,8 @@ class ArtCard extends React.Component {
   };
 
   render() {
+    console.log(this.props.artWork);
+
     return (
       <ImageListItem
         style={{
@@ -29,7 +31,7 @@ class ArtCard extends React.Component {
       >
         <Link
           style={{ position: 'absolute', width: '100%', height: '100%' }}
-          to={`/artWork/${this.props.artWork._id}`}
+          to={`/artworks/${this.props.artWork._id}`}
           onClick={async () => this.fetchTheWork(this.props.artWork._id)}
         />
         <img
