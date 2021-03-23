@@ -3,6 +3,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
+import { Router, browserHistory } from 'react-router';
 import ArtWork from './pages/ArtWork';
 import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';

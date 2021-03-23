@@ -3,7 +3,19 @@ import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
 import { Typography, Grid, Button, CssBaseline } from '@material-ui/core';
 import { toast } from 'react-toastify';
+import { makeStyles } from '@material-ui/core/styles';
 import { auth } from '../../firebase';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: 16,
+    margin: 'auto',
+    maxWidth: 400,
+    [theme.breakpoints.down('sm')]: {
+      margin: 100,
+    },
+  },
+}));
 
 const validate = (values) => {
   const errors = {};
@@ -89,8 +101,10 @@ export default function RegisterForm() {
         // ..
       });
   };
+  const classes = useStyles();
+
   return (
-    <div style={{ padding: 16, margin: 'auto', maxWidth: 400 }}>
+    <div className={classes.root}>
       <CssBaseline />
       <Typography variant="h6" align="center">
         The art world online

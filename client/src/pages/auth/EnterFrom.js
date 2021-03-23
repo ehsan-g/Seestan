@@ -1,7 +1,19 @@
 import React from 'react';
 import { Form } from 'react-final-form';
 import { TextField } from 'mui-rff';
-import { Typography, Grid, Button, CssBaseline, Link } from '@material-ui/core';
+import { Typography, Grid, Button, Link } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: 16,
+    margin: 'auto',
+    maxWidth: 400,
+    [theme.breakpoints.down('sm')]: {
+      margin: 100,
+    },
+  },
+}));
 
 const onSubmit = async () => {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -51,9 +63,10 @@ const formFields = [
 ];
 
 export default function EnterForm() {
+  const classes = useStyles();
+
   return (
-    <div style={{ padding: 16, margin: 'auto', maxWidth: 400 }}>
-      <CssBaseline />
+    <div className={classes.root}>
       <Typography variant="h6" align="center">
         The art world online
       </Typography>

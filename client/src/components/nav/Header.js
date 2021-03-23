@@ -18,6 +18,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { BrowserRouter as Link } from 'react-router-dom';
 import RegisterForm from '../../pages/auth/RegisterForm';
 import EnterForm from '../../pages/auth/EnterFrom';
+import history from '../../history';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -172,8 +173,8 @@ export default function Header() {
 
   const menuGotoUrl = (url) => (e) => {
     console.log(url, e);
-    // this.props.history.push(siteUrl);
-    // this.handleMenuClose(ev);
+    history.push(url);
+    history.go(0);
   };
 
   // the inside menu in mobile view
@@ -193,16 +194,8 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/login" underline="none" target="_self">
-          ورود
-        </Link>
-      </MenuItem>
-      <MenuItem onClick={menuGotoUrl('/register')}>
-        <Link to="/register" underline="none" target="_self">
-          ثبت‌نام
-        </Link>
-      </MenuItem>
+      <MenuItem onClick={menuGotoUrl('/login')}>ورود</MenuItem>
+      <MenuItem onClick={menuGotoUrl('/register')}>ثبت‌نام</MenuItem>
     </Menu>
   );
   const mobileMenuId = 'primary-search-account-menu-mobile';
