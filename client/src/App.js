@@ -19,7 +19,7 @@ const App = () => (
       <Header />
       {/*  use Toastontainer here to access it in the whole project */}
       <ToastContainer />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" style={{ minHeight: '100vh' }}>
         <React.StrictMode>
           <Switch>
             <Route exact path="/" component={ArtWorks} />
@@ -29,7 +29,7 @@ const App = () => (
           </Switch>
         </React.StrictMode>
       </Container>
-      <Divider />
+      <Divider style={{ maxWidth: '70%', margin: 'auto' }} variant="middle" />
       <Footer />
     </BrowserRouter>
   </>

@@ -30,8 +30,8 @@ class Artwork(models.Model):
     workName = models.CharField(max_length=200, null=True, blank=True)
     year = models.CharField(
         _('year'), choices=year_choices(), default=current_year, max_length=200)
-    aboutWork = models.CharField(max_length=200, null=True, blank=True)
-    provenance = models.CharField(max_length=200, null=True, blank=True)
+    aboutWork = models.CharField(max_length=2000, null=True, blank=True)
+    provenance = models.CharField(max_length=2000, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
     medium = models.CharField(max_length=200, null=True, blank=True)
     caption = models.CharField(max_length=200, null=True, blank=True)

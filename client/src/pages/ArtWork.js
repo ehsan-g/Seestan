@@ -47,8 +47,6 @@ class ArtWork extends React.Component {
     if (this.props.fetchedWork) {
       const theArt = this.props.fetchedWork;
       const { classes } = this.props;
-      console.log('theArt');
-
       return (
         <>
           <Grid container direction="row-reverse">
@@ -61,7 +59,9 @@ class ArtWork extends React.Component {
                 />
               </Paper>
               <Paper className={classes.paper} elevation={1}>
-                <IconButton>
+                <IconButton
+                  onClick={() => alert('در حال حاضر راه اندازی نشده است')}
+                >
                   <FavoriteBorder style={{ color: 'black' }} />
                 </IconButton>
               </Paper>

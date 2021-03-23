@@ -26,7 +26,6 @@ def getRoutes(request):
 @api_view(['GET'])
 def getArtWorks(request):
     artworks = Artwork.objects.all()
-    print(artworks)
     serializer = ArtworkSerializer(artworks, many=True)
     return Response(serializer.data)
 

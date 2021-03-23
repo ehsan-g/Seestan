@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
-import reduxThunk from 'redux-thunk';
+import thunk from 'redux-thunk';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
 import App from './App';
@@ -11,9 +11,10 @@ import customTheme from './styles/customTheme';
 
 // Dev Tools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const middleware = [thunk];
 const store = createStore(
   reducers,
-  composeEnhancers(applyMiddleware(reduxThunk))
+  composeEnhancers(applyMiddleware(...middleware))
 );
 ReactDOM.render(
   <Provider store={store}>

@@ -17,8 +17,6 @@ class ArtCard extends React.Component {
   };
 
   render() {
-    console.log(this.props.artWork);
-
     return (
       <ImageListItem
         style={{
@@ -46,7 +44,7 @@ class ArtCard extends React.Component {
           style={{ background: 'transparent' }}
           actionIcon={
             <IconButton
-              onClick={() => alert(<EnterForm />)}
+              onClick={() => alert('در حال حاضر راه اندازی نشده است')}
               aria-label={`star ${this.props.artWork.title}`}
             >
               <FavoriteBorder style={{ color: 'white' }} />
