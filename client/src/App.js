@@ -11,7 +11,7 @@ import RegisterForm from './pages/auth/RegisterForm';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
 
-// Override the defualt theme from here
+// Create an enhanced history that syncs navigation events with the store
 
 const App = () => (
   <>

@@ -170,6 +170,12 @@ export default function Header() {
 
   const menuId = 'primary-search-account-menu';
 
+  const menuGotoUrl = (url) => (e) => {
+    console.log(url, e);
+    // this.props.history.push(siteUrl);
+    // this.handleMenuClose(ev);
+  };
+
   // the inside menu in mobile view
   const renderMenu = (
     <Menu
@@ -188,12 +194,12 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link to="/login" component="a" underline="none" target="_self">
+        <Link to="/login" underline="none" target="_self">
           ورود
         </Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/register" component="a" underline="none" target="_self">
+      <MenuItem onClick={menuGotoUrl('/register')}>
+        <Link to="/register" underline="none" target="_self">
           ثبت‌نام
         </Link>
       </MenuItem>
