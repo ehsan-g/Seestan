@@ -1,8 +1,11 @@
 import artworksBase from '../apis/artworksBase';
 import {
   ARTWORK_LIST_FAIL,
+  ARTWORK_DETAILS_FAIL,
   ARTWORK_LIST_SUCCESS,
   ARTWORK_LIST_REQUEST,
+  ARTWORK_DETAILS_REQUEST,
+  ARTWORK_DETAILS_SUCCESS,
 } from '../constants/artworkConstants';
 
 // export const fetchOneArtWork = (workId) => {
@@ -37,11 +40,20 @@ export const fetchAllArtWorks = () => async (dispatch) => {
 export const fetchOneArtWork = (workId) => async (dispatch) => {
   try {
     const response = await artworksBase.get(`/api/artworks/${workId}`);
+    dispatch({ type: ARTWORK_DETAILS_REQUEST });
     dispatch({
-      type: 'FETCH_THE_ARTWORK',
+      type: ARTWORK_DETAILS_SUCCESS,
       payload: response.data,
     });
   } catch (e) {
-    alert('looks like there is problem with your internet connection');
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: ARTWORK_DETAILS_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    });
+    console.log(e.message);
   }
 };

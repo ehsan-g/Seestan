@@ -71,10 +71,10 @@ class TheTab extends React.Component {
           </Tabs>
         </Box>
         <TabPanel value={this.state.value} index={0}>
-          {this.props.fetchedWork.aboutWork}
+          {/* {this.props.fetchedWork.aboutWork} */}
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
-          {this.props.fetchedWork.provenance}
+          {/* {this.props.fetchedWork.provenance} */}
         </TabPanel>
       </Box>
     );
