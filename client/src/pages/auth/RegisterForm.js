@@ -5,6 +5,7 @@ import { Typography, Grid, Button, CssBaseline } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
 import { auth } from '../../firebase';
+import history from '../../history';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     maxWidth: 400,
     [theme.breakpoints.down('sm')]: {
-      margin: 100,
+      marginTop: 100,
     },
   },
 }));

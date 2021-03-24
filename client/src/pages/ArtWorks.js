@@ -1,96 +1,94 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
-import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ImageList from '@material-ui/core/ImageList';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks } from '../actions';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '70%',
-    marginTop: 100,
-    // paddingBottom: '20px !important',
     [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
 
   responsive: {
-    marginTop: 100,
     padding: 20,
   },
   paper: {
     padding: theme.spacing(2),
     margin: theme.spacing(2),
   },
-});
+}));
 
-class ArtWorks extends React.Component {
-  componentDidMount = async () => {
-    await this.props.fetchAllArtWorks();
-  };
+function Artworks() {
+  const dispatch = useDispatch();
+  const artworksList = useSelector((state) => state.artworks);
+  const { error, loading, artworks } = artworksList;
 
-  render() {
-    const { classes } = this.props;
-    if (this.props.fetchedWorks.map) {
-      const allWorks = this.props.fetchedWorks;
-      return (
+  useEffect(() => {
+    dispatch(fetchAllArtWorks());
+  }, [dispatch]);
+
+  const classes = useStyles();
+
+  return (
+    <div>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="outlined" severity="error">
+          {error}
+        </Message>
+      ) : (
         <>
           <div className={classes.root}>
             <ImageList
-              className={classes.imageList}
               variant="woven"
               cols={3}
               gap={25}
+              style={{ paddingBottom: 80 }}
             >
-              {allWorks.map((item) => (
+              {artworks.map((item) => (
                 <ArtCard key={item._id} artWork={item} />
               ))}
             </ImageList>
           </div>
-
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            spacing={5}
-          >
-            <Paper className={classes.responsive} elevation={0}>
-              {allWorks.map((item) => (
-                <Hidden mdUp key={item._id}>
-                  <Grid>
-                    <Paper className={classes.paper}>
-                      <ArtCard artWork={item} />
-                    </Paper>
-                  </Grid>
-                </Hidden>
-              ))}
-            </Paper>
-          </Grid>
+          <div>
+            <Hidden mdUp>
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                spacing={5}
+              >
+                <Paper className={classes.responsive} elevation={0}>
+                  {artworks.map((item) => (
+                    <Grid key={item._id}>
+                      <Paper className={classes.paper}>
+                        <ArtCard artWork={item} />
+                      </Paper>
+                    </Grid>
+                  ))}
+                </Paper>
+              </Grid>
+            </Hidden>
+          </div>
         </>
-      );
-    }
-
-    return <div className={classes.root}>Loading...</div>;
-  }
+      )}
+    </div>
+  );
 }
 
-ArtWorks.propTypes = {
-  classes: PropTypes.object,
-};
-
-const mapStateToProps = (state) => ({
-  fetchedWorks: state.artworks.all,
-});
-
-export default connect(mapStateToProps, {
-  fetchAllArtWorks,
-})(withStyles(styles)(ArtWorks));
+export default Artworks;

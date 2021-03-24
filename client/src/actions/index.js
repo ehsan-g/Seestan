@@ -1,4 +1,9 @@
 import artworksBase from '../apis/artworksBase';
+import {
+  ARTWORK_LIST_FAIL,
+  ARTWORK_LIST_SUCCESS,
+  ARTWORK_LIST_REQUEST,
+} from '../constants/artworkConstants';
 
 // export const fetchOneArtWork = (workId) => {
 //   const oneArtwork = products.find((p) => p._id === workId);
@@ -8,23 +13,32 @@ import artworksBase from '../apis/artworksBase';
 //   };
 // };
 
+export const fetchAllArtWorks = () => async (dispatch) => {
+  try {
+    const response = await artworksBase.get('/api/artworks');
+    dispatch({ type: ARTWORK_LIST_REQUEST });
+    dispatch({
+      type: ARTWORK_LIST_SUCCESS,
+      payload: response.data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: ARTWORK_LIST_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    });
+    console.log(e.message);
+  }
+};
+
 export const fetchOneArtWork = (workId) => async (dispatch) => {
   try {
     const response = await artworksBase.get(`/api/artworks/${workId}`);
     dispatch({
       type: 'FETCH_THE_ARTWORK',
-      payload: response.data,
-    });
-  } catch (e) {
-    alert('looks like there is problem with your internet connection');
-  }
-};
-
-export const fetchAllArtWorks = () => async (dispatch) => {
-  try {
-    const response = await artworksBase.get('/api/artworks');
-    dispatch({
-      type: 'FETCH_ALL_ARTWORKS',
       payload: response.data,
     });
   } catch (e) {

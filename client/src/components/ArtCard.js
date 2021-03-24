@@ -2,13 +2,12 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import ImageListItem from '@material-ui/core/ImageListItem';
-import { Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import EnterForm from '../pages/auth/EnterFrom';
 import { fetchOneArtWork } from '../actions';
 
 class ArtCard extends React.Component {
@@ -22,7 +21,6 @@ class ArtCard extends React.Component {
         style={{
           color: '#666666',
           width: '300px',
-          minHeight: '200px',
           hover: 'none',
           textDecoration: 'none',
         }}
@@ -36,12 +34,13 @@ class ArtCard extends React.Component {
           srcSet={`${this.props.artWork.image}?w=161&fit=crop&auto=format 1x,
                   ${this.props.artWork.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
           alt={this.props.artWork.name}
+          loading="lazy"
         />
 
         <ImageListItemBar
-          title={this.props.artWork.title}
-          position="bottom"
           style={{ background: 'transparent' }}
+          position="bottom"
+          actionPosition="right"
           actionIcon={
             <IconButton
               onClick={() => alert('در حال حاضر راه اندازی نشده است')}
@@ -50,11 +49,31 @@ class ArtCard extends React.Component {
               <FavoriteBorder style={{ color: 'white' }} />
             </IconButton>
           }
-          actionPosition="right"
         />
-
-        <Typography variant="subtitle1">{this.props.artWork.artist}</Typography>
-        <Typography>${this.props.artWork.price}</Typography>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="flex-end"
+        >
+          <ImageListItemBar
+            title={this.props.artWork.title}
+            subtitle={
+              <span
+                style={{
+                  width: '100%',
+                  lineHeight: 2,
+                  display: 'flex',
+                  direction: 'rtl',
+                }}
+              >
+                تومان {this.props.artWork.price}
+              </span>
+            }
+            position="below"
+            style={{ background: 'transparent' }}
+          />
+        </Grid>
       </ImageListItem>
     );
   }

@@ -27,7 +27,6 @@ class Artwork(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=200, null=True, blank=True)
-    workName = models.CharField(max_length=200, null=True, blank=True)
     year = models.CharField(
         _('year'), choices=year_choices(), default=current_year, max_length=200)
     aboutWork = models.CharField(max_length=2000, null=True, blank=True)

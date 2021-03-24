@@ -1,9 +1,17 @@
-export default (state = { all: {}, one: {} }, action) => {
+import {
+  ARTWORK_LIST_FAIL,
+  ARTWORK_LIST_SUCCESS,
+  ARTWORK_LIST_REQUEST,
+} from '../constants/artworkConstants';
+
+export default (state = { artworks: [] }, action) => {
   switch (action.type) {
-    case 'FETCH_THE_ARTWORK':
-      return { ...state, one: action.payload };
-    case 'FETCH_ALL_ARTWORKS':
-      return { ...state, all: action.payload };
+    case ARTWORK_LIST_REQUEST:
+      return { loading: true, artworks: [] };
+    case ARTWORK_LIST_SUCCESS:
+      return { loading: false, artworks: action.payload };
+    case ARTWORK_LIST_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
