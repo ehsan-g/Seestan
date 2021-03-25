@@ -8,8 +8,8 @@ from django.utils.translation import gettext as _
 
 class Artwork(models.Model):
     UNITS = (
-        ('US', 'in'),
-        ('UK', 'cm'),
+        ('0', 'in'),
+        ('1', 'cm'),
     )
     CLASSIFICATION = (
         ('1', 'Unique'),
@@ -25,34 +25,35 @@ class Artwork(models.Model):
         return str((datetime.date.today().year))
 
     _id = models.AutoField(primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=200, null=True, blank=True)
+    subtitle = models.CharField(max_length=200, null=True, blank=True)
     year = models.CharField(
         _('year'), choices=year_choices(), default=current_year, max_length=200)
-    aboutWork = models.CharField(max_length=2000, null=True, blank=True)
-    provenance = models.CharField(max_length=2000, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
     medium = models.CharField(max_length=200, null=True, blank=True)
-    caption = models.CharField(max_length=200, null=True, blank=True)
+    condition = models.CharField(max_length=200, null=True, blank=True)
     classifications = models.CharField(
-        max_length=20, choices=CLASSIFICATION, default="cm")
+        max_length=20, choices=CLASSIFICATION, default="")
     # uploads to MEDIA_ROOT in setting
     image = models.ImageField(null=True)
-    color = models.CharField(max_length=200, null=True, blank=True)
-    material = models.CharField(max_length=200, null=True, blank=True)
+    # album =
+    # gallery =
     width = models.IntegerField(null=True)
     height = models.IntegerField(null=True)
     depth = models.IntegerField(null=True)
     unit = models.CharField(max_length=2, choices=UNITS, default="")
-    # gallery =
     isAnEdition = models.BooleanField(null=False, default=False)
     editionNum = models.IntegerField(default=0, null=False)
     editionSize = models.IntegerField(default=0, null=False)
     isSigned = models.BooleanField(null=False, default=False)
     isAuthenticated = models.BooleanField(null=False, default=False)
     frame = models.CharField(max_length=200, null=True, blank=True)
+    isPrice = models.BooleanField(null=False, default=False)
     price = models.DecimalField(max_digits=12, decimal_places=0)
-    stockCount = models.IntegerField(null=False, default=0)
+    aboutWork = models.CharField(max_length=2000, null=True, blank=True)
+    provenance = models.CharField(max_length=2000, null=True, blank=True)
+    artLocation = models.CharField(max_length=2000, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -66,9 +67,14 @@ class Favorite(models.Model):
 
 
 class Order(models.Model):
+    PAYMENTMETHOD = (
+        ('1', 'خرید'),
+        ('2', 'تماس با گالری'),
+    )
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    paymentMethod = models.CharField(max_length=200, null=True, blank=True)
+    paymentMethod = models.CharField(
+        max_length=20, choices=PAYMENTMETHOD, null=False, default="خرید")
     isPaid = models.BooleanField(default=False)
     paidAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     shippigDesc = models.CharField(max_length=1200, null=True, blank=True)

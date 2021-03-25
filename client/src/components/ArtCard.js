@@ -65,9 +65,10 @@ class ArtCard extends React.Component {
                   lineHeight: 2,
                   display: 'flex',
                   direction: 'rtl',
+                  position: 'absolute',
                 }}
               >
-                تومان {this.props.artWork.price}
+                {this.props.artWork.price} تومان
               </span>
             }
             position="below"

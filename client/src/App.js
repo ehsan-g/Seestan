@@ -8,6 +8,7 @@ import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';
 import EnterForm from './pages/auth/EnterFrom';
 import RegisterForm from './pages/auth/RegisterForm';
+import Cart from './pages/Cart';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
 
@@ -24,6 +25,7 @@ const App = () => (
           <Switch>
             <Route exact path="/" component={ArtWorks} />
             <Route path="/artworks/:workId" component={ArtWork} />
+            <Route path="/cart/:workId?" component={Cart} />
             <Route exact path="/login" component={EnterForm} />
             <Route exact path="/register" component={RegisterForm} />
           </Switch>

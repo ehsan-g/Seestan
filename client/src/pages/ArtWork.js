@@ -8,7 +8,14 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import IconButton from '@material-ui/core/IconButton';
-import { Typography, Button } from '@material-ui/core';
+import {
+  Typography,
+  Button,
+  FormControl,
+  InputLabel,
+  Input,
+  FormHelperText,
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Divider from '@material-ui/core/Divider';
@@ -19,6 +26,7 @@ import Loader from '../components/Loader';
 import { fetchOneArtWork } from '../actions';
 import Dialog from '../components/Dialog';
 import TheTabe from '../components/TheTab';
+import history from '../history';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     marginLeft: theme.spacing(2),
+    direction: 'rtl',
   },
 }));
 
@@ -41,12 +50,16 @@ function Artwork({ match }) {
 
   const theArtwork = useSelector((state) => state.theArtwork);
   const { error, loading, artwork } = theArtwork;
+  console.log(loading);
 
   useEffect(() => {
-    console.log(match.params.workId);
     dispatch(fetchOneArtWork(match.params.workId));
-  }, []);
+  }, [dispatch, match]);
 
+  const addToCart = (e) => {
+    history.push(`/cart/${match.params.workId}?title=${artwork.title}`);
+    history.go();
+  };
   const classes = useStyles();
 
   const renderElement = () => {
@@ -74,32 +87,58 @@ function Artwork({ match }) {
             <Paper className={classes.paper} elevation={1}>
               <Grid item xs={12}>
                 <Link to="/" variant="subtitle1">
-                  {theArt.artist}
+                  {theArt.owner}
                 </Link>
               </Grid>
               <Grid
-                item
-                xs={12}
+                container
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <IconButton>
+                <IconButton
+                  style={{
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                  }}
+                >
                   <AddCircleOutlineIcon style={{ color: 'black' }} />
-                  <Link to="/">
-                    <Typography variant="body2" style={{ fontSize: '0.75rem' }}>
-                      Follow
-                    </Typography>
-                  </Link>
                 </IconButton>
+                <Link to="/">
+                  <Typography
+                    variant="body2"
+                    style={{
+                      fontSize: '1rem',
+                      marginBottom: 20,
+                      marginTop: 1,
+                      paddingTop: 10,
+                    }}
+                  >
+                    دنبال‌کردن
+                  </Typography>
+                </Link>
+              </Grid>
+              <Grid>
                 <Typography color="#666666" variant="body1">
-                  {theArt.colors}
+                  {theArt.title}
                 </Typography>
                 <Typography color="#666666" variant="body1">
                   {theArt.material}
                 </Typography>
-                <Typography color="/#666666" variant="body1">
-                  {theArt.width} x {theArt.height} in
+                <Typography color="#666666" variant="body1">
+                  {theArt.unit === '0' && ' in '}
+                  {theArt.unit === '1' && ' cm '}
+                  <span style={{ position: 'absolute', direction: 'ltr' }}>
+                    {theArt.width} x {theArt.height}
+                  </span>
                 </Typography>
+                {theArt.editionNum > 0 && (
+                  <Typography
+                    variant="subtitle1"
+                    style={{ marginBottom: 30, marginTop: 8 }}
+                  >
+                    {theArt.editionNum} از {theArt.editionSize} شماره
+                  </Typography>
+                )}
               </Grid>
               <Divider
                 className={classes.divider}
@@ -109,17 +148,25 @@ function Artwork({ match }) {
                 variant="subtitle2"
                 style={{ marginTop: 30, marginBottom: 30 }}
               >
-                ${theArt.price}
+                <span style={{ position: 'absolute', direction: 'rtl' }}>
+                  {theArt.price} تومان
+                </span>
               </Typography>
-              <Button variant="contained" type="submit" fullWidth>
-                تماس با گالری
+              <Button
+                onClick={(e) => addToCart(e)}
+                variant="contained"
+                type="submit"
+                fullWidth
+              >
+                {/* {theArt.Order.paymen} */}hi
               </Button>
+
               <Link to="/">
                 <Typography variant="subtitle2">{theArt.name}</Typography>
               </Link>
               <Typography variant="subtitle1" color="#666666">
                 <RoomOutlinedIcon />
-                {theArt.workName}
+                {theArt.artLocation}
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -135,7 +182,7 @@ function Artwork({ match }) {
         <Grid container justifyContent="flex-end" alignItems="flex-end">
           <Grid item xs sm={8}>
             <Paper className={classes.paper} elevation={1}>
-              <TheTabe />
+              <TheTabe theArt={theArt} />
             </Paper>
           </Grid>
         </Grid>
@@ -146,7 +193,7 @@ function Artwork({ match }) {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {loading ? (
+        {loading === undefined ? (
           <Loader />
         ) : error ? (
           <Message variant="outlined" severity="error">

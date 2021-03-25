@@ -40,7 +40,7 @@ export const fetchAllArtWorks = () => async (dispatch) => {
 export const fetchOneArtWork = (workId) => async (dispatch) => {
   try {
     const response = await artworksBase.get(`/api/artworks/${workId}`);
-    dispatch({ type: ARTWORK_DETAILS_REQUEST });
+    await dispatch({ type: ARTWORK_DETAILS_REQUEST });
     dispatch({
       type: ARTWORK_DETAILS_SUCCESS,
       payload: response.data,

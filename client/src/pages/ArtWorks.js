@@ -3,7 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ImageList from '@material-ui/core/ImageList';
 import { Grid } from '@material-ui/core';
@@ -44,7 +44,7 @@ function Artworks() {
 
   return (
     <div>
-      {loading ? (
+      {loading === undefined ? (
         <Loader />
       ) : error ? (
         <Message variant="outlined" severity="error">
