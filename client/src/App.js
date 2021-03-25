@@ -9,6 +9,7 @@ import Header from './components/nav/Header';
 import EnterForm from './pages/auth/EnterFrom';
 import RegisterForm from './pages/auth/RegisterForm';
 import Cart from './pages/Cart';
+import Sell from './pages/Sell';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
 
@@ -24,6 +25,7 @@ const App = () => (
         <React.StrictMode>
           <Switch>
             <Route exact path="/" component={ArtWorks} />
+            <Route exact path="/sell" component={Sell} />
             <Route path="/artworks/:workId" component={ArtWork} />
             <Route path="/cart/:workId?" component={Cart} />
             <Route exact path="/login" component={EnterForm} />
