@@ -27,6 +27,7 @@ import { fetchOneArtWork } from '../actions';
 import Dialog from '../components/Dialog';
 import TheTabe from '../components/TheTab';
 import history from '../history';
+import Header from '../components/nav/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,8 +65,10 @@ function Artwork({ match }) {
 
   const renderElement = () => {
     const theArt = artwork;
+    // return Header again since it was hidden by the Cart component - when user navigate back
     return (
       <>
+        <Header />
         <Grid container direction="row-reverse">
           <Grid item sm={8} align="center">
             <Paper className={classes.paper} elevation={1}>

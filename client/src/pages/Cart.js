@@ -6,10 +6,13 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Header from '../components/nav/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: '80%',
+    margin: 100,
   },
   buttonWrapper: {
     display: 'flex',
@@ -28,13 +31,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = [
-  'Select campaign settings',
-  'Create an ad group',
-  'Create an ad',
-];
+const steps = ['Confirm the Artist', 'Describe the work', 'Upload photo'];
 
-export default function HorizontalLinearStepper() {
+export default function Cart() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -79,6 +78,9 @@ export default function HorizontalLinearStepper() {
 
   return (
     <div className={classes.root}>
+      <Grid item xs={6} md={8}>
+        Logo
+      </Grid>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -111,7 +113,7 @@ export default function HorizontalLinearStepper() {
       ) : (
         <>
           <Typography className={classes.instructions}>
-            Step {activeStep + 1}
+            Form {activeStep + 1}
           </Typography>
           <div className={classes.buttonWrapper}>
             <Button
@@ -125,7 +127,7 @@ export default function HorizontalLinearStepper() {
             <div className={classes.spacer} />
             {isStepOptional(activeStep) && (
               <Button
-                color="inherit"
+                color="secondary"
                 onClick={handleSkip}
                 className={classes.button}
               >

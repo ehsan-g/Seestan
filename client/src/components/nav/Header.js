@@ -257,6 +257,10 @@ export default function Header() {
   const [rOpen, setRegOpen] = React.useState(false);
   const [eOpen, setEnterOpen] = React.useState(false);
 
+  const hidden = '/cart';
+  const pathName = window.location.pathname;
+  if (pathName.includes(hidden)) return null;
+  console.log(window.location.pathname);
   return (
     <div className={classes.grow}>
       <AppBar position="fixed">
