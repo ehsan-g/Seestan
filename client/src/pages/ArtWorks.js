@@ -13,6 +13,7 @@ import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Header from '../components/nav/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +54,8 @@ function Artworks() {
       ) : (
         <>
           <div className={classes.root}>
+            <Header />
+
             <ImageList
               variant="woven"
               cols={3}

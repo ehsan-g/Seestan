@@ -8,14 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import IconButton from '@material-ui/core/IconButton';
-import {
-  Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  Input,
-  FormHelperText,
-} from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Divider from '@material-ui/core/Divider';
@@ -51,7 +44,6 @@ function Artwork({ match }) {
 
   const theArtwork = useSelector((state) => state.theArtwork);
   const { error, loading, artwork } = theArtwork;
-  console.log(loading);
 
   useEffect(() => {
     dispatch(fetchOneArtWork(match.params.workId));

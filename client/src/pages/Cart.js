@@ -1,41 +1,37 @@
+/* eslint-disable react/button-has-type */
 import * as React from 'react';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import Stack from '@material-ui/core/Stack';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import Box from '@material-ui/core/Box';
+import Tab from '@material-ui/core/Tab';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
+import CartShipForm from '../components/cart/CartShipForm';
+import CartPaymentForm from '../components/cart/CartPaymentForm';
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
+export default function LabTabs() {
+  const [value, setValue] = React.useState('1');
 
-export default function CustomSeparator() {
-  const breadcrumbs = [
-    <Link key="1" color="inherit" href="/" onClick={handleClick}>
-      Material-UI
-    </Link>,
-    <Link
-      key="2"
-      color="inherit"
-      href="/getting-started/installation/"
-      onClick={handleClick}
-    >
-      Core
-    </Link>,
-    <Typography key="3" color="textPrimary">
-      Breadcrumb
-    </Typography>,
-  ];
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
 
   return (
-    <Stack spacing={2}>
-      <Breadcrumbs
-        separator={<NavigateNextIcon fontSize="small" />}
-        aria-label="breadcrumb"
-      >
-        {breadcrumbs}
-      </Breadcrumbs>
-    </Stack>
+    <Box sx={{ width: '100%', typography: 'body1' }}>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList aria-label="lab API tabs example">
+            <Tab disabled label="Item One" value="1" />
+            <Tab disabled label="Item Two" value="2" />
+            <Tab disabled label="Item Three" value="3" />
+          </TabList>
+        </Box>
+        <TabPanel value="1">
+          <CartShipForm />
+        </TabPanel>
+        <TabPanel value="2">{/* <CartPaymentForm /> */}</TabPanel>
+        <TabPanel value="3">{/* <div> hi </div> */}</TabPanel>
+      </TabContext>
+    </Box>
   );
 }

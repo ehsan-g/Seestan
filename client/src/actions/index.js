@@ -1,11 +1,14 @@
 import artworksBase from '../apis/artworksBase';
 import {
-  ARTWORK_LIST_FAIL,
-  ARTWORK_DETAILS_FAIL,
-  ARTWORK_LIST_SUCCESS,
   ARTWORK_LIST_REQUEST,
+  ARTWORK_LIST_SUCCESS,
+  ARTWORK_LIST_FAIL,
   ARTWORK_DETAILS_REQUEST,
   ARTWORK_DETAILS_SUCCESS,
+  ARTWORK_DETAILS_FAIL,
+  CART_DETAILS_REQUEST,
+  CART_DETAILS_SUCCESS,
+  CART_DETAILS_FAIL,
 } from '../constants/artworkConstants';
 
 // export const fetchOneArtWork = (workId) => {
@@ -49,6 +52,28 @@ export const fetchOneArtWork = (workId) => async (dispatch) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: ARTWORK_DETAILS_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    });
+    console.log(e.message);
+  }
+};
+
+export const fetchCartStatus = (values) => (dispatch) => {
+  try {
+    console.log(values);
+
+    dispatch({ type: CART_DETAILS_REQUEST });
+    dispatch({
+      type: CART_DETAILS_SUCCESS,
+      payload: values,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CART_DETAILS_FAIL,
       payload:
         e.response && e.response.data.message
           ? e.response.data.message
