@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Form, Field } from 'react-final-form';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { fetchCartStatus } from '../../actions/index';
@@ -39,14 +39,10 @@ const Address = ({ name, label }) => (
 
 function CartShipForm() {
   const dispatch = useDispatch();
-  const cartStatus = useSelector((state) => state.theCart);
-  const { error, loading, cartData } = cartStatus;
-  console.log(cartStatus);
 
   const onSubmit = async (values) => {
     await sleep(300);
     dispatch(fetchCartStatus(values));
-    console.log(values);
   };
 
   return (
@@ -62,14 +58,6 @@ function CartShipForm() {
           <div className="buttons">
             <button type="submit" disabled={submitting}>
               Submit
-            </button>
-            <button
-              value="1"
-              type="button"
-              onClick={form.reset}
-              disabled={submitting || pristine}
-            >
-              Reset
             </button>
           </div>
           <pre>{JSON.stringify(values, 0, 2)}</pre>

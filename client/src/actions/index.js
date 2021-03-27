@@ -61,14 +61,12 @@ export const fetchOneArtWork = (workId) => async (dispatch) => {
   }
 };
 
-export const fetchCartStatus = (values) => (dispatch) => {
+export const fetchCartStatus = (formValues) => (dispatch) => {
   try {
-    console.log(values);
-
     dispatch({ type: CART_DETAILS_REQUEST });
     dispatch({
       type: CART_DETAILS_SUCCESS,
-      payload: values,
+      payload: formValues,
     });
   } catch (e) {
     // check for generic and custom message to return using ternary statement

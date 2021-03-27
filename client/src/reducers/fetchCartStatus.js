@@ -4,12 +4,12 @@ import {
   CART_DETAILS_REQUEST,
 } from '../constants/artworkConstants';
 
-export default (state = { Cart: {} }, action) => {
+export default (state = { cart: {} }, action) => {
   switch (action.type) {
     case CART_DETAILS_REQUEST:
       return { loading: true, ...state };
     case CART_DETAILS_SUCCESS:
-      return { loading: false, CART: action.payload };
+      return { loading: false, cart: action.payload };
     case CART_DETAILS_FAIL:
       return { loading: false, error: action.payload };
     default:

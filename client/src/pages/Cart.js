@@ -1,20 +1,35 @@
 /* eslint-disable react/button-has-type */
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
+import { useSelector, useDispatch } from 'react-redux';
 import CartShipForm from '../components/cart/CartShipForm';
-import CartPaymentForm from '../components/cart/CartPaymentForm';
+import CartReview from '../components/cart/CartReview';
+import history from '../history';
 
 export default function LabTabs() {
-  const [value, setValue] = React.useState('1');
+  const cartStatus = useSelector((state) => state.theCart);
+  const { error, loading, cart } = cartStatus;
 
-  const handleChange = (e) => {
-    console.log(e.target.value);
-    setValue(e.target.value);
-  };
+  let value;
+  const x = Object.keys(cart);
+  console.log(x);
+
+  switch (x[0]) {
+    case 'name':
+      value = '2';
+      console.log(cart);
+      break;
+    case 'shipping':
+      value = '2';
+      break;
+    default:
+      value = '1';
+    // code block
+  }
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -29,8 +44,12 @@ export default function LabTabs() {
         <TabPanel value="1">
           <CartShipForm />
         </TabPanel>
-        <TabPanel value="2">{/* <CartPaymentForm /> */}</TabPanel>
-        <TabPanel value="3">{/* <div> hi </div> */}</TabPanel>
+        <TabPanel value="2">
+          <CartReview />
+        </TabPanel>
+        <TabPanel value="3">
+          <div> hi </div>
+        </TabPanel>
       </TabContext>
     </Box>
   );

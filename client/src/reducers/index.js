@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import fetchArtWorks from './fetchArtWorks.js';
-import fetchArtWork from './fetchArtWork.js';
-import fetchCart from './fetchCartStatus.js';
+import artWorks from './fetchArtWorks.js';
+import artWork from './fetchArtWork.js';
+import cart from './fetchCartStatus.js';
 
 export default combineReducers({
-  artworks: fetchArtWorks,
-  theArtwork: fetchArtWork,
-  theCart: fetchCart,
+  artworks: artWorks,
+  theArtwork: artWork,
+  theCart: cart,
 });
