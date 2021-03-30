@@ -33,7 +33,6 @@ function CartPaymentForm() {
           >
             Reset
           </button>
-          <pre>{JSON.stringify(values, 0, 2)}</pre>
         </form>
       )}
     />

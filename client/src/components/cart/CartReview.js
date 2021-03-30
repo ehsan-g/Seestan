@@ -42,7 +42,6 @@ function CartShipForm() {
             <Button variant="contained" type="submit" disabled={!checked}>
               hi
             </Button>
-            <pre>{JSON.stringify(values, 0, 2)}</pre>
           </form>
         )}
       />

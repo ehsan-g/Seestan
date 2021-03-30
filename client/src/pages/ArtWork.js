@@ -32,7 +32,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
   },
   paper: {
-    padding: theme.spacing(2),
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    paddingTop: '16px',
     marginLeft: theme.spacing(2),
     direction: 'rtl',
   },
@@ -63,14 +65,14 @@ function Artwork({ match }) {
         <Header />
         <Grid container direction="row-reverse">
           <Grid item sm={8} align="center">
-            <Paper className={classes.paper} elevation={1}>
+            <Paper className={classes.paper} elevation={0}>
               <img
                 src={`${theArt.image}`}
                 alt="Art work"
                 style={{ maxWidth: '100%', height: 'auto' }}
               />
             </Paper>
-            <Paper className={classes.paper} elevation={1}>
+            <Paper className={classes.paper} elevation={0}>
               <IconButton
                 onClick={() => alert('در حال حاضر راه اندازی نشده است')}
               >
@@ -79,7 +81,7 @@ function Artwork({ match }) {
             </Paper>
           </Grid>
           <Grid item xs>
-            <Paper className={classes.paper} elevation={1}>
+            <Paper className={classes.paper} elevation={0}>
               <Grid item xs={12}>
                 <Link to="/" variant="subtitle1">
                   {theArt.owner}
@@ -94,6 +96,7 @@ function Artwork({ match }) {
                   style={{
                     paddingLeft: 0,
                     paddingRight: 0,
+                    padding: 0,
                   }}
                 >
                   <AddCircleOutlineIcon style={{ color: 'black' }} />
@@ -103,9 +106,6 @@ function Artwork({ match }) {
                     variant="body2"
                     style={{
                       fontSize: '1rem',
-                      marginBottom: 20,
-                      marginTop: 1,
-                      paddingTop: 10,
                     }}
                   >
                     دنبال‌کردن
@@ -127,10 +127,7 @@ function Artwork({ match }) {
                   </span>
                 </Typography>
                 {theArt.editionNum > 0 && (
-                  <Typography
-                    variant="subtitle1"
-                    style={{ marginBottom: 30, marginTop: 8 }}
-                  >
+                  <Typography variant="subtitle1">
                     {theArt.editionNum} از {theArt.editionSize} شماره
                   </Typography>
                 )}
@@ -176,7 +173,7 @@ function Artwork({ match }) {
         </Grid>
         <Grid container justifyContent="flex-end" alignItems="flex-end">
           <Grid item xs sm={8}>
-            <Paper className={classes.paper} elevation={1}>
+            <Paper className={classes.paper} elevation={0}>
               <TheTabe theArt={theArt} />
             </Paper>
           </Grid>

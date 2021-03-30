@@ -44,7 +44,7 @@ function Artworks() {
   const classes = useStyles();
 
   return (
-    <div>
+    <div style={{ minHeight: '100vh', marginTop: 100 }}>
       {loading === undefined ? (
         <Loader />
       ) : error ? (

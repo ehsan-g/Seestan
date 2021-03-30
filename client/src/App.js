@@ -22,7 +22,7 @@ const App = () => (
       <Header />
       {/*  use Toastontainer here to access it in the whole project */}
       <ToastContainer />
-      <Container maxWidth="lg" style={{ minHeight: '100vh', marginTop: 100 }}>
+      <Container maxWidth="lg">
         <React.StrictMode>
           <Switch>
             <Route exact path="/" component={ArtWorks} />
@@ -31,7 +31,7 @@ const App = () => (
             <Route path="/cart/:workId?" component={Cart} />
             <Route path="/cart/:workId?/shipping" component={CartReview} />
             <Route exact path="/login" component={EnterForm} />
-            <Route exact path="/register" component={RegisterForm} />
+            <Route exact path="/register" component={RegisterForm} /> */}
           </Switch>
         </React.StrictMode>
       </Container>

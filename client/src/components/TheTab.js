@@ -55,6 +55,7 @@ export default function TheTab(props) {
     <Box sx={{ width: '100%', direction: 'rtl' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
+          indicatorColor="secondary"
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"

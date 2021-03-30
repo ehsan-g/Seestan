@@ -1,9 +1,26 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const customTheme = createMuiTheme({
+  palette: {
+    secondary: {
+      main: '#b77990',
+    },
+    background: {
+      default: 'white',
+    },
+  },
+
   components: {
     // Style sheet name => example Link component ⚛️
     MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: 'white',
+          color: 'black',
+        },
+      },
+    },
+    MuiTab: {
       styleOverrides: {
         colorPrimary: {
           backgroundColor: 'white',
