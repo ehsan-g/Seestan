@@ -8,8 +8,6 @@ import {
   ARTWORK_DETAILS_SUCCESS,
   ARTWORK_DETAILS_FAIL,
   CART_ADD_ITEM,
-  CART_DETAILS_SUCCESS,
-  CART_DETAILS_FAIL,
 } from '../constants/artworkConstants';
 
 // export const fetchOneArtWork = (workId) => {
@@ -64,34 +62,21 @@ export const fetchOneArtWork = (workId) => async (dispatch) => {
 };
 
 export const fetchCartStatus = (workId) => async (dispatch, getState) => {
-  try {
-    const { data } = await artworksBase.get(`/api/artworks/${workId}`);
-
-    dispatch({
-      type: CART_ADD_ITEM,
-      payload: {
-        artworkId: data._id,
-        title: data.title,
-        image: data.image,
-        price: data.price,
-        editionNum: data.editionNum,
-        editionSize: data.editionSize,
-      },
-    });
-    // save the item in browser local storage. It needs to be parsed back to an object to be used
-    localStorage.setItem(
-      'cartItems',
-      JSON.stringify(getState().theCart.cartItems)
-    );
-  } catch (e) {
-    // check for generic and custom message to return using ternary statement
-    dispatch({
-      type: CART_DETAILS_FAIL,
-      payload:
-        e.response && e.response.data.message
-          ? e.response.data.message
-          : e.message,
-    });
-    console.log(e.message);
-  }
+  const { data } = await artworksBase.get(`/api/artworks/${workId}`);
+  dispatch({
+    type: CART_ADD_ITEM,
+    payload: {
+      artworkId: data._id,
+      title: data.title,
+      image: data.image,
+      price: data.price,
+      editionNum: data.editionNum,
+      editionSize: data.editionSize,
+    },
+  });
+  // save the item in browser local storage. It needs to be parsed back to an object to be used
+  localStorage.setItem(
+    'cartItems',
+    JSON.stringify(getState().theCart.cartItems)
+  );
 };
