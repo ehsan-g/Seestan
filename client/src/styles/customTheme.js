@@ -4,6 +4,9 @@ const customTheme = createMuiTheme({
   direction: 'rtl',
 
   palette: {
+    primary: {
+      main: '#b77990',
+    },
     secondary: {
       main: '#b77990',
     },
@@ -95,28 +98,22 @@ const customTheme = createMuiTheme({
         },
       },
     },
+    MuiFilledInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'white',
+        },
+      },
+    },
 
     MuiInputLabel: {
       styleOverrides: {
-        outlined: {
+        root: {
           color: '#b77990',
-          right: 25,
-
-          transition: 'transform 0.6s cubic-bezier(0.61, 1, 0.88, 1)',
-
-          // transform: 'translate(120px, 10px) scale(0.5)',
-          // '&$marginDense': {
-          // transform: 'translate(120px, 7px) scale(0.75)',
-          // },
-          '&.focused': {
-            color: 'cyan',
-            display: 'none',
-            transform: 'translate(120px, 7px) scale(0.75)',
-          },
-          '&.focusedLabel': {
-            color: 'cyan',
-            transform: 'translate(120px, 10px) scale(0.5)',
-          },
+          right: 15,
+          transformOrigin: 'top right',
+          // transition: 'transform 0.6s cubic-bezier(0.61, 1, 0.88, 1)',
+          // transform: 'translate(1px, 9px) scale(0.75)',
         },
       },
     },

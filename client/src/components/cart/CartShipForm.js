@@ -1,30 +1,52 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes, Radios, Select } from 'mui-rff';
 import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { useSelector, useDispatch } from 'react-redux';
 
-const onSubmit = async (values) => {
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  console.log('here');
-  await sleep(300);
-  window.alert(JSON.stringify(values, 0, 2));
-};
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& label.Mui-focused': {
+      color: '#b77990',
+      borderColor: 'cyan',
+    },
+    '& .MuiFilledInput': {
+      backgroundColor: 'green',
+    },
+    '& .MuiFilledInputInput-root': {
+      '& fieldset': {
+        borderColor: 'cyan',
+      },
+      '&:hover fieldset': {
+        borderColor: 'yellow',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'cyan',
+      },
+    },
+  },
+}));
 
 const validate = (values) => {
   const errors = {};
   if (!values.firstName) {
-    errors.firstName = 'Required';
+    errors.firstName = 'لطفا نام خود را وارد کنید';
   }
   if (!values.lastName) {
-    errors.lastName = 'Required';
+    errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
   }
   if (!values.address) {
-    errors.address = 'Required';
+    errors.address = 'لطفا آدرس را وارد کنید';
   }
   if (!values.phone) {
-    errors.phone = 'Required';
+    errors.phone = 'لطفا شماره تماس خود را وارد کنید';
+  }
+  if (!values.postalCode) {
+    errors.postalCode = 'لطفا کد‌پستی خود را وارد کنید';
   }
   return errors;
 };
@@ -33,20 +55,41 @@ const formFields = [
   {
     size: 6,
     size2: 12,
-    field: <TextField label="نام" name="firstName" margin="none" required />,
-  },
-  {
-    size: 6,
-    size2: 12,
     field: (
-      <TextField label="نام خانوادگی" name="lastName" margin="none" required />
+      <TextField
+        label="نام"
+        name="firstName"
+        margin="none"
+        variant="filled"
+        placeholder="نام خود را وارد کنید"
+        required
+      />
     ),
   },
   {
     size: 6,
     size2: 12,
     field: (
-      <TextField label="کد پستی" name="postalCode" margin="none" required />
+      <TextField
+        label="نام خانوادگی"
+        name="lastName"
+        margin="none"
+        variant="filled"
+        required
+      />
+    ),
+  },
+  {
+    size: 6,
+    size2: 12,
+    field: (
+      <TextField
+        label="کد پستی"
+        name="postalCode"
+        margin="none"
+        variant="filled"
+        required
+      />
     ),
   },
   {
@@ -67,12 +110,28 @@ const formFields = [
   {
     size: 12,
     size2: 12,
-    field: <TextField label="آدرس" name="address" margin="none" required />,
+    field: (
+      <TextField
+        label="آدرس"
+        name="address"
+        margin="none"
+        variant="filled"
+        required
+      />
+    ),
   },
   {
     size: 12,
     size2: 12,
-    field: <TextField label="شماره تلفن" name="phone" margin="none" required />,
+    field: (
+      <TextField
+        label="شماره تلفن"
+        name="phone"
+        margin="none"
+        variant="filled"
+        required
+      />
+    ),
   },
   {
     size: 12,
@@ -87,7 +146,15 @@ const formFields = [
   },
 ];
 
-function CartShipForm() {
+function CartShipForm({ match }) {
+  const onSubmit = async (values) => {
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    console.log('here');
+    await sleep(300);
+    window.alert(JSON.stringify(values, 0, 2));
+  };
+  const classes = useStyles();
+
   return (
     <div style={{ maxWidth: 600 }}>
       <CssBaseline />
@@ -95,7 +162,7 @@ function CartShipForm() {
         onSubmit={onSubmit}
         validate={validate}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
-          <form onSubmit={handleSubmit} noValidate>
+          <form onSubmit={handleSubmit} noValidate className={classes.root}>
             <Paper style={{ padding: 10 }} elevation={0}>
               <Grid container alignItems="flex-start" spacing={2}>
                 <Grid item xs={12}>
@@ -122,6 +189,7 @@ function CartShipForm() {
                       label="شماره تلفن"
                       name="phone"
                       margin="none"
+                      variant="filled"
                       required
                     />
                   </Grid>

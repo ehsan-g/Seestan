@@ -2,7 +2,11 @@ import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 
-const initialState = {};
+// const cartItemFromStorage = localStorage.getItem('cartItems')
+//   ? JSON.parse(localStorage.getItem('cartItems'))
+//   : [];
+
+// const initialState = { cartItems: cartItemFromStorage };
 
 // Dev Tools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -10,7 +14,7 @@ const middleware = [thunk];
 
 const store = createStore(
   reducers,
-  initialState,
+  // initialState,
   composeEnhancers(applyMiddleware(...middleware))
 );
 

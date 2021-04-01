@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
-import { Link } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 import { connect } from 'react-redux';
 import { fetchOneArtWork } from '../actions';
 
@@ -27,8 +27,8 @@ class ArtCard extends React.Component {
       >
         <Link
           style={{ position: 'absolute', width: '100%', height: '100%' }}
-          to={`/artworks/${this.props.artWork._id}`}
           onClick={async () => this.fetchTheWork(this.props.artWork._id)}
+          href={`/artworks/${this.props.artWork._id}`}
         />
         <img
           srcSet={`${this.props.artWork.image}?w=161&fit=crop&auto=format 1x,

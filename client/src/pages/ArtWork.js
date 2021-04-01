@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -19,8 +19,6 @@ import Loader from '../components/Loader';
 import { fetchOneArtWork } from '../actions';
 import Dialog from '../components/Dialog';
 import TheTabe from '../components/TheTab';
-import history from '../history';
-import Header from '../components/nav/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // match params has the id from the router /:workId
-function Artwork({ match }) {
+function Artwork({ match, history }) {
   const dispatch = useDispatch();
 
   const theArtwork = useSelector((state) => state.theArtwork);
@@ -52,7 +50,6 @@ function Artwork({ match }) {
 
   const addToCart = (e) => {
     history.push(`/cart/${match.params.workId}?title=${artwork.title}`);
-    history.go();
   };
   const classes = useStyles();
 

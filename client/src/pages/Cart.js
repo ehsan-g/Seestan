@@ -15,6 +15,7 @@ import CartShipForm from '../components/cart/CartShipForm';
 import CartReview from '../components/cart/CartReview';
 import history from '../history';
 import PurchaseCard from '../components/cart/PurchaseCard';
+import { fetchCartStatus } from '../actions/index';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,16 +25,23 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Cart({ match }) {
-  const cartStatus = useSelector((state) => state.theCart);
-  const { cart } = cartStatus;
+  const cart = useSelector((state) => state.theCart);
+  const { cartItems } = cart;
+
+  const artworkId = match.params.workId;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (artworkId) {
+      dispatch(fetchCartStatus(artworkId));
+    }
+  }, [dispatch, artworkId]);
 
   let value;
-  const x = Object.keys(cart);
+  console.log(cartItems);
 
-  switch (x[0]) {
-    case 'name':
-      value = '2';
-      console.log(cart);
+  switch (cartItems) {
+    case undefined:
+      value = '1';
       break;
     case 'shipping':
       value = '2';
@@ -43,11 +51,10 @@ export default function Cart({ match }) {
     // code block
   }
   const classes = useStyles();
-  console.log(cart);
   return (
     <Grid
       className={classes.root}
-      sx={{ marginTop: 3 }}
+      sx={{ marginTop: 5, marginBottom: 10 }}
       container
       direction="row-reverse"
       justifyContent="center"
@@ -67,7 +74,7 @@ export default function Cart({ match }) {
               </TabList>
             </Box>
             <TabPanel value="1">
-              <CartShipForm />
+              <CartShipForm match={match} />
             </TabPanel>
             <TabPanel value="2">
               <CartReview />

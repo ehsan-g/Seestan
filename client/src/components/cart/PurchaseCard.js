@@ -2,19 +2,14 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
-import zIndex from '@material-ui/core/styles/zIndex';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { fetchOneArtWork } from '../../actions';
-import TotalTable from './TotalTable';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     padding: 0,
     marginTop: 60,
@@ -30,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaCard({ workId }) {
+export default function PurchaseCard({ workId }) {
   const classes = useStyles();
   const theArtwork = useSelector((state) => state.theArtwork);
   const { artwork } = theArtwork;
@@ -61,6 +56,9 @@ export default function MediaCard({ workId }) {
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
                 {artwork.subtitle}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {artwork.editionNum} از {artwork.editionSize} شماره
               </Typography>
             </Grid>
             <Grid item xs={5}>
