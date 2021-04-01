@@ -51,13 +51,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchIcon: {
-    padding: theme.spacing(0, 1),
-    height: '100%',
+    width: '100%',
     position: 'absolute',
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'right',
   },
 
   inputRoot: {
@@ -66,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
     '& input::placeholder': {
       fontSize: '10px',
     },
-    direction: 'rtl',
     [theme.breakpoints.up('sm')]: {
       '& input::placeholder': {
         fontSize: '14px',
@@ -326,7 +324,7 @@ export default function Header() {
           </div>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <SearchIcon style={{ margin: '10px' }} />
             </div>
             <InputBase
               placeholder="جستجو نام هنرمند، گالری، اثر، استایل و غیره"

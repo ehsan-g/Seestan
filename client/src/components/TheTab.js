@@ -52,7 +52,7 @@ export default function TheTab(props) {
     setValue(newValue);
   };
   return (
-    <Box sx={{ width: '100%', direction: 'rtl' }}>
+    <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           indicatorColor="secondary"

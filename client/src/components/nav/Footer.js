@@ -22,7 +22,6 @@ export default function BottomAppBar() {
 
   return (
     <>
-      <CssBaseline />
       <AppBar
         position="static"
         color="transparent"

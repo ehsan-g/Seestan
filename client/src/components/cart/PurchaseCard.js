@@ -111,8 +111,10 @@ export default function MediaCard({ workId }) {
           }}
           square
         >
-          <VerifiedUserIcon />
-          پرداخت شما به وسیله بانک مرکزی و فتا خیلی امنه
+          <Typography variant="body2">
+            <VerifiedUserIcon sx={{ paddingTop: 1 }} />
+            پرداخت شما به وسیله بانک مرکزی و فتا خیلی امنه{' '}
+          </Typography>
         </Paper>
       </Grid>
     </>

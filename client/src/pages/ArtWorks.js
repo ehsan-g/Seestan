@@ -18,6 +18,7 @@ import Header from '../components/nav/Header';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '70%',
+    padding: 10,
     [theme.breakpoints.down('md')]: {
       display: 'none',
     },
@@ -53,20 +54,23 @@ function Artworks() {
         </Message>
       ) : (
         <>
-          <div className={classes.root}>
-            <Header />
-
-            <ImageList
-              variant="woven"
-              cols={3}
-              gap={25}
-              style={{ paddingBottom: 80 }}
-            >
-              {artworks.map((item) => (
-                <ArtCard key={item._id} artWork={item} />
-              ))}
-            </ImageList>
-          </div>
+          <Grid container direction="row">
+            <Grid item xs={8} className={classes.root}>
+              <ImageList
+                variant="woven"
+                cols={3}
+                gap={25}
+                style={{ paddingBottom: 80 }}
+              >
+                {artworks.map((item) => (
+                  <ArtCard key={item._id} artWork={item} />
+                ))}
+              </ImageList>
+            </Grid>
+            <Grid item xs={4}>
+              'dgregrtgtgtthththhth'
+            </Grid>
+          </Grid>
           <div>
             <Hidden mdUp>
               <Grid

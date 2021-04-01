@@ -1,16 +1,19 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const customTheme = createMuiTheme({
+  direction: 'rtl',
+
   palette: {
     secondary: {
       main: '#b77990',
     },
     background: {
-      default: 'white',
+      default: '#ffffff',
     },
   },
 
   components: {
+    direction: 'rtl',
     // Style sheet name => example Link component ⚛️
     MuiAppBar: {
       styleOverrides: {
@@ -89,6 +92,31 @@ const customTheme = createMuiTheme({
       styleOverrides: {
         root: {
           overflowY: '-moz-hidden-unscrollable',
+        },
+      },
+    },
+
+    MuiInputLabel: {
+      styleOverrides: {
+        outlined: {
+          color: '#b77990',
+          right: 25,
+
+          transition: 'transform 0.6s cubic-bezier(0.61, 1, 0.88, 1)',
+
+          // transform: 'translate(120px, 10px) scale(0.5)',
+          // '&$marginDense': {
+          // transform: 'translate(120px, 7px) scale(0.75)',
+          // },
+          '&.focused': {
+            color: 'cyan',
+            display: 'none',
+            transform: 'translate(120px, 7px) scale(0.75)',
+          },
+          '&.focusedLabel': {
+            color: 'cyan',
+            transform: 'translate(120px, 10px) scale(0.5)',
+          },
         },
       },
     },

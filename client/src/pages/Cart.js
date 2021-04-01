@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     minHeight: '100vh',
-    direction: 'rtl',
   },
 }));
 

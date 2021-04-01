@@ -1,20 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
+import {
+  ThemeProvider,
+  StylesProvider,
+  jssPreset,
+} from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import { create } from 'jss';
+import rtl from 'jss-rtl';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import customTheme from './styles/customTheme';
 import history from './history';
 import store from './store';
 
+// Configure JSS
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 ReactDOM.render(
   <Router history={history}>
     <Provider store={store}>
-      <ThemeProvider theme={customTheme}>
-        <App />
-      </ThemeProvider>
+      <StylesProvider jss={jss}>
+        <ThemeProvider theme={customTheme}>
+          <App />
+        </ThemeProvider>
+      </StylesProvider>
     </Provider>
   </Router>,
 

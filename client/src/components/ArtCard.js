@@ -58,13 +58,12 @@ class ArtCard extends React.Component {
         >
           <ImageListItemBar
             title={this.props.artWork.title}
+            sx={{ width: '100%' }}
             subtitle={
               <span
                 style={{
-                  width: '100%',
                   lineHeight: 2,
                   display: 'flex',
-                  direction: 'rtl',
                   position: 'absolute',
                 }}
               >

@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '16px',
     paddingTop: '16px',
     marginLeft: theme.spacing(2),
-    direction: 'rtl',
   },
 }));
 
@@ -59,11 +58,9 @@ function Artwork({ match }) {
 
   const renderElement = () => {
     const theArt = artwork;
-    // return Header again since it was hidden by the Cart component - when user navigate back
     return (
       <>
-        <Header />
-        <Grid container direction="row-reverse">
+        <Grid container direction="row">
           <Grid item sm={8} align="center">
             <Paper className={classes.paper} elevation={0}>
               <img
@@ -140,7 +137,7 @@ function Artwork({ match }) {
                 variant="subtitle2"
                 style={{ marginTop: 30, marginBottom: 30 }}
               >
-                <span style={{ position: 'absolute', direction: 'rtl' }}>
+                <span style={{ position: 'absolute' }}>
                   {theArt.price} تومان
                 </span>
               </Typography>
@@ -171,7 +168,7 @@ function Artwork({ match }) {
             </Paper>
           </Grid>
         </Grid>
-        <Grid container justifyContent="flex-end" alignItems="flex-end">
+        <Grid container justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs sm={8}>
             <Paper className={classes.paper} elevation={0}>
               <TheTabe theArt={theArt} />
