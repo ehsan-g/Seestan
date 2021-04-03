@@ -13,7 +13,6 @@ import Divider from '@material-ui/core/Divider';
 import { Paper } from '@material-ui/core';
 import CartShipForm from '../components/cart/CartShipForm';
 import CartReview from '../components/cart/CartReview';
-import history from '../history';
 import PurchaseCard from '../components/cart/PurchaseCard';
 import { fetchCartStatus } from '../actions/index';
 
@@ -24,10 +23,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Cart({ match }) {
+export default function Cart({ match, location, history }) {
   const cart = useSelector((state) => state.theCart);
   const { cartItems } = cart;
-
+  console.log(`location.search: ${location.search}`);
   const artworkId = match.params.workId;
   const dispatch = useDispatch();
   useEffect(() => {
@@ -74,7 +73,7 @@ export default function Cart({ match }) {
               </TabList>
             </Box>
             <TabPanel value="1">
-              <CartShipForm match={match} />
+              <CartShipForm history={history} />
             </TabPanel>
             <TabPanel value="2">
               <CartReview />

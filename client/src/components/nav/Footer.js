@@ -33,8 +33,8 @@ export default function BottomAppBar() {
           direction="row"
           justifyContent="center"
           alignItems="center"
-          spacing={10}
-          style={{ minHeight: 200 }}
+          spacing={6}
+          style={{ minHeight: 200, width: '100%' }}
         >
           <Grid
             item

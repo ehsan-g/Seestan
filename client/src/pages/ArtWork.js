@@ -58,7 +58,7 @@ function Artwork({ match, history }) {
     return (
       <>
         <Grid container direction="row">
-          <Grid item sm={8} align="center">
+          <Grid item xs={10} md={8} align="center">
             <Paper className={classes.paper} elevation={0}>
               <img
                 src={`${theArt.image}`}
@@ -74,7 +74,7 @@ function Artwork({ match, history }) {
               </IconButton>
             </Paper>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={10} md>
             <Paper className={classes.paper} elevation={0}>
               <Grid item xs={12}>
                 <Link to="/" variant="subtitle1">
@@ -166,7 +166,7 @@ function Artwork({ match, history }) {
           </Grid>
         </Grid>
         <Grid container justifyContent="flex-start" alignItems="flex-start">
-          <Grid item xs sm={8}>
+          <Grid item xs={10} md={8}>
             <Paper className={classes.paper} elevation={0}>
               <TheTabe theArt={theArt} />
             </Paper>

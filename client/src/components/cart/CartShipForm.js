@@ -146,12 +146,12 @@ const formFields = [
   },
 ];
 
-function CartShipForm({ match }) {
+function CartShipForm({ history }) {
   const onSubmit = async (values) => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    console.log('here');
     await sleep(300);
     window.alert(JSON.stringify(values, 0, 2));
+    history.push('/login?redirect=payment');
   };
   const classes = useStyles();
 
