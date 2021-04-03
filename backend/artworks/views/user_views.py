@@ -3,9 +3,9 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from .serializer import ArtworkSerializer, UserSerializer, UserSerializerWithToken
+from artworks.serializer import ArtworkSerializer, UserSerializer, UserSerializerWithToken
 from django.contrib.auth.models import User
-from .models import Artwork
+from artworks.models import Artwork
 from rest_framework import status
 
 # Create your views here.
@@ -41,20 +41,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-@api_view(['GET'])
-def getRoutes(request):
-    routes = [
-        'api/artworks/create',
-        'api/artworks/upload',
-        'api/artworks/<id>/favorite',
-        'api/artworks/top',
-        'api/artworks/<id>',
-        'api/artworks/delete/<id>',
-        'api/artworks/<update>/<id>',
-    ]
-    return Response(routes)
-
-
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
@@ -88,19 +74,4 @@ def getUserProfile(request):
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def getArtWorks(request):
-    artworks = Artwork.objects.all()
-    serializer = ArtworkSerializer(artworks, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def getTheArtWork(request, pk):
-    artwork = Artwork.objects.get(_id=pk)
-    serializer = ArtworkSerializer(artwork, many=False)
-
     return Response(serializer.data)
