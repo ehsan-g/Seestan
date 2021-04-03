@@ -7,12 +7,14 @@ import reducers from './reducers';
 //   ? JSON.parse(localStorage.getItem('cartItems'))
 //   : [];
 
-// console.log(cartItemFromStorage);
-// const initialState = {
-//   theCart: {
-//     cartItems: cartItemFromStorage,
-//   },
-// };
+const userInfoFromStorage = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : [];
+
+const initialState = {
+  // theCart: {cartItems: cartItemFromStorage,},
+  userLogin: { userInfo: userInfoFromStorage },
+};
 
 // Dev Tools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -20,7 +22,7 @@ const middleware = [thunk];
 
 const store = createStore(
   reducers,
-  // initialState,
+  initialState,
   composeEnhancers(applyMiddleware(...middleware))
 );
 

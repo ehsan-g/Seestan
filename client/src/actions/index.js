@@ -7,8 +7,14 @@ import {
   ARTWORK_DETAILS_REQUEST,
   ARTWORK_DETAILS_SUCCESS,
   ARTWORK_DETAILS_FAIL,
-  CART_ADD_ITEM,
 } from '../constants/artworkConstants';
+import { CART_ADD_ITEM } from '../constants/cartConstants';
+import {
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAIL,
+  USER_LOGOUT,
+} from '../constants/userConstants';
 
 // export const fetchOneArtWork = (workId) => {
 //   const oneArtwork = products.find((p) => p._id === workId);
@@ -31,8 +37,8 @@ export const fetchAllArtWorks = () => async (dispatch) => {
     dispatch({
       type: ARTWORK_LIST_FAIL,
       payload:
-        e.response && e.response.data.message
-          ? e.response.data.message
+        e.response && e.response.data.detail
+          ? e.response.data.detail
           : e.message,
     });
     console.log(e.message);
@@ -53,8 +59,8 @@ export const fetchOneArtWork = (workId) => async (dispatch) => {
     dispatch({
       type: ARTWORK_DETAILS_FAIL,
       payload:
-        e.response && e.response.data.message
-          ? e.response.data.message
+        e.response && e.response.data.detail
+          ? e.response.data.detail
           : e.message,
     });
     console.log(e.message);
@@ -79,4 +85,36 @@ export const fetchCartStatus = (workId) => async (dispatch, getState) => {
     'cartItems',
     JSON.stringify(getState().theCart.cartItems)
   );
+};
+
+export const login = (email, password) => async (dispatch) => {
+  try {
+    const response = await artworksBase.get('/api/artworks');
+    dispatch({ type: USER_LOGIN_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+    const { data } = await axios.post('/api/users/login/', {
+      username: email,
+      password,
+      config,
+    });
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: USER_LOGIN_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+    console.log(e.message);
+  }
 };

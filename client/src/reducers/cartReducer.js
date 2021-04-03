@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { CART_ADD_ITEM } from '../constants/artworkConstants';
+import { CART_ADD_ITEM } from '../constants/cartConstants';
 
 export default (state = { cartItems: [] }, action) => {
   switch (action.type) {
