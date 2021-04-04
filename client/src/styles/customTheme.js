@@ -110,7 +110,7 @@ const customTheme = createMuiTheme({
       styleOverrides: {
         root: {
           color: '#b77990',
-          right: 15,
+          right: 30,
           transformOrigin: 'top right',
           // transition: 'transform 0.6s cubic-bezier(0.61, 1, 0.88, 1)',
           // transform: 'translate(1px, 9px) scale(0.75)',

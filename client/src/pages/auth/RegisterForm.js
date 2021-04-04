@@ -20,14 +20,11 @@ const useStyles = makeStyles((theme) => ({
 
 const validate = (values) => {
   const errors = {};
-  if (!values.name) {
-    errors.name = 'Name is required.';
-  }
   if (!values.pass) {
-    errors.pass = 'Password is required';
+    errors.pass = 'لطفا پسورد خود را وارد کنید';
   }
   if (!values.email) {
-    errors.email = 'Please enter a valid email';
+    errors.email = 'لطفا ایمیل خود را وارد کنید';
   }
   return errors;
 };
@@ -39,7 +36,7 @@ const formFields = [
       <TextField
         variant="outlined"
         type="email"
-        label="Enter your email address"
+        label="ایمیل"
         name="email"
         margin="normal"
         required
@@ -51,9 +48,9 @@ const formFields = [
     field: (
       <TextField
         variant="outlined"
-        helperText="Password must be at least 8 characters."
+        // helperText="Password must be at least 8 characters."
         type="password"
-        label="Enter a password"
+        label="پسورد"
         name="pass"
         margin="normal"
         required
@@ -66,8 +63,21 @@ const formFields = [
       <TextField
         variant="outlined"
         type="name"
-        label="Full name"
-        name="name"
+        label="نام"
+        name="firstName"
+        margin="normal"
+        required
+      />
+    ),
+  },
+  {
+    size: 12,
+    field: (
+      <TextField
+        variant="outlined"
+        type="name"
+        label="نام خانوادگی"
+        name="lastName"
         margin="normal"
         required
       />
@@ -79,7 +89,7 @@ const formFields = [
       <Checkboxes
         name="terms"
         formControlProps={{ margin: 'none' }}
-        data={{ label: 'By checking this checkbox,...', value: true }}
+        data={{ label: 'با کلیک کردن شما...', value: true }}
       />
     ),
   },
@@ -93,7 +103,7 @@ export default function RegisterForm() {
         // Signed in
 
         const { user } = userCredential;
-        toast.success(`Email is sent to ${event.email}`);
+        toast.success(`ایمیل به این نشانی فرستاده شد: ${event.email}`);
         // ...
       })
       .catch((error) => {
@@ -108,7 +118,7 @@ export default function RegisterForm() {
     <div className={classes.root}>
       <CssBaseline />
       <Typography variant="h6" align="center">
-        The art world online
+        به دنیای دازاین خوش آمدید. مثلا...
       </Typography>
       <Form
         onSubmit={onSubmit}

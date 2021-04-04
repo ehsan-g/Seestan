@@ -4,7 +4,7 @@ import Alert from '@material-ui/core/Alert';
 
 export default function Message({ variant, children, severity }) {
   return (
-    <Alert variant={variant} severity={severity}>
+    <Alert sx={{ margin: 2 }} variant={variant} severity={severity}>
       {children}
     </Alert>
   );

@@ -89,7 +89,6 @@ export const fetchCartStatus = (workId) => async (dispatch, getState) => {
 
 export const login = (email, password) => async (dispatch) => {
   try {
-    const response = await artworksBase.get('/api/artworks');
     dispatch({ type: USER_LOGIN_REQUEST });
     const config = {
       headers: {

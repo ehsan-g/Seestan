@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,8 +17,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import SearchIcon from '@material-ui/icons/Search';
 import { BrowserRouter as Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import RegisterForm from '../../pages/auth/RegisterForm';
-import EnterForm from '../../pages/auth/EnterFrom';
+import EnterForm from '../../pages/auth/LoginForm';
 import history from '../../history';
 
 const useStyles = makeStyles((theme) => ({
@@ -255,10 +257,17 @@ export default function Header() {
   const [rOpen, setRegOpen] = React.useState(false);
   const [eOpen, setEnterOpen] = React.useState(false);
 
-  const hidden = '/cart';
   const pathName = window.location.pathname;
+  const theUser = useSelector((state) => state.theUser);
+  const { userInfo } = theUser;
+  useEffect(() => {
+    if (userInfo) {
+      console.log('hide the log in / register buttons');
+    }
+  }, [userInfo]);
+
+  const hidden = '/cart';
   if (pathName.includes(hidden)) return null;
-  console.log(window.location.pathname);
   return (
     <div className={classes.grow}>
       <AppBar position="fixed">
@@ -277,6 +286,7 @@ export default function Header() {
               variant="outlined"
               className={classes.myButton}
               onClick={() => setEnterOpen(true)}
+              hidden="True"
             >
               ورود
             </Button>

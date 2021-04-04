@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import ArtWork from './pages/ArtWork';
 import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';
-import EnterForm from './pages/auth/EnterFrom';
+import EnterForm from './pages/auth/LoginForm';
 import RegisterForm from './pages/auth/RegisterForm';
 import Cart from './pages/Cart';
 import Sell from './pages/Sell';
