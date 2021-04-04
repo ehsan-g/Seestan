@@ -16,13 +16,9 @@ import {
   USER_LOGOUT,
 } from '../constants/userConstants';
 
-// export const fetchOneArtWork = (workId) => {
-//   const oneArtwork = products.find((p) => p._id === workId);
-//   return {
-//     type: 'FETCH_THE_ARTWORK',
-//     payload: oneArtwork,
-//   };
-// };
+export const headerStatus = (status) => async (dispatch) => {
+  dispatch({ type: 'HEADER_HIDDEN', payload: status });
+};
 
 export const fetchAllArtWorks = () => async (dispatch) => {
   try {
@@ -48,7 +44,6 @@ export const fetchAllArtWorks = () => async (dispatch) => {
 export const fetchOneArtWork = (workId) => async (dispatch) => {
   try {
     const response = await artworksBase.get(`/api/artworks/${workId}`);
-    console.log(response);
     await dispatch({ type: ARTWORK_DETAILS_REQUEST });
     dispatch({
       type: ARTWORK_DETAILS_SUCCESS,

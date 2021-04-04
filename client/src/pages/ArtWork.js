@@ -16,7 +16,7 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import MilitaryTechOutlinedIcon from '@material-ui/icons/MilitaryTechOutlined';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { fetchOneArtWork } from '../actions';
+import { fetchOneArtWork, headerStatus } from '../actions';
 import Dialog from '../components/Dialog';
 import TheTabe from '../components/TheTab';
 

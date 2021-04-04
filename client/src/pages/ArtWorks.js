@@ -10,10 +10,9 @@ import { Grid, Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import ArtCard from '../components/ArtCard';
-import { fetchAllArtWorks } from '../actions';
+import { fetchAllArtWorks, headerStatus } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import Header from '../components/nav/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {

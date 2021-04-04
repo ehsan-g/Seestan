@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form } from 'react-final-form';
 import { TextField } from 'mui-rff';
-import { Typography, Grid, Button, Link } from '@material-ui/core';
+import { Typography, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { login } from '../../actions/index';
+import { Link } from 'react-router-dom';
+
+import { headerStatus, login } from '../../actions/index';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 
@@ -66,6 +68,13 @@ export default function EnterForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(headerStatus(false));
+    return function cleanup() {
+      dispatch(headerStatus(true));
+    };
+  }, []);
+
   const theUser = useSelector((state) => state.theUser);
   const { error, loading, userInfo } = theUser;
 
@@ -102,7 +111,7 @@ export default function EnterForm() {
                   align="right"
                   style={{ marginBottom: 16 }}
                 >
-                  <Link href="/register">ثبت‌نام کنید</Link>
+                  <Link to="/register">ثبت‌نام کنید</Link>
                 </Typography>
                 <Button
                   variant="contained"

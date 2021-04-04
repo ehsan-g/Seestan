@@ -110,45 +110,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//  MOdal fade transition
-// const Fade = React.forwardRef(function Fade(props, ref) {
-//   const { in: open, children, onEnter, onExited, ...other } = props;
-//   const style = useSpring({
-//     from: { opacity: 0 },
-//     to: { opacity: open ? 1 : 0 },
-//     onStart: () => {
-//       if (open && onEnter) {
-//         onEnter();
-//       }
-//     },
-//     onRest: () => {
-//       if (!open && onExited) {
-//         onExited();
-//       }
-//     },
-//   });
-
-//   return (
-//     // eslint-disable-next-line react/jsx-props-no-spreading
-//     <animated.div ref={ref} style={style} {...other}>
-//       {children}
-//     </animated.div>
-//   );
-// });
-
-// Fade.propTypes = {
-//   children: PropTypes.element,
-//   in: PropTypes.bool.isRequired,
-//   onEnter: PropTypes.func,
-//   onExited: PropTypes.func,
-// };
-
 export default function Header() {
   const classes = useStyles();
   const preventDefault = (event) => event.preventDefault();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+  const logoutHandler = () => {
+    console.log('log out');
+  };
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -253,12 +223,56 @@ export default function Header() {
     </Menu>
   );
 
+  const [theAnchorEl, setTheAnchorEl] = React.useState(null);
+  const theOpen = Boolean(theAnchorEl);
+  const handleClick = (event) => {
+    setTheAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setTheAnchorEl(null);
+  };
+  const renderUserMenu = (
+    <>
+      <Button
+        id="demo-positioned-button"
+        aria-controls="demo-positioned-menu"
+        aria-haspopup="true"
+        aria-expanded={theOpen ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <AccountCircle />
+      </Button>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={theAnchorEl}
+        open={theOpen}
+        onClose={handleClose}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem onClick={handleClose}>
+          <Link to="/profile">Profile</Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+      </Menu>
+    </>
+  );
+
   // Modal register
   const [rOpen, setRegOpen] = React.useState(false);
   const [eOpen, setEnterOpen] = React.useState(false);
 
-  const pathName = window.location.pathname;
   const theUser = useSelector((state) => state.theUser);
+
   const { userInfo } = theUser;
 
   useEffect(() => {
@@ -267,96 +281,115 @@ export default function Header() {
     }
   }, [userInfo]);
 
-  const hidden = '/cart';
-  if (pathName.includes(hidden)) return null;
+  const headerStatus = useSelector((state) => state.headerStatus);
+  const { IsHeader } = headerStatus;
+  console.log(IsHeader);
+
   return (
     <div className={classes.grow}>
-      <AppBar position="fixed">
-        {renderMobileMenu}
-        <Toolbar>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <Button
-              variant="contained"
-              className={classes.myButton}
-              onClick={() => setRegOpen(true)}
-            >
-              ثبت‌نام
-            </Button>
-            <Button
-              variant="outlined"
-              className={classes.myButton}
-              onClick={() => setEnterOpen(true)}
-              hidden="True"
-            >
-              ورود
-            </Button>
-            <Typography variant="subtitle1">
-              <Link
-                to="#"
-                component="a"
-                onClick={preventDefault}
-                underline="none"
-              >
-                گزینش‌شده
-              </Link>
-            </Typography>
-            <Typography variant="subtitle1">
-              <Link
-                to="#"
-                component="a"
-                onClick={preventDefault}
-                underline="none"
-              >
-                فروش
-              </Link>
-            </Typography>
-            <Typography variant="subtitle1">
-              <Link
-                to="#"
-                component="a"
-                onClick={preventDefault}
-                underline="none"
-              >
-                خرید
-              </Link>
-            </Typography>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon style={{ margin: '10px' }} />
-            </div>
-            <InputBase
-              placeholder="جستجو نام هنرمند، گالری، اثر، استایل و غیره"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-          <div>
-            <Avatar
-              alt="Logo"
-              variant="square"
-              src="/static/logo.png"
-              className={classes.large}
-            />
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMenu}
+      {!IsHeader ? null : (
+        <>
+          <AppBar
+            position="fixed"
+            elevation={0}
+            sx={{ borderBottom: '1px solid #e5e5e5' }}
+          >
+            {renderMobileMenu}
+            <Toolbar>
+              <div className={classes.grow} />
+              <div>
+                <Avatar
+                  alt="Logo"
+                  variant="square"
+                  src="/static/logo.png"
+                  className={classes.large}
+                />
+              </div>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon style={{ margin: '10px' }} />
+                </div>
+                <InputBase
+                  placeholder="جستجو نام هنرمند، گالری، اثر، استایل و غیره"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </div>
+
+              <div className={classes.sectionDesktop}>
+                {userInfo.access ? (
+                  <>{renderUserMenu}</>
+                ) : (
+                  <>
+                    <Button
+                      variant="contained"
+                      className={classes.myButton}
+                      onClick={() => setRegOpen(true)}
+                    >
+                      ثبت‌نام
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      className={classes.myButton}
+                      onClick={() => setEnterOpen(true)}
+                      hidden="True"
+                    >
+                      ورود
+                    </Button>
+                  </>
+                )}
+
+                <Typography variant="subtitle1">
+                  <Link
+                    to="#"
+                    component="a"
+                    onClick={preventDefault}
+                    underline="none"
+                  >
+                    گزینش‌شده
+                  </Link>
+                </Typography>
+                <Typography variant="subtitle1">
+                  <Link
+                    to="#"
+                    component="a"
+                    onClick={preventDefault}
+                    underline="none"
+                  >
+                    فروش
+                  </Link>
+                </Typography>
+                <Typography variant="subtitle1">
+                  <Link
+                    to="#"
+                    component="a"
+                    onClick={preventDefault}
+                    underline="none"
+                  >
+                    خرید
+                  </Link>
+                </Typography>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {renderMenu}
+        </>
+      )}
+
       <div>
         <Modal
           aria-labelledby="spring-modal-title"
@@ -370,11 +403,9 @@ export default function Header() {
             timeout: 500,
           }}
         >
-          {/* <Fade in={rOpen}> */}
           <div className={classes.paper}>
             <RegisterForm />
           </div>
-          {/* </Fade> */}
         </Modal>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -388,11 +419,9 @@ export default function Header() {
             timeout: 500,
           }}
         >
-          {/* <Fade in={eOpen}> */}
           <div className={classes.paper}>
             <EnterForm />
           </div>
-          {/* </Fade> */}
         </Modal>
       </div>
     </div>

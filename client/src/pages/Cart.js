@@ -14,7 +14,7 @@ import { Paper } from '@material-ui/core';
 import CartShipForm from '../components/cart/CartShipForm';
 import CartReview from '../components/cart/CartReview';
 import PurchaseCard from '../components/cart/PurchaseCard';
-import { fetchCartStatus } from '../actions/index';
+import { fetchCartStatus, headerStatus } from '../actions/index';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,6 +32,10 @@ export default function Cart({ match, location, history }) {
   useEffect(() => {
     if (artworkId) {
       dispatch(fetchCartStatus(artworkId));
+      dispatch(headerStatus(false));
+      return function cleanup() {
+        dispatch(headerStatus(true));
+      };
     }
   }, [dispatch, artworkId]);
 

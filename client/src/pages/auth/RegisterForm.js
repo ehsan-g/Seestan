@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
 import { Typography, Grid, Button, CssBaseline } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 import { auth } from '../../firebase';
+import { headerStatus } from '../../actions/index.js';
 import history from '../../history';
 
 const useStyles = makeStyles((theme) => ({
@@ -96,6 +98,15 @@ const formFields = [
 ];
 
 export default function RegisterForm() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(headerStatus(false));
+    return function cleanup() {
+      dispatch(headerStatus(true));
+    };
+  }, []);
+
   const onSubmit = async (event) => {
     await auth()
       .createUserWithEmailAndPassword(event.email, event.pass)
