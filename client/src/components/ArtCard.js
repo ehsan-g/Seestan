@@ -20,7 +20,7 @@ class ArtCard extends React.Component {
       <ImageListItem
         style={{
           color: '#666666',
-          width: '300px',
+          // width: '300px',
           hover: 'none',
           textDecoration: 'none',
         }}

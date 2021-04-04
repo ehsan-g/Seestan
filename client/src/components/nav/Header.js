@@ -111,37 +111,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //  MOdal fade transition
-const Fade = React.forwardRef(function Fade(props, ref) {
-  const { in: open, children, onEnter, onExited, ...other } = props;
-  const style = useSpring({
-    from: { opacity: 0 },
-    to: { opacity: open ? 1 : 0 },
-    onStart: () => {
-      if (open && onEnter) {
-        onEnter();
-      }
-    },
-    onRest: () => {
-      if (!open && onExited) {
-        onExited();
-      }
-    },
-  });
+// const Fade = React.forwardRef(function Fade(props, ref) {
+//   const { in: open, children, onEnter, onExited, ...other } = props;
+//   const style = useSpring({
+//     from: { opacity: 0 },
+//     to: { opacity: open ? 1 : 0 },
+//     onStart: () => {
+//       if (open && onEnter) {
+//         onEnter();
+//       }
+//     },
+//     onRest: () => {
+//       if (!open && onExited) {
+//         onExited();
+//       }
+//     },
+//   });
 
-  return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <animated.div ref={ref} style={style} {...other}>
-      {children}
-    </animated.div>
-  );
-});
+//   return (
+//     // eslint-disable-next-line react/jsx-props-no-spreading
+//     <animated.div ref={ref} style={style} {...other}>
+//       {children}
+//     </animated.div>
+//   );
+// });
 
-Fade.propTypes = {
-  children: PropTypes.element,
-  in: PropTypes.bool.isRequired,
-  onEnter: PropTypes.func,
-  onExited: PropTypes.func,
-};
+// Fade.propTypes = {
+//   children: PropTypes.element,
+//   in: PropTypes.bool.isRequired,
+//   onEnter: PropTypes.func,
+//   onExited: PropTypes.func,
+// };
 
 export default function Header() {
   const classes = useStyles();
@@ -260,6 +260,7 @@ export default function Header() {
   const pathName = window.location.pathname;
   const theUser = useSelector((state) => state.theUser);
   const { userInfo } = theUser;
+
   useEffect(() => {
     if (userInfo) {
       console.log('hide the log in / register buttons');
@@ -369,11 +370,11 @@ export default function Header() {
             timeout: 500,
           }}
         >
-          <Fade in={rOpen}>
-            <div className={classes.paper}>
-              <RegisterForm />
-            </div>
-          </Fade>
+          {/* <Fade in={rOpen}> */}
+          <div className={classes.paper}>
+            <RegisterForm />
+          </div>
+          {/* </Fade> */}
         </Modal>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -387,11 +388,11 @@ export default function Header() {
             timeout: 500,
           }}
         >
-          <Fade in={eOpen}>
-            <div className={classes.paper}>
-              <EnterForm />
-            </div>
-          </Fade>
+          {/* <Fade in={eOpen}> */}
+          <div className={classes.paper}>
+            <EnterForm />
+          </div>
+          {/* </Fade> */}
         </Modal>
       </div>
     </div>

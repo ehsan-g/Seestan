@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ImageList from '@material-ui/core/ImageList';
-import { Grid } from '@material-ui/core';
+import { Grid, Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import ArtCard from '../components/ArtCard';
@@ -17,7 +17,7 @@ import Header from '../components/nav/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '70%',
+    // width: '70%',
     padding: 10,
     [theme.breakpoints.down('md')]: {
       display: 'none',
@@ -55,19 +55,23 @@ function Artworks() {
       ) : (
         <>
           <Grid container direction="row">
-            <Grid item xs={8} className={classes.root}>
-              <ImageList
-                variant="woven"
-                cols={3}
-                gap={25}
-                style={{ paddingBottom: 80 }}
+            <Grid item xs={9} className={classes.root}>
+              <Box
+                sx={{ width: '100%', minHeight: '100VH', overflow: 'hidden' }}
               >
-                {artworks.map((item) => (
-                  <ArtCard key={item._id} artWork={item} />
-                ))}
-              </ImageList>
+                <ImageList
+                  variant="masonry"
+                  cols={3}
+                  gap={50}
+                  style={{ paddingBottom: 80 }}
+                >
+                  {artworks.map((item) => (
+                    <ArtCard key={item._id} artWork={item} />
+                  ))}
+                </ImageList>
+              </Box>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               'dgregrtgtgtthththhth'
             </Grid>
           </Grid>
