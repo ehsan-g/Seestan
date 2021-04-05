@@ -120,6 +120,9 @@ export default function Header() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -145,72 +148,7 @@ export default function Header() {
     history.go(0);
   };
 
-  // the inside menu in mobile view
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={menuGotoUrl('/login')}>ورود</MenuItem>
-      <MenuItem onClick={menuGotoUrl('/register')}>ثبت‌نام</MenuItem>
-    </Menu>
-  );
   const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem />
-      <MenuItem>
-        <Button href="/sell" color="inherit">
-          فروش
-        </Button>
-      </MenuItem>
-      <MenuItem>
-        <Button href="/" color="inherit">
-          خرید
-        </Button>
-      </MenuItem>
-
-      <MenuItem>
-        <IconButton
-          edge="end"
-          aria-label="account of current user"
-          aria-controls={menuId}
-          aria-haspopup="true"
-          onClick={handleProfileMenuOpen}
-          color="inherit"
-        >
-          <Typography variant="subtitle1">حساب کاربری</Typography>
-
-          <AccountCircle />
-        </IconButton>
-      </MenuItem>
-    </Menu>
-  );
 
   const [theAnchorEl, setTheAnchorEl] = React.useState(null);
   const theOpen = Boolean(theAnchorEl);
@@ -253,12 +191,82 @@ export default function Header() {
         }}
       >
         <MenuItem onClick={TheHandleClose}>
-          <Link to="/profile">Profile</Link>
+          <Link to="/profile">صفحه کاربری</Link>
         </MenuItem>
-        <MenuItem onClick={TheHandleClose}>My account</MenuItem>
-        <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+        <MenuItem onClick={logoutHandler}>خروج</MenuItem>
       </Menu>
     </>
+  );
+
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <Button href="/sell" color="inherit">
+          فروش
+        </Button>
+      </MenuItem>
+      <MenuItem>
+        <Button href="/" color="inherit">
+          خرید
+        </Button>
+      </MenuItem>
+
+      <MenuItem>
+        {userInfo && userInfo.token !== undefined ? (
+          <div>{renderUserMenu}</div>
+        ) : (
+          <div>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Typography variant="subtitle1">حساب کاربری</Typography>
+
+              <AccountCircle />
+            </IconButton>
+          </div>
+        )}
+      </MenuItem>
+    </Menu>
+  );
+  // the inside menu in mobile view
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={menuGotoUrl('/login')}>ورود</MenuItem>
+      <MenuItem onClick={menuGotoUrl('/register')}>ثبت‌نام</MenuItem>
+    </Menu>
   );
 
   // Modal register
@@ -269,10 +277,6 @@ export default function Header() {
   useEffect(() => {
     if (location.pathname.includes('/register')) setEnterOpen(false);
   }, [location]);
-
-  const userLogin = useSelector((state) => state.userLogin);
-
-  const { userInfo } = userLogin;
 
   useEffect(() => {
     if (userInfo) {
@@ -297,12 +301,9 @@ export default function Header() {
             <Toolbar>
               <div className={classes.grow} />
               <div>
-                <Avatar
-                  alt="Logo"
-                  variant="square"
-                  src="/static/logo.png"
-                  className={classes.large}
-                />
+                <Button href="/" color="inherit">
+                  <Avatar alt="Logo" variant="square" src="/static/logo.png" />
+                </Button>
               </div>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>

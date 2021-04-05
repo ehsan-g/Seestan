@@ -71,9 +71,11 @@ export default function EnterForm() {
 
   useEffect(() => {
     dispatch(headerStatus(false));
-    // return function cleanup() {
-    // history.go();
-    // };
+    if (!location.pathname.includes('/register'))
+      return function cleanup() {
+        console.log('hsdfsdf');
+        dispatch(headerStatus(true));
+      };
   }, [dispatch]);
 
   const userLogin = useSelector((state) => state.userLogin);

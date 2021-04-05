@@ -74,12 +74,7 @@ function Artworks() {
           </Grid>
           <div>
             <Hidden mdUp>
-              <Grid
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                spacing={5}
-              >
+              <Grid>
                 <Paper className={classes.responsive} elevation={0}>
                   {artworks.map((item) => (
                     <Grid key={item._id}>
