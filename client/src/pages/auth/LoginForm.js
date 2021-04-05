@@ -91,7 +91,7 @@ export default function EnterForm() {
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
   useEffect(() => {
-    if (userInfo && userInfo.access !== undefined) {
+    if (userInfo && userInfo.token !== undefined) {
       history.push(redirect);
       history.go();
     }

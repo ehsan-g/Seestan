@@ -116,7 +116,7 @@ export default function RegisterForm() {
   const { error, loading, userInfo } = userRegister;
 
   useEffect(() => {
-    if (userInfo && userInfo.access !== undefined) {
+    if (userInfo && userInfo.token !== undefined) {
       history.push(redirect);
       history.go();
     }
@@ -132,6 +132,7 @@ export default function RegisterForm() {
         register(values.firstName, values.lastName, values.email, values.pass)
       );
       toast.success(`Email is sent to ${values.email}`);
+      history.push('/');
     }
   };
 

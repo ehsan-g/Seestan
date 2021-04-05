@@ -135,6 +135,7 @@ export const register = (firstName, lastName, email, password) => async (
       firstName,
       lastName,
       email,
+      username: email,
       password,
       config,
     });
@@ -142,11 +143,12 @@ export const register = (firstName, lastName, email, password) => async (
       type: USER_REGISTER_SUCCESS,
       payload: data,
     });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
-    localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({

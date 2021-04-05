@@ -328,7 +328,7 @@ export default function Header() {
               </div>
 
               <div className={classes.sectionDesktop}>
-                {userInfo && userInfo.access !== undefined ? (
+                {userInfo && userInfo.token !== undefined ? (
                   <>{renderUserMenu}</>
                 ) : (
                   <>
