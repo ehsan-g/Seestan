@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
 import { Typography, Grid, Button, CssBaseline } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
-import { headerStatus } from '../../actions/index.js';
-import history from '../../history';
+import { headerStatus, register } from '../../actions/index.js';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
 
 const validate = (values) => {
   const errors = {};
+  if (!values.firstName) {
+    errors.firstName = 'لطفا نام‌ خود را وارد کنید';
+  }
+  if (!values.lastName) {
+    errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
+  }
   if (!values.pass) {
     errors.pass = 'لطفا پسورد خود را وارد کنید';
   }
@@ -98,31 +106,43 @@ const formFields = [
 ];
 
 export default function RegisterForm() {
-  const dispatch = useDispatch();
+  const [message, setMessage] = useState('');
+  const location = useLocation();
+  const history = useHistory();
+  const redirect = location.search ? location.search.split('=')[1] : '/';
 
+  const dispatch = useDispatch();
+  const userRegister = useSelector((state) => state.userRegister);
+  const { error, loading, userInfo } = userRegister;
+
+  useEffect(() => {
+    if (userInfo && userInfo.access !== undefined) {
+      history.push(redirect);
+      history.go();
+    }
+  }, [history, userInfo, redirect]);
+
+  const onSubmit = async (values) => {
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    await sleep(300);
+    if (!values.terms) {
+      setMessage('لطفا قبول کنید');
+    } else {
+      dispatch(
+        register(values.firstName, values.lastName, values.email, values.pass)
+      );
+      toast.success(`Email is sent to ${values.email}`);
+    }
+  };
+
+  // removing header for when we go directly to the page instead of opening the modal
   useEffect(() => {
     dispatch(headerStatus(false));
     return function cleanup() {
       dispatch(headerStatus(true));
     };
-  }, []);
+  }, [dispatch]);
 
-  const onSubmit = async (event) => {
-    await auth()
-      .createUserWithEmailAndPassword(event.email, event.pass)
-      .then((userCredential) => {
-        // Signed in
-
-        const { user } = userCredential;
-        toast.success(`ایمیل به این نشانی فرستاده شد: ${event.email}`);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
-  };
   const classes = useStyles();
 
   return (
@@ -156,6 +176,9 @@ export default function RegisterForm() {
           </form>
         )}
       />
+      {message && <Message severity="error">{message}</Message>}
+      {error && <Message severity="error">{error}</Message>}
+      {loading && <Loader />}
     </div>
   );
 }

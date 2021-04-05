@@ -16,11 +16,12 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import SearchIcon from '@material-ui/icons/Search';
-import { BrowserRouter as Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { BrowserRouter as Link, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import RegisterForm from '../../pages/auth/RegisterForm';
 import EnterForm from '../../pages/auth/LoginForm';
 import history from '../../history';
+import { logout } from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -116,9 +117,6 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const logoutHandler = () => {
-    console.log('log out');
-  };
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -225,11 +223,16 @@ export default function Header() {
 
   const [theAnchorEl, setTheAnchorEl] = React.useState(null);
   const theOpen = Boolean(theAnchorEl);
-  const handleClick = (event) => {
+  const TheHandleClick = (event) => {
     setTheAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const TheHandleClose = () => {
     setTheAnchorEl(null);
+  };
+
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
   };
   const renderUserMenu = (
     <>
@@ -238,7 +241,7 @@ export default function Header() {
         aria-controls="demo-positioned-menu"
         aria-haspopup="true"
         aria-expanded={theOpen ? 'true' : undefined}
-        onClick={handleClick}
+        onClick={TheHandleClick}
       >
         <AccountCircle />
       </Button>
@@ -247,7 +250,7 @@ export default function Header() {
         aria-labelledby="demo-positioned-button"
         anchorEl={theAnchorEl}
         open={theOpen}
-        onClose={handleClose}
+        onClose={TheHandleClose}
         getContentAnchorEl={null}
         anchorOrigin={{
           vertical: 'bottom',
@@ -258,10 +261,10 @@ export default function Header() {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={TheHandleClose}>
           <Link to="/profile">Profile</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={TheHandleClose}>My account</MenuItem>
         <MenuItem onClick={logoutHandler}>Logout</MenuItem>
       </Menu>
     </>
@@ -270,10 +273,15 @@ export default function Header() {
   // Modal register
   const [rOpen, setRegOpen] = React.useState(false);
   const [eOpen, setEnterOpen] = React.useState(false);
+  const location = useLocation();
+  console.log(location.pathname);
+  useEffect(() => {
+    if (location.pathname.includes('/register')) setEnterOpen(false);
+  }, [location]);
 
-  const theUser = useSelector((state) => state.theUser);
+  const userLogin = useSelector((state) => state.userLogin);
 
-  const { userInfo } = theUser;
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     if (userInfo) {
@@ -320,7 +328,7 @@ export default function Header() {
               </div>
 
               <div className={classes.sectionDesktop}>
-                {userInfo.access ? (
+                {userInfo && userInfo.access !== undefined ? (
                   <>{renderUserMenu}</>
                 ) : (
                   <>
