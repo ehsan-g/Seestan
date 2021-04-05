@@ -183,27 +183,18 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem />
       <MenuItem>
-        <Typography variant="subtitle1">
-          <Link to="#" component="a" onClick={preventDefault} underline="none">
-            گزینش‌شده
-          </Link>
-        </Typography>
+        <Button href="/sell" color="inherit">
+          فروش
+        </Button>
       </MenuItem>
       <MenuItem>
-        <Typography variant="subtitle1">
-          <Link to="#" component="a" onClick={preventDefault} underline="none">
-            فروش
-          </Link>
-        </Typography>
+        <Button href="/" color="inherit">
+          خرید
+        </Button>
       </MenuItem>
-      <MenuItem>
-        <Typography variant="subtitle1">
-          <Link to="#" component="a" onClick={preventDefault} underline="none">
-            خرید
-          </Link>
-        </Typography>
-      </MenuItem>
+
       <MenuItem>
         <IconButton
           edge="end"
@@ -350,36 +341,12 @@ export default function Header() {
                   </>
                 )}
 
-                <Typography variant="subtitle1">
-                  <Link
-                    to="#"
-                    component="a"
-                    onClick={preventDefault}
-                    underline="none"
-                  >
-                    گزینش‌شده
-                  </Link>
-                </Typography>
-                <Typography variant="subtitle1">
-                  <Link
-                    to="#"
-                    component="a"
-                    onClick={preventDefault}
-                    underline="none"
-                  >
-                    فروش
-                  </Link>
-                </Typography>
-                <Typography variant="subtitle1">
-                  <Link
-                    to="#"
-                    component="a"
-                    onClick={preventDefault}
-                    underline="none"
-                  >
-                    خرید
-                  </Link>
-                </Typography>
+                <Button href="/sell" color="inherit">
+                  فروش
+                </Button>
+                <Button href="/" color="inherit">
+                  خرید
+                </Button>
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton

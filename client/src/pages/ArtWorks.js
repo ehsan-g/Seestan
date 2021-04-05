@@ -16,7 +16,6 @@ import Message from '../components/Message';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // width: '70%',
     padding: 10,
     [theme.breakpoints.down('md')]: {
       display: 'none',
@@ -24,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   responsive: {
-    padding: 20,
+    // margin: 40,
+    // width: '100%',
   },
   paper: {
     padding: theme.spacing(2),
@@ -55,9 +55,7 @@ function Artworks() {
         <>
           <Grid container direction="row">
             <Grid item xs={9} className={classes.root}>
-              <Box
-                sx={{ width: '100%', minHeight: '100VH', overflow: 'hidden' }}
-              >
+              <Box sx={{ minHeight: '100VH', overflow: 'hidden' }}>
                 <ImageList
                   variant="masonry"
                   cols={3}
@@ -77,7 +75,6 @@ function Artworks() {
           <div>
             <Hidden mdUp>
               <Grid
-                container
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
