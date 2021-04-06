@@ -17,6 +17,13 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_DETAILS_SUCCESS,
+  USER_DETAILS_FAIL,
+  USER_DETAILS_REQUEST,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_RESET,
 } from '../constants/userConstants';
 
 export const headerStatus = (status) => async (dispatch) => {
@@ -158,6 +165,79 @@ export const register = (firstName, lastName, email, password) => async (
           ? e.response.data.detail
           : e.message,
     });
-    console.log(e.message);
+  }
+};
+
+export const fetchUserDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_DETAILS_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/${id}/`, config);
+
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: USER_DETAILS_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/users/profile/update/`,
+      user,
+      config
+    );
+
+    dispatch({
+      type: USER_UPDATE_PROFILE_SUCCESS,
+      payload: data,
+    });
+    // login the user with new data and update local storage
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: USER_UPDATE_PROFILE_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
   }
 };

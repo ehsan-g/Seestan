@@ -1,0 +1,68 @@
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Tab from '@material-ui/core/Tab';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
+import { Grid, Typography, Button, Paper } from '@material-ui/core';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import Avatar from '@material-ui/core/Avatar';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
+import ShareLocationIcon from '@material-ui/icons/ShareLocation';
+import AccountUserTab from '../components/account/AccountUserForm';
+import { fetchUserDetails, headerStatus } from '../actions/index';
+
+export default function FullWidthTabs() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(headerStatus(false));
+    return function cleanup() {
+      dispatch(headerStatus(true));
+    };
+  }, [dispatch]);
+  const [value, setValue] = React.useState('1');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <div>
+      <Button href="/" color="inherit">
+        <Avatar alt="Logo" variant="square" src="/static/logo.png" />
+      </Button>
+      <Box sx={{ width: '100%', typography: 'body1' }}>
+        <TabContext value={value}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <Tab icon={<PersonPinIcon />} label="تنظیمات" value="1" />
+              <Tab
+                icon={<FavoriteIcon />}
+                label="مورد علاقه"
+                disabled
+                value="2"
+              />
+              <Tab icon={<ShareLocationIcon />} label="آدرس‌ها" value="3" />
+              <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="4" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <AccountUserTab />
+          </TabPanel>
+          <TabPanel value="2">ki</TabPanel>
+          <TabPanel value="3">
+            <div> hi </div>
+          </TabPanel>
+          <TabPanel value="4">
+            <div> bye </div>
+          </TabPanel>
+        </TabContext>
+      </Box>
+    </div>
+  );
+}

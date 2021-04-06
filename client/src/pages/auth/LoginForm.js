@@ -73,7 +73,6 @@ export default function EnterForm() {
     dispatch(headerStatus(false));
     if (!location.pathname.includes('/register'))
       return function cleanup() {
-        console.log('hsdfsdf');
         dispatch(headerStatus(true));
       };
   }, [dispatch]);

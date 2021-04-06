@@ -190,9 +190,7 @@ export default function Header() {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={TheHandleClose}>
-          <Link to="/profile">صفحه کاربری</Link>
-        </MenuItem>
+        <MenuItem onClick={menuGotoUrl('/profile')}>صفحه کاربری</MenuItem>
         <MenuItem onClick={logoutHandler}>خروج</MenuItem>
       </Menu>
     </>
@@ -238,7 +236,7 @@ export default function Header() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Typography variant="subtitle1">حساب کاربری</Typography>
+              <MenuItem>ورود / ثبت‌نام</MenuItem>
 
               <AccountCircle />
             </IconButton>
