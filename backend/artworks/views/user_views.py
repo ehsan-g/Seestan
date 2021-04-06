@@ -61,11 +61,31 @@ def registerUser(request):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    user = request.user
+    serializer = UserSerializerWithToken(user, many=False)
+
+    data = request.data
+    user.first_name = data['firstName']
+    user.last_name = data['lastName']
+    user.email = data['email']
+    user.username = data['email']
+    if data['password'] != '':
+        user.password = make_password(data['password'])
+
+    user.save()
+
+    return Response(serializer.data)
+
 # since we have wrapped this view with rest-framework decorator and changed the default authentication
 # /api/users/profile user is not the same as the user used for /admin
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getUserProfile(request):
+def fetchUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
@@ -73,7 +93,7 @@ def getUserProfile(request):
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
-def getUsers(request):
+def fetchUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)

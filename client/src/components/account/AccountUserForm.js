@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { fetchUserDetails, updateUserProfile } from '../../actions/index';
 import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants';
+import Message from '../Message';
+import Loader from '../Loader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,8 +53,10 @@ const validate = (firstName, lastName, email) => {
 function AccountUserForm() {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
+  const [confirmPassword, setconfirmPassword] = useState('');
   const [firstName, setfirstName] = useState('');
   const [lastName, setlastName] = useState('');
+  const [message, setMessage] = useState();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -69,6 +73,7 @@ function AccountUserForm() {
     if (!userInfo) {
       history.push('/login');
     } else if (!user || !user.firstName || success) {
+      // clean the field and update again using reset
       dispatch({ type: USER_UPDATE_PROFILE_RESET });
       dispatch(fetchUserDetails('profile'));
     } else {
@@ -81,26 +86,26 @@ function AccountUserForm() {
   const onSubmit = async () => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(300);
-    // setfirstName(user.firstName);
-    // setlastName(user.lastName);
-    // setemail(user.email);
-    // window.alert(JSON.stringify(values, 0, 2));
-    dispatch(
-      updateUserProfile({
-        id: user._id,
-        firstName,
-        lastName,
-        email,
-        password,
-      })
-    );
-    // history.push('/login?redirect=payment');
+    if (password !== confirmPassword) {
+      setMessage('پسورد متفاوت وارد شده است');
+    } else {
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          firstName,
+          lastName,
+          email,
+          password,
+        })
+      );
+      setMessage('');
+    }
   };
   const classes = useStyles();
 
   const formFields = [
     {
-      size: 6,
+      size: 12,
       size2: 12,
       field: (
         <TextField
@@ -116,7 +121,7 @@ function AccountUserForm() {
       ),
     },
     {
-      size: 6,
+      size: 12,
       size2: 12,
       field: (
         <TextField
@@ -131,7 +136,7 @@ function AccountUserForm() {
       ),
     },
     {
-      size: 6,
+      size: 12,
       size2: 12,
       field: (
         <TextField
@@ -146,7 +151,7 @@ function AccountUserForm() {
       ),
     },
     {
-      size: 6,
+      size: 12,
       size2: 12,
       field: (
         <TextField
@@ -157,7 +162,21 @@ function AccountUserForm() {
           variant="filled"
           type="password"
           onChange={(e) => setpassword(e.target.value)}
-          required
+        />
+      ),
+    },
+    {
+      size: 12,
+      size2: 12,
+      field: (
+        <TextField
+          label="پسوزد تکرار"
+          name="confirmPassword"
+          value={confirmPassword}
+          margin="none"
+          variant="filled"
+          type="password"
+          onChange={(e) => setconfirmPassword(e.target.value)}
         />
       ),
     },
@@ -194,6 +213,9 @@ function AccountUserForm() {
           </form>
         )}
       />
+      {message && <Message severity="error">{message}</Message>}
+      {error && <Message severity="error">{error}</Message>}
+      {loading && <Loader />}
     </div>
   );
 }

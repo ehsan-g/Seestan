@@ -32,37 +32,53 @@ export default function FullWidthTabs() {
   };
 
   return (
-    <div>
-      <Button href="/" color="inherit">
-        <Avatar alt="Logo" variant="square" src="/static/logo.png" />
-      </Button>
-      <Box sx={{ width: '100%', typography: 'body1' }}>
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab icon={<PersonPinIcon />} label="تنظیمات" value="1" />
-              <Tab
-                icon={<FavoriteIcon />}
-                label="مورد علاقه"
-                disabled
-                value="2"
-              />
-              <Tab icon={<ShareLocationIcon />} label="آدرس‌ها" value="3" />
-              <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="4" />
-            </TabList>
-          </Box>
-          <TabPanel value="1">
-            <AccountUserTab />
-          </TabPanel>
-          <TabPanel value="2">ki</TabPanel>
-          <TabPanel value="3">
-            <div> hi </div>
-          </TabPanel>
-          <TabPanel value="4">
-            <div> bye </div>
-          </TabPanel>
-        </TabContext>
-      </Box>
-    </div>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item direction="reverse">
+        <Button href="/" color="inherit">
+          <Avatar alt="Logo" variant="square" src="/static/logo.png" />
+        </Button>
+      </Grid>
+      <Grid item xs={8}>
+        <Box sx={{ width: '100%', typography: 'body1' }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+                centered
+              >
+                <Tab icon={<PersonPinIcon />} label="تنظیمات" value="1" />
+                <Tab
+                  icon={<FavoriteIcon />}
+                  label="مورد علاقه"
+                  disabled
+                  value="2"
+                />
+                <Tab icon={<ShareLocationIcon />} label="آدرس‌ها" value="3" />
+                <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="4" />
+              </TabList>
+            </Box>
+
+            <Box>
+              <TabPanel value="1">
+                <AccountUserTab />
+              </TabPanel>
+              <TabPanel value="2">ki</TabPanel>
+              <TabPanel value="3">
+                <div> hi </div>
+              </TabPanel>
+              <TabPanel value="4">
+                <div> bye </div>
+              </TabPanel>
+            </Box>
+          </TabContext>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

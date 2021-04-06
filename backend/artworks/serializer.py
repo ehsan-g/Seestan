@@ -43,6 +43,7 @@ class UserSerializerWithToken(UserSerializer):
 
     def get_token(sefl, obj):
         token = RefreshToken.for_user(obj)
+        # our token is going to be an access token not refresh one
         return str(token.access_token)
 
 
