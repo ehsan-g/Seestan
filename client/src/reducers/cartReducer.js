@@ -1,12 +1,14 @@
 /* eslint-disable no-case-declarations */
-import { CART_ADD_ITEM } from '../constants/cartConstants';
+import {
+  CART_ADD_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+  CART_REMOVE_ITEMS,
+} from '../constants/cartConstants';
 
-export default (state = { cartItems: [] }, action) => {
+export default (state = { cartItems: [], shippingAddress: {} }, action) => {
   switch (action.type) {
     case CART_ADD_ITEM:
-      console.log(action);
       const item = action.payload;
-      console.log(state);
       const existItem = state.cartItems.find(
         (x) => x.artworkId === item.artworkId
       );
@@ -24,10 +26,19 @@ export default (state = { cartItems: [] }, action) => {
         cartItems: [...state.cartItems, item],
       };
 
-    // case CART_DETAILS_SUCCESS:
-    //   return { loading: false, cartItems: action.payload };
-    // case CART_DETAILS_FAIL:
-    //   return { loading: false, error: action.payload };
+    case CART_SAVE_SHIPPING_ADDRESS:
+      console.log(action);
+      return {
+        ...state,
+        shippingAddress: action.payload,
+      };
+
+    case CART_REMOVE_ITEMS:
+      return {
+        ...state,
+        cartItems: action.payload,
+      };
+
     default:
       return state;
   }

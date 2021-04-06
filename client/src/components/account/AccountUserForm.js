@@ -37,17 +37,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validate = (firstName, lastName, email) => {
-  // const errors = {};
-  // if (!firstName) {
-  //   errors.firstName = 'لطفا نام خود را وارد کنید';
-  // }
-  // if (!lastName) {
-  //   errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
-  // }
-  // if (!email) {
-  //   errors.email = 'لطفا ایمیل را وارد کنید';
-  // }
-  // return errors;
+  const errors = {};
+  if (!firstName) {
+    errors.firstName = 'لطفا نام خود را وارد کنید';
+  }
+  if (!lastName) {
+    errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
+  }
+  if (!email) {
+    errors.email = 'لطفا ایمیل را وارد کنید';
+  }
+  return errors;
 };
 
 function AccountUserForm() {

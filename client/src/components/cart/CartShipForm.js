@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes, Radios, Select } from 'mui-rff';
 import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+import { saveShippingAddress } from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,109 +53,135 @@ const validate = (values) => {
   return errors;
 };
 
-const formFields = [
-  {
-    size: 6,
-    size2: 12,
-    field: (
-      <TextField
-        label="نام"
-        name="firstName"
-        margin="none"
-        variant="filled"
-        placeholder="نام خود را وارد کنید"
-        required
-      />
-    ),
-  },
-  {
-    size: 6,
-    size2: 12,
-    field: (
-      <TextField
-        label="نام خانوادگی"
-        name="lastName"
-        margin="none"
-        variant="filled"
-        required
-      />
-    ),
-  },
-  {
-    size: 6,
-    size2: 12,
-    field: (
-      <TextField
-        label="کد پستی"
-        name="postalCode"
-        margin="none"
-        variant="filled"
-        required
-      />
-    ),
-  },
-  {
-    size: 6,
-    size2: 12,
-    field: (
-      <Select
-        name="city"
-        label="انتخاب شهر"
-        formControlProps={{ margin: 'none' }}
-      >
-        <MenuItem default value="Tehran">
-          تهران
-        </MenuItem>
-      </Select>
-    ),
-  },
-  {
-    size: 12,
-    size2: 12,
-    field: (
-      <TextField
-        label="آدرس"
-        name="address"
-        margin="none"
-        variant="filled"
-        required
-      />
-    ),
-  },
-  {
-    size: 12,
-    size2: 12,
-    field: (
-      <TextField
-        label="شماره تلفن"
-        name="phone"
-        margin="none"
-        variant="filled"
-        required
-      />
-    ),
-  },
-  {
-    size: 12,
-    size2: 12,
-    field: (
-      <Checkboxes
-        name="saveShipping"
-        formControlProps={{ margin: 'none' }}
-        data={{ label: 'ذخیره اطلاعات', value: true }}
-      />
-    ),
-  },
-];
+function CartShipForm() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const theCart = useSelector((state) => state.theCart);
+  const { shippingAddress } = theCart;
 
-function CartShipForm({ history }) {
+  const [firstName, setFirstName] = useState(shippingAddress.firstName);
+  const [lastName, setLastname] = useState(shippingAddress.lastName);
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
+  const [address, setAddress] = useState(shippingAddress.address);
+  const [city, setCity] = useState('');
+  const [phone, setPhone] = useState(shippingAddress.phone);
+
   const onSubmit = async (values) => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(300);
     window.alert(JSON.stringify(values, 0, 2));
+    dispatch(
+      saveShippingAddress({ firstName, lastName, address, postalCode, city })
+    );
+
     history.push('/login?redirect=payment');
   };
   const classes = useStyles();
+
+  const formFields = [
+    {
+      size: 6,
+      size2: 12,
+      field: (
+        <TextField
+          label="نام"
+          name="firstName"
+          margin="none"
+          variant="filled"
+          placeholder="نام خود را وارد کنید"
+          onChange={(e) => setFirstName(e.target.value)}
+          value={firstName || ''}
+          required
+        />
+      ),
+    },
+    {
+      size: 6,
+      size2: 12,
+      field: (
+        <TextField
+          label="نام خانوادگی"
+          name="lastName"
+          margin="none"
+          variant="filled"
+          onChange={(e) => setLastname(e.target.value)}
+          value={lastName || ''}
+          required
+        />
+      ),
+    },
+    {
+      size: 6,
+      size2: 12,
+      field: (
+        <TextField
+          label="کد پستی"
+          name="postalCode"
+          margin="none"
+          variant="filled"
+          onChange={(e) => setPostalCode(e.target.value)}
+          value={postalCode || ''}
+          required
+        />
+      ),
+    },
+    {
+      size: 6,
+      size2: 12,
+      field: (
+        <Select
+          name="city"
+          label="انتخاب شهر"
+          formControlProps={{ margin: 'none' }}
+        >
+          <MenuItem default value={city || 'تهران'}>
+            تهران
+          </MenuItem>
+        </Select>
+      ),
+    },
+    {
+      size: 12,
+      size2: 12,
+      field: (
+        <TextField
+          label="آدرس"
+          name="address"
+          margin="none"
+          variant="filled"
+          onChange={(e) => setAddress(e.target.value)}
+          value={address || ''}
+          required
+        />
+      ),
+    },
+    {
+      size: 12,
+      size2: 12,
+      field: (
+        <TextField
+          label="شماره تلفن"
+          name="phone"
+          margin="none"
+          variant="filled"
+          onChange={(e) => setPhone(e.target.value)}
+          value={phone || ''}
+          required
+        />
+      ),
+    },
+    {
+      size: 12,
+      size2: 12,
+      field: (
+        <Checkboxes
+          name="saveShipping"
+          formControlProps={{ margin: 'none' }}
+          data={{ label: 'ذخیره اطلاعات', value: true }}
+        />
+      ),
+    },
+  ];
 
   return (
     <div style={{ maxWidth: 600 }}>

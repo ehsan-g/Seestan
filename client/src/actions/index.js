@@ -8,7 +8,11 @@ import {
   ARTWORK_DETAILS_SUCCESS,
   ARTWORK_DETAILS_FAIL,
 } from '../constants/artworkConstants';
-import { CART_ADD_ITEM } from '../constants/cartConstants';
+import {
+  CART_ADD_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+  CART_REMOVE_ITEMS,
+} from '../constants/cartConstants';
 import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -90,6 +94,14 @@ export const fetchCartStatus = (workId) => async (dispatch, getState) => {
     'cartItems',
     JSON.stringify(getState().theCart.cartItems)
   );
+};
+
+export const cleanTheCart = () => async (dispatch) => {
+  localStorage.removeItem('cartItems');
+  dispatch({
+    type: CART_REMOVE_ITEMS,
+    payload: {},
+  });
 };
 
 export const login = (email, password) => async (dispatch) => {
@@ -240,4 +252,12 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
           : e.message,
     });
   }
+};
+
+export const saveShippingAddress = (data) => async (dispatch) => {
+  dispatch({
+    type: CART_SAVE_SHIPPING_ADDRESS,
+    payload: data,
+  });
+  localStorage.setItem('shippingAddress', JSON.stringify(data));
 };
