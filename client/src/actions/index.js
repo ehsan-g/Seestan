@@ -100,7 +100,7 @@ export const cleanTheCart = () => async (dispatch) => {
   localStorage.removeItem('cartItems');
   dispatch({
     type: CART_REMOVE_ITEMS,
-    payload: {},
+    payload: [],
   });
 };
 

@@ -23,23 +23,22 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Cart({ match, location, history }) {
-  const cart = useSelector((state) => state.theCart);
-  const { cartItems } = cart;
-  console.log(`location.search: ${location.search}`);
+export default function Cart({ match, history }) {
+  const theCart = useSelector((state) => state.theCart);
+  const { cartItems } = theCart;
   const artworkId = match.params.workId;
   const dispatch = useDispatch();
 
   useEffect(
     () => () => {
       dispatch(cleanTheCart());
-      console.log('now');
     },
     [dispatch]
   );
 
   useEffect(() => {
     if (artworkId) {
+      console.log('here');
       dispatch(fetchCartStatus(artworkId));
       dispatch(headerStatus(false));
       return function cleanup() {
