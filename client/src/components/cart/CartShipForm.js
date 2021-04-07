@@ -33,26 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.firstName) {
-    errors.firstName = 'لطفا نام خود را وارد کنید';
-  }
-  if (!values.lastName) {
-    errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
-  }
-  if (!values.address) {
-    errors.address = 'لطفا آدرس را وارد کنید';
-  }
-  if (!values.phone) {
-    errors.phone = 'لطفا شماره تماس خود را وارد کنید';
-  }
-  if (!values.postalCode) {
-    errors.postalCode = 'لطفا کد‌پستی خود را وارد کنید';
-  }
-  return errors;
-};
-
 function CartShipForm() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -182,6 +162,26 @@ function CartShipForm() {
       ),
     },
   ];
+
+  const validate = () => {
+    const errors = {};
+    if (!firstName) {
+      errors.firstName = 'لطفا نام خود را وارد کنید';
+    }
+    if (!lastName) {
+      errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
+    }
+    if (!address) {
+      errors.address = 'لطفا آدرس را وارد کنید';
+    }
+    if (!phone) {
+      errors.phone = 'لطفا شماره تماس خود را وارد کنید';
+    }
+    if (!postalCode) {
+      errors.postalCode = 'لطفا کد‌پستی خود را وارد کنید';
+    }
+    return errors;
+  };
 
   return (
     <div style={{ maxWidth: 600 }}>

@@ -34,10 +34,7 @@ export default (state = { cartItems: [], shippingAddress: {} }, action) => {
       };
 
     case CART_REMOVE_ITEMS:
-      return {
-        ...state,
-        cartItems: action.payload,
-      };
+      return [];
 
     default:
       return state;

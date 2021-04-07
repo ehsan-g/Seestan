@@ -38,7 +38,7 @@ export default function FullWidthTabs() {
       justifyContent="center"
       alignItems="center"
     >
-      <Grid item direction="reverse">
+      <Grid item>
         <Button href="/" color="inherit">
           <Avatar alt="Logo" variant="square" src="/static/logo.png" />
         </Button>

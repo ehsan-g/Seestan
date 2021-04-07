@@ -27,7 +27,6 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
-  USER_UPDATE_PROFILE_RESET,
 } from '../constants/userConstants';
 
 export const headerStatus = (status) => async (dispatch) => {
@@ -100,7 +99,6 @@ export const cleanTheCart = () => async (dispatch) => {
   localStorage.removeItem('cartItems');
   dispatch({
     type: CART_REMOVE_ITEMS,
-    payload: [],
   });
 };
 

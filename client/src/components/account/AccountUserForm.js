@@ -36,30 +36,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const validate = (firstName, lastName, email) => {
-  const errors = {};
-  if (!firstName) {
-    errors.firstName = 'لطفا نام خود را وارد کنید';
-  }
-  if (!lastName) {
-    errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
-  }
-  if (!email) {
-    errors.email = 'لطفا ایمیل را وارد کنید';
-  }
-  return errors;
-};
-
 function AccountUserForm() {
-  const [email, setemail] = useState('');
-  const [password, setpassword] = useState('');
-  const [confirmPassword, setconfirmPassword] = useState('');
-  const [firstName, setfirstName] = useState('');
-  const [lastName, setlastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [message, setMessage] = useState();
   const dispatch = useDispatch();
   const history = useHistory();
-
   const userDetails = useSelector((state) => state.userDetails);
   const { error, loading, user } = userDetails;
 
@@ -77,9 +62,9 @@ function AccountUserForm() {
       dispatch({ type: USER_UPDATE_PROFILE_RESET });
       dispatch(fetchUserDetails('profile'));
     } else {
-      setfirstName(user.firstName);
-      setlastName(user.lastName);
-      setemail(user.email);
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setEmail(user.email);
     }
   }, [dispatch, history, userInfo, user, success]);
 
@@ -111,11 +96,11 @@ function AccountUserForm() {
         <TextField
           label="نام"
           name="firstName"
-          value={firstName}
+          value={firstName || ''}
           margin="none"
           variant="filled"
           placeholder="نام خود را وارد کنید"
-          onChange={(e) => setfirstName(e.target.value)}
+          onChange={(e) => setFirstName(e.target.value)}
           required
         />
       ),
@@ -127,10 +112,10 @@ function AccountUserForm() {
         <TextField
           label="نام خانوادگی"
           name="lastName"
-          value={lastName}
+          value={lastName || ''}
           margin="none"
           variant="filled"
-          onChange={(e) => setlastName(e.target.value)}
+          onChange={(e) => setLastName(e.target.value)}
           required
         />
       ),
@@ -142,10 +127,10 @@ function AccountUserForm() {
         <TextField
           label="ایمیل"
           name="email"
-          value={email}
+          value={email || ''}
           margin="none"
           variant="filled"
-          onChange={(e) => setemail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
       ),
@@ -157,11 +142,11 @@ function AccountUserForm() {
         <TextField
           label="پسوزد"
           name="password"
-          value={password}
+          value={password || ''}
           margin="none"
           variant="filled"
           type="password"
-          onChange={(e) => setpassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
       ),
     },
@@ -172,15 +157,29 @@ function AccountUserForm() {
         <TextField
           label="پسوزد تکرار"
           name="confirmPassword"
-          value={confirmPassword}
+          value={confirmPassword || ''}
           margin="none"
           variant="filled"
           type="password"
-          onChange={(e) => setconfirmPassword(e.target.value)}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
       ),
     },
   ];
+
+  const validate = () => {
+    const errors = {};
+    if (!firstName) {
+      errors.firstName = 'لطفا نام خود را وارد کنید';
+    }
+    if (!lastName) {
+      errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
+    }
+    if (!email) {
+      errors.email = 'لطفا ایمیل را وارد کنید';
+    }
+    return errors;
+  };
 
   return (
     <div style={{ maxWidth: 600 }}>
