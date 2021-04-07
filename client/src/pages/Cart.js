@@ -25,7 +25,8 @@ const useStyles = makeStyles(() => ({
 
 export default function Cart({ match, history }) {
   const theCart = useSelector((state) => state.theCart);
-  const { cartItems } = theCart;
+  const { cartItems, shippingAddress } = theCart;
+
   const artworkId = match.params.workId;
   const dispatch = useDispatch();
 
@@ -38,7 +39,6 @@ export default function Cart({ match, history }) {
 
   useEffect(() => {
     if (artworkId) {
-      console.log('here');
       dispatch(fetchCartStatus(artworkId));
       dispatch(headerStatus(false));
       return function cleanup() {
@@ -48,13 +48,14 @@ export default function Cart({ match, history }) {
   }, [dispatch, artworkId]);
 
   let value;
-  console.log(cartItems);
-
-  switch (cartItems) {
+  switch (shippingAddress.step) {
     case undefined:
       value = '1';
       break;
-    case 'shipping':
+    case '1':
+      value = '1';
+      break;
+    case '2':
       value = '2';
       break;
     default:

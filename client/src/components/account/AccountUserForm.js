@@ -57,7 +57,7 @@ function AccountUserForm() {
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
-    } else if (!user || !user.firstName || success) {
+    } else if (!user || !user.email || success) {
       // clean the field and update again using reset
       dispatch({ type: USER_UPDATE_PROFILE_RESET });
       dispatch(fetchUserDetails('profile'));
@@ -101,7 +101,6 @@ function AccountUserForm() {
           variant="filled"
           placeholder="نام خود را وارد کنید"
           onChange={(e) => setFirstName(e.target.value)}
-          required
         />
       ),
     },
@@ -116,7 +115,6 @@ function AccountUserForm() {
           margin="none"
           variant="filled"
           onChange={(e) => setLastName(e.target.value)}
-          required
         />
       ),
     },
@@ -130,8 +128,7 @@ function AccountUserForm() {
           value={email || ''}
           margin="none"
           variant="filled"
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          disabled
         />
       ),
     },
@@ -169,12 +166,6 @@ function AccountUserForm() {
 
   const validate = () => {
     const errors = {};
-    if (!firstName) {
-      errors.firstName = 'لطفا نام خود را وارد کنید';
-    }
-    if (!lastName) {
-      errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
-    }
     if (!email) {
       errors.email = 'لطفا ایمیل را وارد کنید';
     }

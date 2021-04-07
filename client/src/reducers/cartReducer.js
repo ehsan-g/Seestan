@@ -27,14 +27,13 @@ export default (state = { cartItems: [], shippingAddress: {} }, action) => {
       };
 
     case CART_SAVE_SHIPPING_ADDRESS:
-      console.log(action);
       return {
         ...state,
         shippingAddress: action.payload,
       };
 
     case CART_REMOVE_ITEMS:
-      return [];
+      return { cartItems: [], shippingAddress: state.shippingAddress };
 
     default:
       return state;

@@ -45,16 +45,24 @@ function CartShipForm() {
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState(shippingAddress.phone);
+  // for progress bar
+  const [step, setStep] = useState(0);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async () => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await sleep(300);
-    window.alert(JSON.stringify(values, 0, 2));
-    dispatch(
-      saveShippingAddress({ firstName, lastName, address, postalCode, city })
-    );
 
-    history.push('/login?redirect=payment');
+    await sleep(300);
+    dispatch(
+      saveShippingAddress({
+        firstName,
+        lastName,
+        address,
+        postalCode,
+        city,
+        step,
+      })
+    );
+    // history.push('/login?redirect=payment');
   };
   const classes = useStyles();
 
@@ -228,6 +236,7 @@ function CartShipForm() {
                     color="primary"
                     type="submit"
                     disabled={submitting}
+                    onClick={() => setStep('2')}
                   >
                     مرحله بعد
                   </Button>

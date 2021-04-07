@@ -24,12 +24,6 @@ const useStyles = makeStyles((theme) => ({
 
 const validate = (values) => {
   const errors = {};
-  if (!values.firstName) {
-    errors.firstName = 'لطفا نام‌ خود را وارد کنید';
-  }
-  if (!values.lastName) {
-    errors.lastName = 'لطفا نام خانوادگی خود را وارد کنید';
-  }
   if (!values.pass) {
     errors.pass = 'لطفا پسورد خود را وارد کنید';
   }
@@ -76,7 +70,6 @@ const formFields = [
         label="نام"
         name="firstName"
         margin="normal"
-        required
       />
     ),
   },
@@ -89,7 +82,6 @@ const formFields = [
         label="نام خانوادگی"
         name="lastName"
         margin="normal"
-        required
       />
     ),
   },
