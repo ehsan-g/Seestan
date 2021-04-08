@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import CardContent from '@material-ui/core/CardContent';
@@ -29,6 +29,15 @@ export default function PurchaseCard({ workId }) {
   const classes = useStyles();
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
+
+  const theArtwork = useSelector((state) => state.theArtwork);
+  const { artwork } = theArtwork;
+
+  // adding shipping price to the cart - toFixed for decimal
+  theCart.shippingPrice = (artwork.price > 100000 ? 0 : 10000).toFixed(0);
+  theCart.tax = (artwork.price * 0.09).toFixed(0);
+  theCart.total =
+    Number(artwork.price) + Number(theCart.shippingPrice) + Number(theCart.tax);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -87,33 +96,52 @@ export default function PurchaseCard({ workId }) {
               </Grid>
 
               <Grid container sx={{ borderTop: '1px solid #e0e0e0' }}>
-                <CardContent>
-                  <Grid
-                    container
-                    direction="row"
-                    // justifyContent="center"
-                    // alignItems="center"
-                  >
-                    <Grid item xs={4}>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle1"
-                        component="p"
-                      >
-                        قیمت
-                      </Typography>
-                    </Grid>
-                    <Grid item xs>
-                      <Typography
-                        variant="subtitle1"
-                        color="textSecondary"
-                        sx={{ width: '100%' }}
-                      >
-                        {cartItems[0].price} تومان
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </CardContent>
+                <Grid item xs={4}>
+                  <Typography gutterBottom variant="subtitle1" component="p">
+                    قیمت
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {`${cartItems[0].price} تومان`}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid container>
+                <Grid item xs={4}>
+                  <Typography gutterBottom variant="subtitle1" component="p">
+                    حمل و نقل
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {`${theCart.shippingPrice} تومان`}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid container>
+                <Grid item xs={4}>
+                  <Typography gutterBottom variant="subtitle1" component="p">
+                    (۹٪)مالیات
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {`${theCart.tax} تومان`}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid container sx={{ borderTop: '1px solid #e0e0e0' }}>
+                <Grid item xs={4}>
+                  <Typography gutterBottom variant="subtitle1" component="p">
+                    جمع
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {`${theCart.total} تومان`}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
           </Paper>

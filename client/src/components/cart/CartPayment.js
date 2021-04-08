@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
 import { Typography, Button, Grid, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { cartStep } from '../../actions/index';
@@ -12,10 +10,10 @@ import CartPaymentButton from './CartPaymentButton';
 
 function CartPayment() {
   const history = useHistory();
-  const [payment, setPayment] = useState('PayPal');
+  const dispatch = useDispatch();
+
   // for progress bar
   const [step, setStep] = useState(0);
-  const dispatch = useDispatch();
 
   const theCart = useSelector((state) => state.theCart);
   const { shippingAddress } = theCart;
