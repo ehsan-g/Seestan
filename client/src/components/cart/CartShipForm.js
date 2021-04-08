@@ -7,7 +7,6 @@ import { TextField, Checkboxes, Radios, Select } from 'mui-rff';
 import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useLocation, useHistory } from 'react-router-dom';
 import { saveShippingAddress, cartStep } from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 function CartShipForm() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const theCart = useSelector((state) => state.theCart);
   const { shippingAddress } = theCart;
 

@@ -91,8 +91,8 @@ export default function PurchaseCard({ workId }) {
                   <Grid
                     container
                     direction="row"
-                    justifyContent="center"
-                    alignItems="center"
+                    // justifyContent="center"
+                    // alignItems="center"
                   >
                     <Grid item xs={4}>
                       <Typography
@@ -103,11 +103,11 @@ export default function PurchaseCard({ workId }) {
                         قیمت
                       </Typography>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs>
                       <Typography
                         variant="subtitle1"
                         color="textSecondary"
-                        component="p"
+                        sx={{ width: '100%' }}
                       >
                         {cartItems[0].price} تومان
                       </Typography>

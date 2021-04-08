@@ -4,6 +4,7 @@ import {
   CART_SAVE_SHIPPING_ADDRESS,
   CART_REMOVE_ITEMS,
   CHANGE_CART_STEP,
+  CART_SAVE_PAYMENT_METHOD,
 } from '../constants/cartConstants';
 
 export default (
@@ -44,6 +45,12 @@ export default (
         shippingAddress: state.shippingAddress,
         cartItems: state.cartItems,
         step: action.payload,
+      };
+
+    case CART_SAVE_PAYMENT_METHOD:
+      return {
+        ...state,
+        paymentMethod: action.payload,
       };
 
     default:
