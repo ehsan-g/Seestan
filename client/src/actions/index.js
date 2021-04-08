@@ -99,6 +99,7 @@ export const fetchCartStatus = (workId) => async (dispatch, getState) => {
 
 export const cleanTheCart = () => async (dispatch) => {
   localStorage.removeItem('cartItems');
+  localStorage.removeItem('shippingAddress');
   dispatch({
     type: CART_REMOVE_ITEMS,
   });

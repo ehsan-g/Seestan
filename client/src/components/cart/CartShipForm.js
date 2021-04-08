@@ -7,6 +7,7 @@ import { TextField, Checkboxes, Radios, Select } from 'mui-rff';
 import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { saveShippingAddress, cartStep } from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,9 +34,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CartShipForm() {
+  const history = useHistory();
   const dispatch = useDispatch();
+
   const theCart = useSelector((state) => state.theCart);
   const { shippingAddress } = theCart;
+
+  const theArtwork = useSelector((state) => state.theArtwork);
+  const { artwork } = theArtwork;
 
   const [firstName, setFirstName] = useState(shippingAddress.firstName);
   const [lastName, setLastname] = useState(shippingAddress.lastName);
@@ -48,7 +54,6 @@ function CartShipForm() {
 
   const onSubmit = async () => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
     await sleep(300);
     dispatch(
       saveShippingAddress({
@@ -61,7 +66,7 @@ function CartShipForm() {
       })
     );
     dispatch(cartStep(step));
-    // history.push('/login?redirect=payment');
+    history.push(`/cart/payment/${artwork._id}?title=${artwork.title}`);
   };
   const classes = useStyles();
 
@@ -138,6 +143,7 @@ function CartShipForm() {
           variant="filled"
           onChange={(e) => setAddress(e.target.value)}
           value={address || ''}
+          multiline
           required
         />
       ),

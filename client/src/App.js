@@ -13,7 +13,7 @@ import Cart from './pages/Cart';
 import Sell from './pages/Sell';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
-import CartReview from './components/cart/CartReview';
+import CartReview from './components/cart/CartPayment';
 
 // Create an enhanced history that syncs navigation events with the store
 
@@ -29,8 +29,9 @@ const App = () => (
             <Route exact path="/" component={ArtWorks} />
             <Route exact path="/sell" component={Sell} />
             <Route path="/artworks/:workId" component={ArtWork} />
-            <Route path="/cart/:workId?" component={Cart} />
-            <Route path="/cart/:workId?/shipping" component={CartReview} />
+            <Route path="/cart/shippingAddress/:workId?" component={Cart} />
+            <Route path="/cart/payment/:workId?" component={Cart} />
+            <Route path="/cart/placeOrder/:workId?" component={Cart} /> */}
             <Route exact path="/login" component={EnterForm} />
             <Route exact path="/register" component={RegisterForm} />
             <Route exact path="/profile" component={userProfile} />

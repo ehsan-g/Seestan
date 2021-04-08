@@ -11,8 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import { Paper } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import CartShipForm from '../components/cart/CartShipForm';
-import CartReview from '../components/cart/CartReview';
+import CartReview from '../components/cart/CartPayment';
 import PurchaseCard from '../components/cart/PurchaseCard';
 import { cleanTheCart, fetchCartStatus, headerStatus } from '../actions/index';
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
 
 export default function Cart({ match, history }) {
   const theCart = useSelector((state) => state.theCart);
-  const { step, shippingAddress } = theCart;
+  const { step } = theCart;
 
   const artworkId = match.params.workId;
   const dispatch = useDispatch();
@@ -97,6 +98,7 @@ export default function Cart({ match, history }) {
             <TabPanel value="3">
               <Paper sx={{ height: 150 }} square elevation={2}>
                 پرداخت انجام شد
+                <Link to="/">برگشت</Link>
               </Paper>
             </TabPanel>
           </TabContext>

@@ -49,7 +49,9 @@ function Artwork({ match, history }) {
   }, [dispatch, match]);
 
   const addToCart = (e) => {
-    history.push(`/cart/${match.params.workId}?title=${artwork.title}`);
+    history.push(
+      `/cart/shippingAddress/${match.params.workId}?title=${artwork.title}`
+    );
   };
   const classes = useStyles();
 
@@ -110,10 +112,13 @@ function Artwork({ match, history }) {
                 <Typography color="#666666" variant="body1">
                   {theArt.title}
                 </Typography>
-                <Typography color="#666666" variant="body1">
-                  {theArt.material}
+                <Typography color="#666666" variant="subtitle1">
+                  {theArt.year}
                 </Typography>
                 <Typography color="#666666" variant="body1">
+                  {theArt.medium}
+                </Typography>
+                <Typography color="#666666" variant="subtitle1">
                   {theArt.unit === '0' && ' in '}
                   {theArt.unit === '1' && ' cm '}
                   <span style={{ position: 'absolute', direction: 'ltr' }}>

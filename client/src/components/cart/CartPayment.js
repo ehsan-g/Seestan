@@ -6,10 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Typography, Button, Grid, Paper } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import { cartStep } from '../../actions/index';
 import CartPaymentButton from './CartPaymentButton';
 
-function CartReview() {
+function CartPayment() {
+  const history = useHistory();
   const [payment, setPayment] = useState('PayPal');
   // for progress bar
   const [step, setStep] = useState(0);
@@ -18,15 +20,19 @@ function CartReview() {
   const theCart = useSelector((state) => state.theCart);
   const { shippingAddress } = theCart;
 
+  const theArtwork = useSelector((state) => state.theArtwork);
+  const { artwork } = theArtwork;
+
   const onEdit = async () => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(300);
     dispatch(cartStep(step));
+    history.push(`/cart/shippingAddress/${artwork._id}?title=${artwork.title}`);
   };
 
   const onSubmit = async () => {
-    // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    // await sleep(300);
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    await sleep(300);
     dispatch(cartStep(step));
   };
 
@@ -79,10 +85,7 @@ function CartReview() {
                   >
                     ویرایش
                   </Button>
-                  <CartPaymentButton
-                    onClick={() => setStep('3')}
-                    type="submit"
-                  />
+                  <CartPaymentButton />
                 </Grid>
               </form>
             )}
@@ -92,4 +95,4 @@ function CartReview() {
     </div>
   );
 }
-export default CartReview;
+export default CartPayment;
