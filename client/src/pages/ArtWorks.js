@@ -68,8 +68,10 @@ function Artworks() {
                 </ImageList>
               </Box>
             </Grid>
-            <Grid item xs={3}>
-              'dgregrtgtgtthththhth'
+            <Grid item xs>
+              <Paper sx={{ width: '100%', backgroundColor: '#f6e4bc' }}>
+                'Filters Grid'
+              </Paper>
             </Grid>
           </Grid>
           <div>

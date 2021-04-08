@@ -12,6 +12,7 @@ import {
   CART_ADD_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_REMOVE_ITEMS,
+  CHANGE_CART_STEP,
 } from '../constants/cartConstants';
 import {
   USER_LOGIN_REQUEST,
@@ -260,4 +261,11 @@ export const saveShippingAddress = (data) => async (dispatch) => {
     payload: data,
   });
   localStorage.setItem('shippingAddress', JSON.stringify(data));
+};
+
+export const cartStep = (step) => async (dispatch) => {
+  dispatch({
+    type: CHANGE_CART_STEP,
+    payload: step,
+  });
 };

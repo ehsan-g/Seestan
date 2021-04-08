@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 
 export default function Cart({ match, history }) {
   const theCart = useSelector((state) => state.theCart);
-  const { cartItems, shippingAddress } = theCart;
+  const { step, shippingAddress } = theCart;
 
   const artworkId = match.params.workId;
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export default function Cart({ match, history }) {
   }, [dispatch, artworkId]);
 
   let value;
-  switch (shippingAddress.step) {
+  switch (step) {
     case undefined:
       value = '1';
       break;
@@ -57,6 +57,9 @@ export default function Cart({ match, history }) {
       break;
     case '2':
       value = '2';
+      break;
+    case '3':
+      value = '3';
       break;
     default:
       value = '1';
@@ -92,7 +95,9 @@ export default function Cart({ match, history }) {
               <CartReview />
             </TabPanel>
             <TabPanel value="3">
-              <div> hi </div>
+              <Paper sx={{ height: 150 }} square elevation={2}>
+                پرداخت انجام شد
+              </Paper>
             </TabPanel>
           </TabContext>
         </Box>

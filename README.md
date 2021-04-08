@@ -16,7 +16,7 @@ Aristotle: “Art completes what nature cannot bring to finish. The artist gives
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+https://drawsql.app/dazain/diagrams/artworks-ecommerce
 
 
 ### Installing

@@ -62,7 +62,7 @@ const customTheme = createMuiTheme({
         },
 
         body1: {
-          fontSize: '11px',
+          // fontSize: '11px',
         },
       },
     },

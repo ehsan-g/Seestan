@@ -3,9 +3,13 @@ import {
   CART_ADD_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_REMOVE_ITEMS,
+  CHANGE_CART_STEP,
 } from '../constants/cartConstants';
 
-export default (state = { cartItems: [], shippingAddress: {} }, action) => {
+export default (
+  state = { cartItems: [], shippingAddress: {}, step: '1' },
+  action
+) => {
   switch (action.type) {
     case CART_ADD_ITEM:
       const item = action.payload;
@@ -34,6 +38,13 @@ export default (state = { cartItems: [], shippingAddress: {} }, action) => {
 
     case CART_REMOVE_ITEMS:
       return { cartItems: [], shippingAddress: state.shippingAddress };
+
+    case CHANGE_CART_STEP:
+      return {
+        shippingAddress: state.shippingAddress,
+        cartItems: state.cartItems,
+        step: action.payload,
+      };
 
     default:
       return state;

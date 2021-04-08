@@ -8,7 +8,7 @@ import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation, useHistory } from 'react-router-dom';
-import { saveShippingAddress } from '../../actions/index';
+import { saveShippingAddress, cartStep } from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,10 +58,11 @@ function CartShipForm() {
         lastName,
         address,
         postalCode,
+        phone,
         city,
-        step,
       })
     );
+    dispatch(cartStep(step));
     // history.push('/login?redirect=payment');
   };
   const classes = useStyles();
@@ -197,6 +198,7 @@ function CartShipForm() {
       <Form
         onSubmit={onSubmit}
         validate={validate}
+        initialValues={{ employed: true, deliveryMethod: 'delivery' }}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit} noValidate className={classes.root}>
             <Paper style={{ padding: 10 }} elevation={0}>
