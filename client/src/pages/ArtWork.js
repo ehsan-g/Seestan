@@ -41,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
 function Artwork({ match, history }) {
   const dispatch = useDispatch();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const theArtwork = useSelector((state) => state.theArtwork);
   const { error, loading, artwork } = theArtwork;
 
@@ -49,9 +52,13 @@ function Artwork({ match, history }) {
   }, [dispatch, match]);
 
   const addToCart = (e) => {
-    history.push(
-      `/cart/shippingAddress/${match.params.workId}?title=${artwork.title}`
-    );
+    if (userInfo) {
+      history.push(
+        `/cart/shippingAddress/${match.params.workId}?title=${artwork.title}`
+      );
+    } else {
+      history.push(`/login`);
+    }
   };
   const classes = useStyles();
 
