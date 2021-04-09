@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from artworks.serializer import ArtworkSerializer
+from artworks.serializer import ArtworkSerializer, OrderItemSerializer
 from django.contrib.auth.models import User
 from artworks.models import Artwork
 from rest_framework import status
@@ -51,5 +51,6 @@ def addOrderItems(request):
             # update stock
             artwork.quantity -= item.quantity
             artwork.save()
-
-    return Response('order')
+            
+    serializer = OrderItemSerializer(order, many=True)
+    return Response(serializer.data)
