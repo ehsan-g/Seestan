@@ -51,17 +51,17 @@ $ pip3 install virtualenv
 ## Installing
  **Start back-end locally**
 ```
-cd Dazain/
-source myenv/bin/activate
-cd backend/
-pip3 install -r requirements.txt
-python3 manage.py runserver
+$ cd Dazain/
+$ source myenv/bin/activate
+$ cd backend/
+$ pip3 install -r requirements.txt
+$ python3 manage.py runserver
 ```
 **Start front-end locally**
 ```
-cd client/
-yarn install 
-yarn start
+$ cd client/
+$ yarn install 
+$ yarn start
 ```
 
 ## Running the tests
