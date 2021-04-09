@@ -20,11 +20,33 @@ Aristotle: “Art completes what nature cannot bring to finish. The artist gives
 
 1- install [node](https://nodejs.org/)
 
-2- run the following command
+2- run the following commands
 ```
-npm install --global yarn
+$ sudo apt update
+
+$ sudo apt install python3-pip
+
+$ npm install --global yarn
+
+```
+3- pull from git to your computer
+```
+$ cd Desktop/
+
+$ mkdir <folder>
+
+$ cd <folder>/
+
+$ git init
+
+$ git pull https://github.com/ehsan-g/dazain.git
+
 ```
 
+3- Install virtual environment
+```
+$ pip3 install virtualenv
+```
 
 ## Installing
  **Start back-end locally**
@@ -32,6 +54,7 @@ npm install --global yarn
 cd Dazain/
 source myenv/bin/activate
 cd backend/
+pip3 install -r requirements.txt
 python3 manage.py runserver
 ```
 **Start front-end locally**
