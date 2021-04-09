@@ -36,8 +36,8 @@ def addOrderItems(request):
         )
 
         # create order items relation with order
-        for x in orderItems:
-            artwork = artwork.objects.get(_id=x[artworkId])
+        for theOrderItem in orderItems:
+            artwork = artwork.objects.get(_id=theOrderItem['artworkId'])
             item = OrderItem.objects.create(
                 artwork,
                 order,
