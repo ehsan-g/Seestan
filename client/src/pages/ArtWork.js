@@ -129,7 +129,7 @@ function Artwork({ match, history }) {
                   {theArt.unit === '0' && ' in '}
                   {theArt.unit === '1' && ' cm '}
                   <span style={{ position: 'absolute', direction: 'ltr' }}>
-                    {theArt.width} x {theArt.height}
+                    `{theArt.width} x ${theArt.height}`
                   </span>
                 </Typography>
                 {theArt.editionNum > 0 && (
@@ -137,6 +137,9 @@ function Artwork({ match, history }) {
                     {theArt.editionNum} از {theArt.editionSize} شماره
                   </Typography>
                 )}
+                <Typography color="#666666" variant="subtitle1">
+                  {theArt.quantity} عدد باقیمانده
+                </Typography>
               </Grid>
               <Divider
                 className={classes.divider}
