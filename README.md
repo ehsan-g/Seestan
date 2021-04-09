@@ -64,9 +64,12 @@ $ yarn install
 $ yarn start
 ```
 
+## Routes
+```http://127.0.0.1:8000/routes/```
+
 ## Running the tests
 
-Explain how to run the automated tests for this system
+...
 
 ### Break down into end to end tests
 

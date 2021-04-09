@@ -9,20 +9,6 @@ from rest_framework import status
 
 
 @api_view(['GET'])
-def getRoutes(request):
-    routes = [
-        'api/artworks/create',
-        'api/artworks/upload',
-        'api/artworks/<id>/favorite',
-        'api/artworks/top',
-        'api/artworks/<id>',
-        'api/artworks/delete/<id>',
-        'api/artworks/<update>/<id>',
-    ]
-    return Response(routes)
-
-
-@api_view(['GET'])
 def getArtWorks(request):
     artworks = Artwork.objects.all()
     serializer = ArtworkSerializer(artworks, many=True)

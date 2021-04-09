@@ -156,7 +156,7 @@ function Artwork({ match, history }) {
                 type="submit"
                 fullWidth
               >
-                {/* {theArt.Order.paymen} */}hi
+                خرید اثر
               </Button>
 
               <Link to="/">
