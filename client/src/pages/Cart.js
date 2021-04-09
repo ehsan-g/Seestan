@@ -16,6 +16,7 @@ import CartShipForm from '../components/cart/CartShipForm';
 import CartReview from '../components/cart/CartPayment';
 import PurchaseCard from '../components/cart/PurchaseCard';
 import { cleanTheCart, fetchCartStatus, headerStatus } from '../actions/index';
+import LoginForm from './auth/LoginForm';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -67,6 +68,16 @@ export default function Cart({ match, history }) {
     // code block
   }
   const classes = useStyles();
+
+  try {
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+    const name = userInfo.firstName;
+  } catch (e) {
+    history.push(`/login`);
+    return <LoginForm />;
+  }
+
   return (
     <Grid
       className={classes.root}
