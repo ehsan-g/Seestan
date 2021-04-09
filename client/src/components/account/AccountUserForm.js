@@ -152,7 +152,7 @@ function AccountUserForm() {
       size2: 12,
       field: (
         <TextField
-          label="پسوزد تکرار"
+          label=" تکرار پسورد"
           name="confirmPassword"
           value={confirmPassword || ''}
           margin="none"

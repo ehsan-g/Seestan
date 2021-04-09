@@ -18,15 +18,29 @@ Aristotle: “Art completes what nature cannot bring to finish. The artist gives
 [Data Base Schema](https://drawsql.app/dazain/diagrams/artworks-ecommerce)
 
 
-1- install [node](https://nodejs.org/)
+### 1- install [Node](https://nodejs.org/), [Python](https://www.python.org/downloads/)
 
-2- run the following commands
+### 2- Environment
+
+- Linux
 ```
 $ sudo apt update
 $ sudo apt install python3-pip
 $ npm install --global yarn
+$ pip3 install virtualenv
 ```
-3- pull from git to your computer
+
+- Windows:
+
+1- Install [pip3](https://stackoverflow.com/questions/41501636/how-to-install-pip3-on-windows)
+
+2- Run these commands:
+```
+$ npm install --global yarn
+$ pip3 install virtualenv
+```
+
+### 4- pull from git to your computer
 ```
 $ cd Desktop/
 $ mkdir <folder>
@@ -35,10 +49,6 @@ $ git init
 $ git pull https://github.com/ehsan-g/dazain.git
 ```
 
-3- Install virtual environment
-```
-$ pip3 install virtualenv
-```
 
 ## Installing
  **Start back-end locally**

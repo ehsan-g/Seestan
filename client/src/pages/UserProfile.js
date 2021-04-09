@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Tab from '@material-ui/core/Tab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { Grid, Typography, Button, Paper } from '@material-ui/core';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Avatar from '@material-ui/core/Avatar';
@@ -52,7 +52,7 @@ export default function FullWidthTabs() {
                 aria-label="lab API tabs example"
                 centered
               >
-                <Tab icon={<PersonPinIcon />} label="تنظیمات" value="1" />
+                <Tab icon={<SettingsIcon />} label="تنظیمات" value="1" />
                 <Tab
                   icon={<FavoriteIcon />}
                   label="مورد علاقه"

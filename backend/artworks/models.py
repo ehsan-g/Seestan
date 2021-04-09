@@ -54,6 +54,7 @@ class Artwork(models.Model):
     aboutWork = models.CharField(max_length=2000, null=True, blank=True)
     provenance = models.CharField(max_length=2000, null=True, blank=True)
     artLocation = models.CharField(max_length=2000, null=True, blank=True)
+    quantity = models.IntegerField(null=False, default=1)
     createdAt = models.DateTimeField(auto_now_add=True)
     # user type: artist, gallery, buyer/seller, admin
 
