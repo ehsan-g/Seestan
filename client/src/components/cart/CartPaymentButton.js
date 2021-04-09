@@ -30,7 +30,7 @@ export default function CartPaymentButton() {
   const handleClick = () => {
     if (options[selectedIndex] === 'پرداخت با شاپرک') {
       dispatch(savePaymentMethod(options[selectedIndex]));
-      history.push(`/cart/placeOrder/`);
+      history.push(`/cart/payment/`);
       dispatch(cartStep('3'));
     }
   };

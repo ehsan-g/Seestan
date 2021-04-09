@@ -16,9 +16,9 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import MilitaryTechOutlinedIcon from '@material-ui/icons/MilitaryTechOutlined';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { fetchOneArtWork, headerStatus } from '../actions';
+import { fetchOneArtWork } from '../actions';
 import Dialog from '../components/Dialog';
-import TheTabe from '../components/TheTab';
+import TheTab from '../components/TheTab';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,8 +86,8 @@ function Artwork({ match, history }) {
           <Grid item xs={10} md>
             <Paper className={classes.paper} elevation={0}>
               <Grid item xs={12}>
-                <Link to="/" variant="subtitle1">
-                  {theArt.owner}
+                <Link to="#" variant="subtitle1">
+                  User Id: {theArt.owner}
                 </Link>
               </Grid>
               <Grid
@@ -104,7 +104,7 @@ function Artwork({ match, history }) {
                 >
                   <AddCircleOutlineIcon style={{ color: 'black' }} />
                 </IconButton>
-                <Link to="/">
+                <Link onClick={() => alert('در حال حاضر راه اندازی نشده است')}>
                   <Typography
                     variant="body2"
                     style={{
@@ -183,7 +183,7 @@ function Artwork({ match, history }) {
         <Grid container justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs={10} md={8}>
             <Paper className={classes.paper} elevation={0}>
-              <TheTabe theArt={theArt} />
+              <TheTab theArt={theArt} />
             </Paper>
           </Grid>
         </Grid>

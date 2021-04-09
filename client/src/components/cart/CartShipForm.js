@@ -77,7 +77,7 @@ function CartShipForm() {
       })
     );
     dispatch(cartStep(step));
-    history.push(`/cart/payment/${artwork._id}?title=${artwork.title}`);
+    history.push(`/cart/placeOrder/${artwork._id}?title=${artwork.title}`);
   };
   const classes = useStyles();
 
@@ -182,6 +182,7 @@ function CartShipForm() {
           name="saveShipping"
           formControlProps={{ margin: 'none' }}
           data={{ label: 'ذخیره اطلاعات', value: true }}
+          disabled
         />
       ),
     },

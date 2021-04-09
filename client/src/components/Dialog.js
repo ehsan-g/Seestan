@@ -20,19 +20,15 @@ export default function AlertDialog() {
 
   return (
     <div>
-      <Link to="/" onClick={handleClickOpen}>
-        Certificate of authenticity
-      </Link>
+      <Link onClick={handleClickOpen}>اصالت اثر</Link>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        style={{ width: '50%' }}
+        style={{ width: '100%' }}
       >
-        <DialogTitle id="alert-dialog-title">
-          Certificate of Authenticity{' '}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">اصالت اثر </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             A certificate of authenticity (COA) is a document from an
