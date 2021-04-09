@@ -18,6 +18,9 @@ function CartPayment() {
   const theCart = useSelector((state) => state.theCart);
   const { shippingAddress } = theCart;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const theArtwork = useSelector((state) => state.theArtwork);
   const { artwork } = theArtwork;
 
@@ -48,13 +51,13 @@ function CartPayment() {
                     <label>نام</label>
                   </Typography>
                   <Typography variant="subtitle1" sx={{ paddingRight: 1 }}>
-                    {shippingAddress.firstName}
+                    {userInfo.firstName}
                   </Typography>
                   <Typography variant="body1">
                     <label>نام خانوادگی</label>
                   </Typography>
                   <Typography variant="subtitle1" sx={{ paddingRight: 1 }}>
-                    {shippingAddress.lastName}
+                    {userInfo.lastName}
                   </Typography>
                   <Typography variant="body1">
                     <label>آدرس</label>

@@ -1,7 +1,7 @@
 # Dazain
 Aristotle: “Art completes what nature cannot bring to finish. The artist gives us knowledge of nature's unrealized ends.”  
 
-### Cart Features
+## Cart Features
 
 * Stock avalibility
 * Is the product already added to card  
@@ -10,17 +10,35 @@ Aristotle: “Art completes what nature cannot bring to finish. The artist gives
 * Coupon & Discount
 * Save the card locally for faster response
 * Save cart in db for price calculation
-* Shipment details before procceding to payment
+* Shipment details before proceeding to payment
 * Create new order when product is purchased
 
 
-### Prerequisites
+## Prerequisites
+[Data Base Schema](https://drawsql.app/dazain/diagrams/artworks-ecommerce)
 
-https://drawsql.app/dazain/diagrams/artworks-ecommerce
+
+1- install [node](https://nodejs.org/)
+
+2- run the following command
+```
+npm install --global yarn
+```
 
 
-### Installing
-...
+## Installing
+ **Start back-end locally**
+```
+source myenv/bin/activate
+cd backend/
+python3 manage.py runserver
+```
+**Start front-end locally**
+```
+cd client/
+yarn install 
+yarn start
+```
 
 ## Running the tests
 
@@ -43,12 +61,6 @@ Django - React - Postgres - Material UI
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning.
-
-## Authors
-
-* **Ehsan Ghasemi** - *Initial work* - [ehsan-g](https://github.com/ehsan-g)
-
-
 
 ## License
 

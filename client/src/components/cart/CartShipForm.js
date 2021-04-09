@@ -8,7 +8,11 @@ import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { saveShippingAddress, cartStep } from '../../actions/index';
+import {
+  saveShippingAddress,
+  cartStep,
+  updateUserProfile,
+} from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,8 +47,11 @@ function CartShipForm() {
   const theArtwork = useSelector((state) => state.theArtwork);
   const { artwork } = theArtwork;
 
-  const [firstName, setFirstName] = useState(shippingAddress.firstName);
-  const [lastName, setLastname] = useState(shippingAddress.lastName);
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const [firstName, setFirstName] = useState(userInfo.firstName);
+  const [lastName, setLastname] = useState(userInfo.lastName);
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState('');
@@ -57,12 +64,16 @@ function CartShipForm() {
     await sleep(300);
     dispatch(
       saveShippingAddress({
-        firstName,
-        lastName,
         address,
         postalCode,
         phone,
         city,
+      })
+    );
+    dispatch(
+      updateUserProfile({
+        firstName,
+        lastName,
       })
     );
     dispatch(cartStep(step));

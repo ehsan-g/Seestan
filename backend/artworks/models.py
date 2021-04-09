@@ -68,18 +68,13 @@ class Favorite(models.Model):
 
 
 class Order(models.Model):
-    PAYMENTMETHOD = (
-        ('1', 'خرید'),
-        ('2', 'تماس با گالری'),
-    )
     _id = models.AutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    paymentMethod = models.CharField(
-        max_length=20, choices=PAYMENTMETHOD, null=False, default="خرید")
+    paymentMethod = models.CharField(max_length=200, null=True, blank=True)
     isPaid = models.BooleanField(default=False)
     paidAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     shippigDesc = models.CharField(max_length=1200, null=True, blank=True)
-    feePrice = models.DecimalField(
+    shippingPrice = models.DecimalField(
         max_digits=7, decimal_places=0, null=True, blank=True)
     taxPrice = models.DecimalField(
         max_digits=7, decimal_places=0, null=True, blank=True)
