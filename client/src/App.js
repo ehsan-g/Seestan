@@ -31,7 +31,7 @@ const App = () => (
             <Route path="/artworks/:workId" component={ArtWork} />
             <Route path="/cart/shippingAddress/:workId?" component={Cart} />
             <Route path="/cart/payment/:workId?" component={Cart} />
-            <Route path="/cart/placeOrder/:workId?" component={Cart} /> */}
+            <Route path="/cart/placeOrder" component={Cart} /> */}
             <Route exact path="/login" component={EnterForm} />
             <Route exact path="/register" component={RegisterForm} />
             <Route exact path="/profile" component={userProfile} />

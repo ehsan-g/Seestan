@@ -10,7 +10,7 @@ import { Grid, Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import ArtCard from '../components/ArtCard';
-import { fetchAllArtWorks, headerStatus } from '../actions';
+import { fetchAllArtWorks, cleanTheCart, headerStatus } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
@@ -39,6 +39,10 @@ function Artworks() {
 
   useEffect(() => {
     dispatch(fetchAllArtWorks());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(cleanTheCart());
   }, [dispatch]);
 
   const classes = useStyles();

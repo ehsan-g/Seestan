@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { savePaymentMethod, cartStep } from '../../actions';
+import { savePaymentMethod, cartStep, createOrder } from '../../actions';
 
 const options = ['پرداخت با شاپرک', 'PayPal Payment', 'Mint NFT'];
 
@@ -30,8 +30,7 @@ export default function CartPaymentButton() {
   const handleClick = () => {
     if (options[selectedIndex] === 'پرداخت با شاپرک') {
       dispatch(savePaymentMethod(options[selectedIndex]));
-      history.push(`/cart/placeOrder/${artwork._id}?title=${artwork.title}`);
-      console.log('khafe');
+      history.push(`/cart/placeOrder/`);
       dispatch(cartStep('3'));
     }
   };

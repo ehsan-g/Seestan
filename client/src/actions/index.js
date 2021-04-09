@@ -31,6 +31,12 @@ import {
   USER_UPDATE_PROFILE_FAIL,
 } from '../constants/userConstants';
 
+import {
+  ORDER_CREATE_REQUEST,
+  ORDER_CREATE_SUCCESS,
+  ORDER_CREATE_FAIL,
+} from '../constants/orderConstants';
+
 export const headerStatus = (status) => async (dispatch) => {
   dispatch({ type: 'HEADER_HIDDEN', payload: status });
 };
@@ -278,4 +284,37 @@ export const savePaymentMethod = (data) => async (dispatch) => {
     payload: data,
   });
   localStorage.setItem('paymentMethod', JSON.stringify(data));
+};
+
+export const createOrder = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_CREATE_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/orders/add/`, order, config);
+
+    dispatch({
+      type: ORDER_CREATE_SUCCESS,
+      payload: data,
+    });
+    // login the user with new data and update local storage
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: ORDER_CREATE_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
 };
