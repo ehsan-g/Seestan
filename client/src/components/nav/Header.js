@@ -7,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Avatar from '@material-ui/core/Avatar';
 import { Button, Typography } from '@material-ui/core';
@@ -18,6 +17,7 @@ import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is requir
 import SearchIcon from '@material-ui/icons/Search';
 import { BrowserRouter as Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import RegisterForm from '../../pages/auth/RegisterForm';
 import EnterForm from '../../pages/auth/LoginForm';
 import history from '../../history';
@@ -172,7 +172,7 @@ export default function Header() {
         aria-expanded={theOpen ? 'true' : undefined}
         onClick={TheHandleClick}
       >
-        <AccountCircle />
+        <PermIdentityIcon />
       </Button>
       <Menu
         id="demo-positioned-menu"
@@ -238,7 +238,7 @@ export default function Header() {
             >
               <MenuItem>ورود / ثبت‌نام</MenuItem>
 
-              <AccountCircle />
+              <PermIdentityIcon />
             </IconButton>
           </div>
         )}
