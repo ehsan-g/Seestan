@@ -40,7 +40,7 @@ $ npm install --global yarn
 $ pip3 install virtualenv
 ```
 
-### 4- pull from git to your computer
+### 3- pull from git to your computer
 ```
 $ cd Desktop/
 $ mkdir <folder>
