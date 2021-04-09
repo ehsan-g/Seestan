@@ -29,6 +29,7 @@ npm install --global yarn
 ## Installing
  **Start back-end locally**
 ```
+cd Dazain/
 source myenv/bin/activate
 cd backend/
 python3 manage.py runserver
