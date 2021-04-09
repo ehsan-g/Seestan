@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from artworks.models import Artwork
 from rest_framework import status
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def addOrderItems(request):
@@ -51,6 +50,6 @@ def addOrderItems(request):
             # update stock
             artwork.quantity -= item.quantity
             artwork.save()
-            
+
     serializer = OrderItemSerializer(order, many=True)
     return Response(serializer.data)
