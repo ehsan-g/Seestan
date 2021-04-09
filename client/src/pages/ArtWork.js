@@ -51,7 +51,7 @@ function Artwork({ match, history }) {
     dispatch(fetchOneArtWork(match.params.workId));
   }, [dispatch, match]);
 
-  const addToCart = (e) => {
+  const addToCart = () => {
     if (userInfo) {
       history.push(
         `/cart/shippingAddress/${match.params.workId}?title=${artwork.title}`

@@ -35,7 +35,7 @@ def addOrderItems(request):
             City=data['shippingAddress']['City'],
             phone=data['shippingAddress']['phone'],
         )
-        
+
         # create order items relation with order
         for x in orderItems:
             artwork = artwork.objects.get(_id=x[artworkId])
@@ -43,8 +43,13 @@ def addOrderItems(request):
                 artwork,
                 order,
                 name=artwork.name,
-                quantity='',
-                price=artwork
+                quantity=artwork.quantity,
+                price=artwork.price,
+                image=artwork.image
             )
-        # update stock
+
+            # update stock
+            artwork.quantity -= item.quantity
+            artwork.save()
+
     return Response('order')
