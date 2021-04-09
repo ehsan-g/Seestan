@@ -23,24 +23,16 @@ Aristotle: “Art completes what nature cannot bring to finish. The artist gives
 2- run the following commands
 ```
 $ sudo apt update
-
 $ sudo apt install python3-pip
-
 $ npm install --global yarn
-
 ```
 3- pull from git to your computer
 ```
 $ cd Desktop/
-
 $ mkdir <folder>
-
 $ cd <folder>/
-
 $ git init
-
 $ git pull https://github.com/ehsan-g/dazain.git
-
 ```
 
 3- Install virtual environment
