@@ -74,7 +74,6 @@ class Order(models.Model):
     paymentMethod = models.CharField(max_length=200, null=True, blank=True)
     isPaid = models.BooleanField(default=False)
     paidAt = models.DateTimeField(auto_now_add=False, null=True, blank=True)
-    shippigDesc = models.CharField(max_length=1200, null=True, blank=True)
     shippingPrice = models.DecimalField(
         max_digits=7, decimal_places=0, null=True, blank=True)
     taxPrice = models.DecimalField(
@@ -111,6 +110,7 @@ class ShippingAddress(models.Model):
         Order, on_delete=models.CASCADE, null=True, blank=True)
     address = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)
+    phone = models.CharField(max_length=200, null=True, blank=True)
     postalcode = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=200, null=True, blank=True)
     shippingPrice = models.DecimalField(
