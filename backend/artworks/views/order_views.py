@@ -42,7 +42,7 @@ def addOrderItems(request):
                 artwork=artwork,
                 order=order,
                 name=artwork.title,
-                quantity=artwork.quantity,
+                quantity=1,
                 price=artwork.price,
                 image=artwork.image
             )
