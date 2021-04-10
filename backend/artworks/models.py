@@ -79,7 +79,7 @@ class Order(models.Model):
     taxPrice = models.DecimalField(
         max_digits=7, decimal_places=0, null=True, blank=True)
     totalPrice = models.DecimalField(
-        max_digits=7, decimal_places=0, null=True, blank=True)
+        max_digits=16, decimal_places=0, null=True, blank=True)
     isDelivered = models.BooleanField(default=False)
     deliveredAt = models.DateTimeField(
         auto_now_add=False, null=True, blank=True)

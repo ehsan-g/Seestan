@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 # when email is changed user name is changed
 def updateUser(sender, instance, **kwargs):
-    print('Sognal Triggered')
     user = instance
     if user.email != '':
         user.username = user.email
