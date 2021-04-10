@@ -48,7 +48,7 @@ def addOrderItems(request):
             )
 
             # update stock
-            artwork.quantity -= item.quantity
+            artwork.quantity -= 1
             artwork.save()
 
         serializer = OrderItemSerializer(item, many=False)
