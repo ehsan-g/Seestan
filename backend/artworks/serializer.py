@@ -4,6 +4,33 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Artwork, Order, OrderItem, ShippingAddress
 
 
+class ArtistSerializer(serializers.ModelSerializer):
+    firstName = serializers.SerializerMethodField(read_only=True)
+    lastName = serializers.SerializerMethodField(read_only=True)
+    _id = serializers.SerializerMethodField(read_only=True)
+    isAdmin = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', '_id','firstName', 'lastName', 'isAdmin']
+
+    # for changing id to _id and keeping the same convention
+    def get__id(self, obj):
+        return obj.id
+
+    def get_isAdmin(self, obj):
+        return obj.is_staff
+
+    def get_username(self, obj):
+        return obj.email
+
+    def get_firstName(self, obj):
+        return obj.first_name
+
+    def get_lastName(self, obj):
+        return obj.last_name
+
+
 class UserSerializer(serializers.ModelSerializer):
     firstName = serializers.SerializerMethodField(read_only=True)
     lastName = serializers.SerializerMethodField(read_only=True)
@@ -88,7 +115,6 @@ class OrderSerializer(serializers.ModelSerializer):
         except:
             address = False
         return address
-
 
     def get_user(self, obj):
         user = obj.user

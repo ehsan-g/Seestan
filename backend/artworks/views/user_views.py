@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from artworks.serializer import ArtworkSerializer, UserSerializer, UserSerializerWithToken
+from artworks.serializer import ArtworkSerializer, UserSerializer, UserSerializerWithToken, ArtistSerializer
 from django.contrib.auth.models import User
 from artworks.models import Artwork
 from rest_framework import status
@@ -91,9 +91,9 @@ def fetchUserProfile(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def fetchUserById(request, id):
+def fetchArtist(request, id):
     user = User.objects.get(id=id)
-    serializer = UserSerializer(user, many=False)
+    serializer = ArtistSerializer(user, many=False)
     return Response(serializer.data)
 
 
