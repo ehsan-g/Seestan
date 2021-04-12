@@ -25,7 +25,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         data = super().validate(attrs)
-
         # data['username'] = self.user.username
         # data['email'] = self.user.email
         #  ...
@@ -88,7 +87,12 @@ def updateUserProfile(request):
 @permission_classes([IsAuthenticated])
 def fetchUserProfile(request):
     user = request.user
-    # user = User.objects.get(id=id)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def fetchUserById(request, id):
+    user = User.objects.get(id=id)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
