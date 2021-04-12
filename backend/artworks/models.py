@@ -3,7 +3,14 @@ from django.contrib.auth.models import User
 import datetime
 from django.utils.translation import gettext as _
 
-# Create your models here.
+
+class Artist(models.Model):
+    _id = models.AutoField(primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.user.first_name
+
 
 class Artwork(models.Model):
     UNITS = (
@@ -26,6 +33,8 @@ class Artwork(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     accountOwner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True)
+    artist = models.ForeignKey(
+        Artist, on_delete=models.CASCADE, null=False)
     # user type: artist, gallery, buyer/seller, admin
     title = models.CharField(max_length=200, null=True, blank=True)
     subtitle = models.CharField(max_length=200, null=True, blank=True)
@@ -87,6 +96,8 @@ class Order(models.Model):
         return str(self.createAt)
 
 # cart
+
+
 class OrderItem(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
