@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -13,6 +14,8 @@ import MenuList from '@material-ui/core/MenuList';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { savePaymentMethod, cartStep, createOrder } from '../../actions';
+import Message from '../Message';
+import Loader from '../Loader';
 
 const options = ['پرداخت با شاپرک', 'PayPal Payment', 'Mint NFT'];
 
@@ -20,20 +23,49 @@ export default function CartPaymentButton() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const theArtwork = useSelector((state) => state.theArtwork);
-  const { artwork } = theArtwork;
+  const theCart = useSelector((state) => state.theCart);
+  const {
+    cartItems,
+    shippingAddress,
+    shippingPrice,
+    taxPrice,
+    totalCartPrice,
+  } = theCart;
+
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, loading, error, success } = orderCreate;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const handleClick = () => {
+  const placeOrder = () => {
     if (options[selectedIndex] === 'پرداخت با شاپرک') {
       dispatch(savePaymentMethod(options[selectedIndex]));
-      history.push(`/cart/payment/`);
-      dispatch(cartStep('3'));
+      dispatch(
+        createOrder({
+          userInfo,
+          cartItems,
+          shippingAddress,
+          shippingPrice,
+          taxPrice,
+          totalCartPrice,
+          paymentMethod: options[selectedIndex],
+        })
+      );
     }
   };
+
+  // go to receipt page if payment successful
+  useEffect(() => {
+    if (success) {
+      history.push(`/cart/order/${order._id}`);
+      dispatch(cartStep('3'));
+    }
+  }, [history, success]);
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -61,7 +93,7 @@ export default function CartPaymentButton() {
         aria-label="split button"
         sx={{ direction: 'ltr' }}
       >
-        <Button onClick={handleClick}>{options[selectedIndex]}</Button>
+        <Button onClick={placeOrder}>{options[selectedIndex]}</Button>
         <Button
           color="primary"
           size="small"
@@ -74,6 +106,14 @@ export default function CartPaymentButton() {
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="outlined" severity="error">
+          {error}
+        </Message>
+      ) : null}
+
       <Popper
         open={open}
         anchorEl={anchorRef.current}

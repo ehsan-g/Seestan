@@ -9,6 +9,7 @@ import {
   ARTWORK_DETAILS_FAIL,
 } from '../constants/artworkConstants';
 import {
+  CART_ADD_REQUEST,
   CART_ADD_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_REMOVE_ITEMS,
@@ -43,7 +44,7 @@ export const headerStatus = (status) => async (dispatch) => {
 
 export const fetchAllArtWorks = () => async (dispatch) => {
   try {
-    const response = await artworksBase.get('/api/artworks');
+    const response = await artworksBase.get('/api/artworks/');
     dispatch({ type: ARTWORK_LIST_REQUEST });
     dispatch({
       type: ARTWORK_LIST_SUCCESS,
@@ -64,7 +65,7 @@ export const fetchAllArtWorks = () => async (dispatch) => {
 
 export const fetchOneArtWork = (workId) => async (dispatch) => {
   try {
-    const response = await artworksBase.get(`/api/artworks/${workId}`);
+    const response = await artworksBase.get(`/api/artworks/${workId}/`);
     await dispatch({ type: ARTWORK_DETAILS_REQUEST });
     dispatch({
       type: ARTWORK_DETAILS_SUCCESS,
@@ -83,8 +84,9 @@ export const fetchOneArtWork = (workId) => async (dispatch) => {
   }
 };
 
-export const fetchCartStatus = (workId) => async (dispatch, getState) => {
+export const addToCart = (workId) => async (dispatch, getState) => {
   const { data } = await artworksBase.get(`/api/artworks/${workId}`);
+  dispatch({ type: CART_ADD_REQUEST });
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
@@ -92,6 +94,7 @@ export const fetchCartStatus = (workId) => async (dispatch, getState) => {
       title: data.title,
       image: data.image,
       price: data.price,
+      quantity: data.quantity,
       editionNum: data.editionNum,
       editionSize: data.editionSize,
     },
@@ -106,6 +109,7 @@ export const fetchCartStatus = (workId) => async (dispatch, getState) => {
 export const cleanTheCart = () => async (dispatch) => {
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
+  localStorage.removeItem('paymentMethod');
   dispatch({
     type: CART_REMOVE_ITEMS,
   });
@@ -205,6 +209,8 @@ export const fetchUserDetails = (id) => async (dispatch, getState) => {
 
     const { data } = await axios.get(`/api/users/${id}/`, config);
 
+    console.log(id);
+
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data,
@@ -300,7 +306,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/orders/add/`, order, config);
+    const { data } = await axios.post(`/api/orders/add`, order, config);
 
     dispatch({
       type: ORDER_CREATE_SUCCESS,

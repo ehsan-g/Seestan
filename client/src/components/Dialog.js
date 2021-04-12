@@ -20,7 +20,9 @@ export default function AlertDialog() {
 
   return (
     <div>
-      <Link onClick={handleClickOpen}>اصالت اثر</Link>
+      <Link to="#" onClick={handleClickOpen}>
+        اصالت اثر
+      </Link>
       <Dialog
         open={open}
         onClose={handleClose}

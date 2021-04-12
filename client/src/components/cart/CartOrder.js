@@ -7,8 +7,9 @@ import { Typography, Button, Grid, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { cartStep } from '../../actions/index';
 import CartPaymentButton from './CartPaymentButton';
+import Message from '../Message';
 
-function CartPayment() {
+function CartOrder() {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -96,4 +97,4 @@ function CartPayment() {
     </div>
   );
 }
-export default CartPayment;
+export default CartOrder;

@@ -1,7 +1,7 @@
 import {
-  ARTWORK_LIST_FAIL,
-  ARTWORK_LIST_SUCCESS,
   ARTWORK_LIST_REQUEST,
+  ARTWORK_LIST_SUCCESS,
+  ARTWORK_LIST_FAIL,
 } from '../constants/artworkConstants';
 
 export default (state = { artworks: [] }, action) => {

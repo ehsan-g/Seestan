@@ -86,9 +86,9 @@ def updateUserProfile(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def fetchUserProfile(request, id):
-    # user = request.user
-    user = User.objects.get(id=id)
+def fetchUserProfile(request):
+    user = request.user
+    # user = User.objects.get(id=id)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 

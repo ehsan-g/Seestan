@@ -5,6 +5,7 @@ import {
   CART_REMOVE_ITEMS,
   CHANGE_CART_STEP,
   CART_SAVE_PAYMENT_METHOD,
+  CART_ADD_REQUEST,
 } from '../constants/cartConstants';
 
 export default (
@@ -12,6 +13,8 @@ export default (
   action
 ) => {
   switch (action.type) {
+    case CART_ADD_REQUEST:
+      return { loadingCart: true, cartItems: [], shippingAddress: {} };
     case CART_ADD_ITEM:
       const item = action.payload;
       const existItem = state.cartItems.find(
@@ -20,6 +23,7 @@ export default (
       if (existItem) {
         return {
           ...state,
+          loadingCart: false,
           cartItems: state.cartItems.map((x) =>
             x.artworkId === existItem.artworkId ? item : x
           ),
@@ -28,6 +32,7 @@ export default (
 
       return {
         ...state,
+        loadingCart: false,
         cartItems: [...state.cartItems, item],
       };
 

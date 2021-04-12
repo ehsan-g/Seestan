@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -14,9 +14,10 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Divider from '@material-ui/core/Divider';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import MilitaryTechOutlinedIcon from '@material-ui/icons/MilitaryTechOutlined';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { fetchOneArtWork } from '../actions';
+import { fetchOneArtWork, addToCart, fetchUserDetails } from '../actions';
 import Dialog from '../components/Dialog';
 import TheTab from '../components/TheTab';
 
@@ -39,20 +40,40 @@ const useStyles = makeStyles((theme) => ({
 
 // match params has the id from the router /:workId
 function Artwork({ match, history }) {
+  const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const theArtwork = useSelector((state) => state.theArtwork);
-  const { error, loading, artwork } = theArtwork;
-
   useEffect(() => {
     dispatch(fetchOneArtWork(match.params.workId));
   }, [dispatch, match]);
 
-  const addToCart = () => {
+  const theArtwork = useSelector((state) => state.theArtwork);
+  const { error, loading, artwork } = theArtwork;
+
+  useEffect(() => {
+    if (artwork.quantity < 1) {
+      setDisabled(true);
+    }
+  }, [artwork]);
+
+  useEffect(() => {
+    if (artwork.accountOwner) {
+      dispatch(fetchUserDetails(artwork.accountOwner));
+    }
+  }, [artwork.accountOwner]);
+
+  const theCart = useSelector((state) => state.theCart);
+  const { loadingCart } = theCart;
+
+  const userDetails = useSelector((state) => state.userDetails);
+  // const { user } = userDetails;
+
+  const onAddToCart = () => {
     if (userInfo) {
+      dispatch(addToCart(match.params.workId));
       history.push(
         `/cart/shippingAddress/${match.params.workId}?title=${artwork.title}`
       );
@@ -60,6 +81,25 @@ function Artwork({ match, history }) {
       history.push(`/login`);
     }
   };
+
+  let classification;
+  switch (artwork.classifications) {
+    case '1':
+      classification = 'Unique';
+      break;
+    case '2':
+      classification = 'Limited edition';
+      break;
+    case '3':
+      classification = 'Open edition';
+      break;
+    case '4':
+      classification = 'Unknown edition';
+      break;
+    default:
+      classification = '1';
+  }
+
   const classes = useStyles();
 
   const renderElement = () => {
@@ -86,9 +126,13 @@ function Artwork({ match, history }) {
           <Grid item xs={10} md>
             <Paper className={classes.paper} elevation={0}>
               <Grid item xs={12}>
-                <Link to="#" variant="subtitle1">
-                  User Id: {theArt.owner}
-                </Link>
+                <Typography>
+                  {!artwork.accountOwner ? (
+                    <CircularProgress />
+                  ) : (
+                    `${artwork.accountOwner}`
+                  )}
+                </Typography>
               </Grid>
               <Grid
                 container
@@ -104,7 +148,10 @@ function Artwork({ match, history }) {
                 >
                   <AddCircleOutlineIcon style={{ color: 'black' }} />
                 </IconButton>
-                <Link onClick={() => alert('در حال حاضر راه اندازی نشده است')}>
+                <Link
+                  to="#"
+                  onClick={() => alert('در حال حاضر راه اندازی نشده است')}
+                >
                   <Typography
                     variant="body2"
                     style={{
@@ -119,6 +166,12 @@ function Artwork({ match, history }) {
                 <Typography color="#666666" variant="body1">
                   {theArt.title}
                 </Typography>
+                <Typography color="#666666" variant="body1">
+                  {theArt.subtitle}
+                </Typography>
+                <Typography color="#666666" variant="body1">
+                  {classification}
+                </Typography>
                 <Typography color="#666666" variant="subtitle1">
                   {theArt.year}
                 </Typography>
@@ -129,7 +182,7 @@ function Artwork({ match, history }) {
                   {theArt.unit === '0' && ' in '}
                   {theArt.unit === '1' && ' cm '}
                   <span style={{ position: 'absolute', direction: 'ltr' }}>
-                    `{theArt.width} x ${theArt.height}`
+                    `{theArt.width} x {theArt.height}`
                   </span>
                 </Typography>
                 {theArt.editionNum > 0 && (
@@ -138,7 +191,9 @@ function Artwork({ match, history }) {
                   </Typography>
                 )}
                 <Typography color="#666666" variant="subtitle1">
-                  {theArt.quantity} عدد باقیمانده
+                  {classification === 'Unique'
+                    ? null
+                    : `${theArt.quantity} عدد باقیمانده`}
                 </Typography>
               </Grid>
               <Divider
@@ -154,12 +209,13 @@ function Artwork({ match, history }) {
                 </span>
               </Typography>
               <Button
-                onClick={(e) => addToCart(e)}
+                onClick={(e) => onAddToCart(e)}
                 variant="contained"
                 type="submit"
                 fullWidth
+                disabled={disabled}
               >
-                خرید اثر
+                {loadingCart ? <CircularProgress /> : ` خرید اثر`}
               </Button>
 
               <Link to="/">

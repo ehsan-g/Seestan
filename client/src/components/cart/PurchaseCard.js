@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import { fetchCartStatus } from '../../actions';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -27,23 +26,25 @@ const useStyles = makeStyles(() => ({
 
 export default function PurchaseCard({ workId }) {
   const classes = useStyles();
-  const theCart = useSelector((state) => state.theCart);
-  const { cartItems } = theCart;
+  const dispatch = useDispatch();
 
   const theArtwork = useSelector((state) => state.theArtwork);
   const { artwork } = theArtwork;
 
+  const theCart = useSelector((state) => state.theCart);
+  const { cartItems } = theCart;
+  console.log(cartItems);
+
   // adding shipping price to the cart - toFixed for decimal
-  theCart.shippingPrice = (artwork.price > 100000 ? 0 : 10000).toFixed(0);
-  theCart.tax = (artwork.price * 0.09).toFixed(0);
-  theCart.total =
-    Number(artwork.price) + Number(theCart.shippingPrice) + Number(theCart.tax);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchCartStatus(workId));
-  }, [dispatch, workId]);
-
+  theCart.shippingPrice = (Number(artwork.price) > 100000 ? 0 : 10000).toFixed(
+    0
+  );
+  theCart.taxPrice = (artwork.price * 0.09).toFixed(0);
+  theCart.totalCartPrice =
+    Number(artwork.price) +
+    Number(theCart.shippingPrice) +
+    Number(theCart.taxPrice);
+  console.log(theCart.shippingPrice);
   return (
     <>
       {!cartItems[0] ? null : (
@@ -127,7 +128,7 @@ export default function PurchaseCard({ workId }) {
                 </Grid>
                 <Grid item xs>
                   <Typography variant="subtitle1" color="textSecondary">
-                    {`${theCart.tax} تومان`}
+                    {`${theCart.taxPrice} تومان`}
                   </Typography>
                 </Grid>
               </Grid>
@@ -139,7 +140,7 @@ export default function PurchaseCard({ workId }) {
                 </Grid>
                 <Grid item xs>
                   <Typography variant="subtitle1" color="textSecondary">
-                    {`${theCart.total} تومان`}
+                    {`${theCart.totalCartPrice} تومان`}
                   </Typography>
                 </Grid>
               </Grid>

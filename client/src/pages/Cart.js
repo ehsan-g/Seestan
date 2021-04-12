@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
@@ -9,14 +9,13 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import { Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import CartShipForm from '../components/cart/CartShipForm';
-import CartReview from '../components/cart/CartPayment';
-import PurchaseCard from '../components/cart/PurchaseCard';
-import { cleanTheCart, fetchCartStatus, headerStatus } from '../actions/index';
+import CartReview from '../components/cart/CartOrder';
+import { headerStatus } from '../actions/index';
 import LoginForm from './auth/LoginForm';
+import PurchaseCard from '../components/cart/PurchaseCard';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,28 +31,20 @@ export default function Cart({ match, history }) {
   const artworkId = match.params.workId;
   const dispatch = useDispatch();
 
-  useEffect(
-    () => () => {
-      dispatch(cleanTheCart());
-    },
-    [dispatch]
-  );
-
   useEffect(() => {
+    console.log('CART');
+
     if (artworkId) {
-      dispatch(fetchCartStatus(artworkId));
       dispatch(headerStatus(false));
       return function cleanup() {
         dispatch(headerStatus(true));
+        // dispatch(cleanTheCart());
       };
     }
-  }, [dispatch, artworkId]);
+  }, []);
 
   let value;
   switch (step) {
-    case undefined:
-      value = '1';
-      break;
     case '1':
       value = '1';
       break;
@@ -71,8 +62,7 @@ export default function Cart({ match, history }) {
 
   try {
     const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-    const name = userInfo.firstName;
+    console.log('Checking authentication');
   } catch (e) {
     history.push(`/login`);
     return <LoginForm />;
@@ -83,10 +73,23 @@ export default function Cart({ match, history }) {
       className={classes.root}
       sx={{ marginTop: 5, marginBottom: 10 }}
       container
-      direction="row-reverse"
+      direction="row"
       justifyContent="center"
       spacing={8}
     >
+      <Grid
+        container
+        direction="column"
+        spacing={8}
+        item
+        xs={12}
+        md={4}
+        sx={{ padding: 0 }}
+      >
+        <Grid item>
+          <PurchaseCard workId={match.params.workId} />
+        </Grid>
+      </Grid>
       <Grid item xs={12} md={8}>
         <Box>
           <TabContext value={value}>
@@ -114,20 +117,6 @@ export default function Cart({ match, history }) {
             </TabPanel>
           </TabContext>
         </Box>
-      </Grid>
-
-      <Grid
-        container
-        direction="column"
-        spacing={8}
-        item
-        xs={12}
-        md={4}
-        sx={{ padding: 0 }}
-      >
-        <Grid item>
-          <PurchaseCard workId={match.params.workId} />
-        </Grid>
       </Grid>
     </Grid>
   );

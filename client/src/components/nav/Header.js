@@ -271,20 +271,13 @@ export default function Header() {
   const [rOpen, setRegOpen] = React.useState(false);
   const [eOpen, setEnterOpen] = React.useState(false);
   const location = useLocation();
-  console.log(location.pathname);
+
   useEffect(() => {
     if (location.pathname.includes('/register')) setEnterOpen(false);
   }, [location]);
 
-  useEffect(() => {
-    if (userInfo) {
-      console.log('hide the log in / register buttons');
-    }
-  }, [userInfo]);
-
   const headerStatus = useSelector((state) => state.headerStatus);
   const { IsHeader } = headerStatus;
-  console.log(IsHeader);
 
   return (
     <div className={classes.grow}>

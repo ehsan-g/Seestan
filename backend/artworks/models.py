@@ -5,7 +5,6 @@ from django.utils.translation import gettext as _
 
 # Create your models here.
 
-
 class Artwork(models.Model):
     UNITS = (
         ('0', 'in'),
@@ -25,7 +24,9 @@ class Artwork(models.Model):
         return str((datetime.date.today().year))
 
     _id = models.AutoField(primary_key=True, editable=False)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    accountOwner = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True)
+    # user type: artist, gallery, buyer/seller, admin
     title = models.CharField(max_length=200, null=True, blank=True)
     subtitle = models.CharField(max_length=200, null=True, blank=True)
     year = models.CharField(
@@ -37,8 +38,6 @@ class Artwork(models.Model):
         max_length=20, choices=CLASSIFICATION, default="")
     # uploads to MEDIA_ROOT in setting
     image = models.ImageField(null=True)
-    # album =
-    # gallery =
     width = models.IntegerField(null=True)
     height = models.IntegerField(null=True)
     depth = models.IntegerField(null=True)
@@ -56,7 +55,6 @@ class Artwork(models.Model):
     artLocation = models.CharField(max_length=2000, null=True, blank=True)
     quantity = models.IntegerField(null=False, default=1)
     createdAt = models.DateTimeField(auto_now_add=True)
-    # user type: artist, gallery, buyer/seller, admin
 
     def __str__(self):
         return self.title

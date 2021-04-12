@@ -10,7 +10,7 @@ import { Grid, Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import ArtCard from '../components/ArtCard';
-import { fetchAllArtWorks, cleanTheCart, headerStatus } from '../actions';
+import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
@@ -34,15 +34,18 @@ const useStyles = makeStyles((theme) => ({
 
 function Artworks() {
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(cleanTheCart());
+    return () => {
+      dispatch(cleanTheCart());
+    };
+  }, []);
+
   const artworksList = useSelector((state) => state.artworks);
   const { error, loading, artworks } = artworksList;
 
   useEffect(() => {
     dispatch(fetchAllArtWorks());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(cleanTheCart());
   }, [dispatch]);
 
   const classes = useStyles();
@@ -66,8 +69,8 @@ function Artworks() {
                   gap={50}
                   style={{ paddingBottom: 80 }}
                 >
-                  {artworks.map((item) => (
-                    <ArtCard key={item._id} artWork={item} />
+                  {artworks.map((artWork) => (
+                    <ArtCard key={artWork._id} artWork={artWork} />
                   ))}
                 </ImageList>
               </Box>
