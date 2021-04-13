@@ -3,9 +3,9 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from artworks.serializer import ArtworkSerializer, UserSerializer, UserSerializerWithToken, ArtistSerializer
+from artworks.serializer import ArtworkSerializer, UserSerializer, UserSerializerWithToken
 from django.contrib.auth.models import User
-from artworks.models import Artwork
+from artworks.models import Artwork, Artist
 from rest_framework import status
 
 # Create your views here.
@@ -90,10 +90,12 @@ def fetchUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def fetchArtist(request, id):
-    user = User.objects.get(id=id)
-    serializer = ArtistSerializer(user, many=False)
+def fetchArtist(request, pk):
+    artist = Artist.objects.get(_id=pk)
+    user = artist.user
+    serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
 

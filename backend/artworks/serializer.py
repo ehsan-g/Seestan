@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Artwork, Order, OrderItem, ShippingAddress
+from .models import Artwork, Order, OrderItem, ShippingAddress, Artist
 
 
 class ArtistSerializer(serializers.ModelSerializer):
@@ -12,7 +12,7 @@ class ArtistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', '_id','firstName', 'lastName', 'isAdmin']
+        fields = ['id', '_id', 'firstName', 'lastName', 'isAdmin']
 
     # for changing id to _id and keeping the same convention
     def get__id(self, obj):
@@ -73,7 +73,6 @@ class UserSerializerWithToken(UserSerializer):
         # our token is going to be an access token not refresh one
         return str(token.access_token)
 
-
 class ArtworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artwork
@@ -103,7 +102,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_orderItems(self, obj):
         # query set
-        items = obj.orderItem_set.all()
+        items = obj.orderitem_set.all()
         serializer = OrderItemSerializer(items, many=True)
         return serializer.data
 
@@ -111,13 +110,13 @@ class OrderSerializer(serializers.ModelSerializer):
         try:
             # one to one relation -> obj.shippingAddress
             address = ShippingAddressSerializer(
-                obj.shippingAddress, many=False)
+                obj.shippingaddress, many=False).data
         except:
             address = False
         return address
 
     def get_user(self, obj):
         user = obj.user
-        serializer = UserSerializer(items, many=False)
+        serializer = UserSerializer(user, many=False)
 
         return serializer.data
