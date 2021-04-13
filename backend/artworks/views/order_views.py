@@ -49,7 +49,8 @@ def addOrderItems(request):
                 )
                 # update stock
                 artwork.quantity -= 1
-                artwork.editionNum += 1
+                if artwork.editionSize > artwork.editionNum:
+                    artwork.editionNum += 1
                 artwork.save()
                 serializer = OrderItemSerializer(item, many=False)
 

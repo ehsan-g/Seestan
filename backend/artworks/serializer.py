@@ -101,7 +101,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_orderItems(self, obj):
-        # query set
+        # reverse query set
         items = obj.orderitem_set.all()
         serializer = OrderItemSerializer(items, many=True)
         return serializer.data
@@ -109,11 +109,11 @@ class OrderSerializer(serializers.ModelSerializer):
     def get_shippingAddress(self, obj):
         try:
             # one to one relation -> obj.shippingAddress
-            address = ShippingAddressSerializer(
+            shippingAddress = ShippingAddressSerializer(
                 obj.shippingaddress, many=False).data
         except:
-            address = False
-        return address
+            shippingAddress = False
+        return shippingAddress
 
     def get_user(self, obj):
         user = obj.user
