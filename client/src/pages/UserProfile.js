@@ -14,7 +14,8 @@ import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
 import ShareLocationIcon from '@material-ui/icons/ShareLocation';
 import AccountUserTab from '../components/account/AccountUserForm';
-import { fetchUserDetails, headerStatus } from '../actions/index';
+import { headerStatus } from '../actions/index';
+import AccountUserOrders from '../components/account/AccountUserOrders';
 
 export default function FullWidthTabs() {
   const dispatch = useDispatch();
@@ -59,7 +60,6 @@ export default function FullWidthTabs() {
                   disabled
                   value="2"
                 />
-                <Tab icon={<ShareLocationIcon />} label="آدرس‌ها" value="3" />
                 <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="4" />
               </TabList>
             </Box>
@@ -69,11 +69,8 @@ export default function FullWidthTabs() {
                 <AccountUserTab />
               </TabPanel>
               <TabPanel value="2">ki</TabPanel>
-              <TabPanel value="3">
-                <div> hi </div>
-              </TabPanel>
               <TabPanel value="4">
-                <div> bye </div>
+                <AccountUserOrders />
               </TabPanel>
             </Box>
           </TabContext>

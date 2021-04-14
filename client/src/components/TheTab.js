@@ -61,7 +61,7 @@ export default function TheTab(props) {
           aria-label="basic tabs example"
         >
           <Tab label="در مورد اثر" {...a11yProps(0)} />
-          <Tab label="پیشنه" {...a11yProps(1)} />
+          <Tab label="پیشینه" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

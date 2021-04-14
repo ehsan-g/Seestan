@@ -43,7 +43,6 @@ function Artworks() {
 
   const artworksList = useSelector((state) => state.artworks);
   const { error, loading, artworks } = artworksList;
-
   useEffect(() => {
     dispatch(fetchAllArtWorks());
   }, [dispatch]);
@@ -69,8 +68,8 @@ function Artworks() {
                   gap={50}
                   style={{ paddingBottom: 80 }}
                 >
-                  {artworks.map((artWork) => (
-                    <ArtCard key={artWork._id} artWork={artWork} />
+                  {artworks.map((artwork) => (
+                    <ArtCard key={artwork._id} artwork={artwork} />
                   ))}
                 </ImageList>
               </Box>
@@ -85,10 +84,10 @@ function Artworks() {
             <Hidden mdUp>
               <Grid>
                 <Paper className={classes.responsive} elevation={0}>
-                  {artworks.map((item) => (
-                    <Grid key={item._id}>
+                  {artworks.map((artwork) => (
+                    <Grid key={artwork._id}>
                       <Paper className={classes.paper}>
-                        <ArtCard artWork={item} />
+                        <ArtCard artwork={artwork} />
                       </Paper>
                     </Grid>
                   ))}

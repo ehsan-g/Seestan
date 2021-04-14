@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import { Grid, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,20 +8,19 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import Link from '@material-ui/core/Link';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserDetails } from '../actions/index';
+// import { fetchArtistDetails } from '../actions/index';
+import axios from 'axios';
 
-export default function ArtCard({ artWork }) {
-  const dispatch = useDispatch();
-  const { accountOwner } = artWork;
-  console.log(artWork);
+export default function ArtCard({ artwork }) {
+  const [theArtist, setTheArtist] = useState('');
+
   useEffect(() => {
-    if (!accountOwner) {
-      dispatch(fetchUserDetails(accountOwner));
-    }
-  }, [dispatch]);
-
-  const userDetails = useSelector((state) => state.userDetails);
-  const { user } = userDetails;
+    const fetchArtistLocally = async () => {
+      const { data } = await axios.get(`/api/users/artist/${artwork.artist}/`);
+      setTheArtist(data);
+    };
+    fetchArtistLocally();
+  }, []);
 
   return (
     <ImageListItem
@@ -33,12 +32,12 @@ export default function ArtCard({ artWork }) {
     >
       <Link
         style={{ position: 'absolute', width: '100%', height: '100%' }}
-        href={`/artworks/${artWork._id}`}
+        href={`/artworks/${artwork._id}`}
       />
       <img
-        srcSet={`${artWork.image}?w=161&fit=crop&auto=format 1x,
-                  ${artWork.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
-        alt={artWork.name}
+        srcSet={`${artwork.image}?w=161&fit=crop&auto=format 1x,
+                  ${artwork.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
+        alt={artwork.name}
         loading="lazy"
       />
 
@@ -49,7 +48,7 @@ export default function ArtCard({ artWork }) {
         actionIcon={
           <IconButton
             onClick={() => alert('در حال حاضر راه اندازی نشده است')}
-            aria-label={`star ${artWork.title}`}
+            aria-label={`star ${artwork.title}`}
           >
             <FavoriteBorder style={{ color: 'white' }} />
           </IconButton>
@@ -61,9 +60,11 @@ export default function ArtCard({ artWork }) {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Typography>{user.firstName}</Typography>
+        <Typography variant="h6">
+          {theArtist.firstName} {theArtist.lastName}
+        </Typography>
         <ImageListItemBar
-          title={artWork.title}
+          title={artwork.title}
           sx={{ width: '100%' }}
           subtitle={
             <span
@@ -73,7 +74,7 @@ export default function ArtCard({ artWork }) {
                 position: 'absolute',
               }}
             >
-              {artWork.price} تومان
+              {artwork.price} تومان
             </span>
           }
           position="below"

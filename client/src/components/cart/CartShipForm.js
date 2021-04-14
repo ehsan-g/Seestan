@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes, Radios, Select } from 'mui-rff';
-import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
+import { Paper, Grid, Button, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -14,7 +13,7 @@ import {
   updateUserProfile,
 } from '../../actions/index';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     '& label.Mui-focused': {
       color: '#b77990',
@@ -56,10 +55,12 @@ function CartShipForm() {
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState(shippingAddress.phone);
+
   // for progress bar
   const [step, setStep] = useState(0);
 
-  const onSubmit = async () => {
+  const onSubmit = async (values) => {
+    console.log(values);
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(300);
     dispatch(
@@ -68,8 +69,11 @@ function CartShipForm() {
         postalCode,
         phone,
         city,
+        saveShipping: values.saveShipping,
+        deliveryMethod: values.deliveryMethod,
       })
     );
+
     dispatch(
       updateUserProfile({
         firstName,
@@ -136,6 +140,7 @@ function CartShipForm() {
           name="city"
           label="انتخاب شهر"
           formControlProps={{ margin: 'none' }}
+          displayEmpty
         >
           <MenuItem default value={city || 'تهران'}>
             تهران
@@ -210,12 +215,11 @@ function CartShipForm() {
 
   return (
     <div style={{ maxWidth: 600 }}>
-      <CssBaseline />
       <Form
         onSubmit={onSubmit}
+        initialValues={{ saveShipping: false, deliveryMethod: 'delivery' }}
         validate={validate}
-        initialValues={{ employed: true, deliveryMethod: 'delivery' }}
-        render={({ handleSubmit, form, submitting, pristine, values }) => (
+        render={({ handleSubmit, submitting, values }) => (
           <form onSubmit={handleSubmit} noValidate className={classes.root}>
             <Paper style={{ padding: 10 }} elevation={0}>
               <Grid container alignItems="flex-start" spacing={2}>

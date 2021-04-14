@@ -13,6 +13,9 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
+  ARTIST_DETAILS_REQUEST,
+  ARTIST_DETAILS_SUCCESS,
+  ARTIST_DETAILS_FAIL,
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -68,6 +71,19 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_UPDATE_PROFILE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const artistDetailsReducer = (state = { artist: {} }, action) => {
+  switch (action.type) {
+    case ARTIST_DETAILS_REQUEST:
+      return { ...state, loading: true };
+    case ARTIST_DETAILS_SUCCESS:
+      return { loading: false, artist: action.payload };
+    case ARTIST_DETAILS_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

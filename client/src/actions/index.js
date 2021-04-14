@@ -30,12 +30,21 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  ARTIST_DETAILS_REQUEST,
+  ARTIST_DETAILS_SUCCESS,
+  ARTIST_DETAILS_FAIL,
 } from '../constants/userConstants';
 
 import {
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
   ORDER_CREATE_FAIL,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL,
+  ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_FAIL,
 } from '../constants/orderConstants';
 
 export const headerStatus = (status) => async (dispatch) => {
@@ -59,7 +68,6 @@ export const fetchAllArtWorks = () => async (dispatch) => {
           ? e.response.data.detail
           : e.message,
     });
-    console.log(e.message);
   }
 };
 
@@ -80,7 +88,6 @@ export const fetchOneArtWork = (workId) => async (dispatch) => {
           ? e.response.data.detail
           : e.message,
     });
-    console.log(e.message);
   }
 };
 
@@ -142,7 +149,6 @@ export const login = (email, password) => async (dispatch) => {
           ? e.response.data.detail
           : e.message,
     });
-    console.log(e.message);
   }
 };
 
@@ -185,6 +191,27 @@ export const register = (firstName, lastName, email, password) => async (
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: USER_REGISTER_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const fetchArtistDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: ARTIST_DETAILS_REQUEST });
+
+    const { data } = await axios.get(`/api/users/artist/${id}/`);
+    dispatch({
+      type: ARTIST_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: ARTIST_DETAILS_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail
@@ -312,11 +339,39 @@ export const createOrder = (order) => async (dispatch, getState) => {
       type: ORDER_CREATE_SUCCESS,
       payload: data,
     });
-    // login the user with new data and update local storage
   } catch (e) {
-    // check for generic and custom message to return using ternary statement
     dispatch({
       type: ORDER_CREATE_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const fetchOrderDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_DETAILS_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get(`/api/orders/${id}`, config);
+
+    dispatch({
+      type: ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ORDER_DETAILS_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail

@@ -17,7 +17,7 @@ import MilitaryTechOutlinedIcon from '@material-ui/icons/MilitaryTechOutlined';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { fetchOneArtWork, addToCart, fetchUserDetails } from '../actions';
+import { fetchOneArtWork, addToCart, fetchArtistDetails } from '../actions';
 import Dialog from '../components/Dialog';
 import TheTab from '../components/TheTab';
 
@@ -60,16 +60,16 @@ function Artwork({ match, history }) {
   }, [artwork]);
 
   useEffect(() => {
-    if (artwork.accountOwner) {
-      dispatch(fetchUserDetails(artwork.accountOwner));
+    if (artwork.artist) {
+      dispatch(fetchArtistDetails(artwork.artist));
     }
-  }, [artwork.accountOwner]);
+  }, [artwork.artist]);
 
   const theCart = useSelector((state) => state.theCart);
   const { loadingCart } = theCart;
 
-  const userDetails = useSelector((state) => state.userDetails);
-  // const { user } = userDetails;
+  const artistDetails = useSelector((state) => state.artistDetails);
+  const { artist } = artistDetails;
 
   const onAddToCart = () => {
     if (userInfo) {
@@ -127,10 +127,10 @@ function Artwork({ match, history }) {
             <Paper className={classes.paper} elevation={0}>
               <Grid item xs={12}>
                 <Typography>
-                  {!artwork.accountOwner ? (
+                  {!artist.firstName ? (
                     <CircularProgress />
                   ) : (
-                    `${artwork.accountOwner}`
+                    `${artist.firstName} ${artist.lastName}`
                   )}
                 </Typography>
               </Grid>
