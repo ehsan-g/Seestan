@@ -33,6 +33,7 @@ def addOrderItems(request):
             postalcode=data['shippingAddress']['postalCode'],
             city=data['shippingAddress']['city'],
             phone=data['shippingAddress']['phone'],
+            deliverymethod=data['shippingAddress']['deliveryMethod'],
         )
 
         # create order items relation with order
@@ -57,17 +58,26 @@ def addOrderItems(request):
         return Response(serializer.data)
 
 
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def getOrderById(request, pk):
+#     user = request.user
+#     try:
+#         order = Order.objects.get(_id=pk)
+#         if user.is_staff or order.user == user:
+#             serializer = OrderSerializer(order, many=False)
+#             return Response(serializer.data)
+#         else:
+#             Response({'Sorry: (, You are not authorized to view this order'},
+#                      status=status.HTTP_400_BAD_REQUEST)
+#     except:
+#         return Response({'The order you are requesting does not exit'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getOrderById(request, pk):
+def getAllUserOrders(request):
     user = request.user
-    try:
-        order = Order.objects.get(_id=pk)
-        if user.is_staff or order.user == user:
-            serializer = OrderSerializer(order, many=False)
-            return Response(serializer.data)
-        else:
-            Response({'Sorry: (, You are not authorized to view this order'},
-                     status=status.HTTP_400_BAD_REQUEST)
-    except:
-        return Response({'The order you are requesting does not exit'}, status=status.HTTP_400_BAD_REQUEST)
+    orders = Order.objects.filter(user=user)
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)

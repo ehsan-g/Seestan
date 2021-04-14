@@ -28,5 +28,3 @@ urlpatterns = [
     path('api/orders/', include('artworks.urls.order_urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-print(urlpatterns)

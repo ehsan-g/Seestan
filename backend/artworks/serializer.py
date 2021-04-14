@@ -73,6 +73,7 @@ class UserSerializerWithToken(UserSerializer):
         # our token is going to be an access token not refresh one
         return str(token.access_token)
 
+
 class ArtworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artwork
@@ -104,6 +105,11 @@ class OrderSerializer(serializers.ModelSerializer):
         # reverse query set
         items = obj.orderitem_set.all()
         serializer = OrderItemSerializer(items, many=True)
+        return serializer.data
+
+    def get_users(self, obj):
+        users = obj.user_set.all()
+        serializer = UserSerializer(users, many=True)
         return serializer.data
 
     def get_shippingAddress(self, obj):
