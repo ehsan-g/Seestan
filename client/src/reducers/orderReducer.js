@@ -5,6 +5,10 @@ import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
+  MY_ORDERS_REQUEST,
+  MY_ORDERS_SUCCESS,
+  MY_ORDERS_FAIL,
+  MY_ORDERS_REMOVE_ALL,
 } from '../constants/orderConstants.js';
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -49,6 +53,33 @@ export const orderDetailsReducer = (
         loading: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const userOrderListReducer = (
+  state = { loading: true, orderItems: [], shippingAddress: {} },
+  action
+) => {
+  switch (action.type) {
+    case MY_ORDERS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case MY_ORDERS_SUCCESS:
+      return {
+        loading: false,
+        myOrders: action.payload,
+      };
+    case MY_ORDERS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case MY_ORDERS_REMOVE_ALL:
+      return {};
     default:
       return state;
   }

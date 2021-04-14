@@ -1,13 +1,15 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
-import { useBlogTextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/blog';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
+import { Typography } from '@material-ui/core';
+import Loader from '../Loader';
+import Message from '../Message';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   root: {
@@ -34,13 +36,11 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: spacing(-3),
-    height: 0,
-    paddingBottom: '48%',
     borderRadius: spacing(2),
     backgroundColor: '#fff',
     position: 'relative',
     [breakpoints.up('md')]: {
-      width: '100%',
+      width: '40%',
       marginLeft: spacing(-3),
       marginTop: 0,
       transform: 'translateX(-8px)',
@@ -52,7 +52,6 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
       left: 0,
       width: '100%',
       height: '100%',
-      backgroundImage: 'linear-gradient(147deg, #fe8a39 0%, #fd3838 74%)',
       borderRadius: spacing(2), // 16
       opacity: 0.5,
     },
@@ -66,30 +65,52 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   },
 }));
 
-export const BlogCardDemo = React.memo(function BlogCard() {
+export function AccountUserOrdersCard({ order }) {
+  console.log(order);
   const styles = useStyles();
-  const {
-    button: buttonStyles,
-    ...contentStyles
-  } = useBlogTextInfoContentStyles();
+
   const shadowStyles = useOverShadowStyles();
   return (
     <Card className={cx(styles.root, shadowStyles.root)}>
-      <CardMedia
+      <img
+        src={`images/${order.orderItems[0].image}`}
+        alt={order.orderItems[0].name}
+        loading="lazy"
         className={styles.media}
-        image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Git_icon.svg/2000px-Git_icon.svg.png"
       />
       <CardContent>
-        <TextInfoContent
-          classes={contentStyles}
-          overline="28 MAR 2019"
-          heading="What is Git ?"
-          body="Git is a distributed version control system. Every dev has a working copy of the code and..."
-        />
-        <Button className={buttonStyles}>Read more</Button>
+        <TextInfoContent overline={order.orderItems[0].name} />
+        <Typography variant="subtitle1">{`آدرس: ${order.shippingAddress.address}`}</Typography>
+        <Typography variant="subtitle1">{`کد‌پستی: ${order.shippingAddress.postalcode}`}</Typography>
+        <Typography variant="subtitle1">{` تلفن: ${order.shippingAddress.phone}`}</Typography>
+        <Typography variant="subtitle1">{`ارسال: ${order.shippingAddress.deliverymethod}`}</Typography>
+        <Typography variant="subtitle1">{`حمل و نقل: ${order.shippingPrice}`}</Typography>
+        <Typography variant="subtitle1">{`مالیات: ${order.taxPrice}`}</Typography>
+        <Typography variant="subtitle1">{`جمع: ${order.totalPrice}`}</Typography>
+        <Typography variant="subtitle1">{`طریفه پرداخت: ${order.paymentMethod}`}</Typography>
+        {order.isPaid ? (
+          <>
+            <Message variant="outlined" severity="success" sx={{ margin: 0 }}>
+              پرداخت شده
+            </Message>
+            {order.isDelivered ? (
+              <Message variant="outlined" severity="success">
+                تحویل داده شد
+              </Message>
+            ) : (
+              <Message variant="outlined" severity="error">
+                منتظر ارسال
+              </Message>
+            )}
+          </>
+        ) : (
+          <Message variant="outlined" severity="error">
+            پرداخت نشده
+          </Message>
+        )}
       </CardContent>
     </Card>
   );
-});
+}
 
-export default BlogCardDemo;
+export default AccountUserOrdersCard;

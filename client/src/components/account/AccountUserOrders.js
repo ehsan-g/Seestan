@@ -1,71 +1,81 @@
-import React, { useEffect } from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from 'react';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOrderDetails } from '../../actions/index';
+import { fetchUserOrderList, cleanMyOrders } from '../../actions/index';
 import Loader from '../Loader';
+import Message from '../Message';
+import { AccountUserOrdersCard } from './AccountUserOrdersCard';
 
 export default function AccountUserOrders() {
-  const orderId = 1;
   const dispatch = useDispatch();
-  const orderDetails = useSelector((state) => state.orderDetails);
-  const { orderById, shippingAddress, loading } = orderDetails;
 
-  const [expanded, setExpanded] = React.useState(false);
+  useEffect(() => {
+    dispatch(cleanMyOrders());
+    dispatch(fetchUserOrderList());
+    return () => {
+      dispatch(cleanMyOrders());
+    };
+  }, [dispatch]);
+
+  const allOrders = useSelector((state) => state.allOrders);
+  const { myOrders, loading, error } = allOrders;
+
+  const [expanded, setExpanded] = useState(false);
 
   const handleChange = (order) => (event, isExpanded) => {
-    setExpanded(isExpanded ? `panel${order.key}` : false);
-    console.log('panel');
-
-    dispatch(fetchOrderDetails(order.key));
+    setExpanded(isExpanded ? `panel${order._id}` : false);
+    dispatch(fetchUserOrderList());
   };
 
-  const userOrders = [{ key: 9 }, { key: 2 }, { key: 3 }, { key: 4 }];
-  return (
-    <div>
-      {userOrders.map((order) => (
-        <div key={order.key}>
-          <Accordion
-            expanded={expanded === `panel${order.key}`}
-            onChange={handleChange(order)}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel4bh-content"
-              id="panel4bh-header"
-            >
-              <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                {`order${order.key}`}
-              </Typography>
-              <Typography>General</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {!orderById ? (
-                <Loader />
-              ) : (
-                <>
-                  <Typography>{`${orderById._id}`}</Typography>
-                  <Typography>{`${orderById.orderItems[0].name}`}</Typography>
-                  <Typography>{`${orderById.paymentMethod}`}</Typography>
-                  <Typography>{`${orderById.shippingAddress.address}`}</Typography>
-                  <Typography>{`${orderById.shippingAddress.postalcode}`}</Typography>
-                  <Typography>{`${orderById.shippingAddress.phone}`}</Typography>
-                  <Typography>{`${orderById.shippingAddress.deliveryMethod}`}</Typography>
-                  <img
-                    src={`images/${orderById.orderItems[0].image}`}
-                    alt={orderById.orderItems[0].name}
-                    loading="lazy"
-                    style={{ width: '20%' }}
-                  />
-                </>
-              )}
-            </AccordionDetails>
-          </Accordion>
+  const renderElement = () => (
+    <>
+      {!myOrders || !myOrders.map ? (
+        <Loader />
+      ) : (
+        <div>
+          {myOrders.map((order) => (
+            <div key={order._id}>
+              <Accordion
+                expanded={expanded === `panel${order._id}`}
+                onChange={handleChange(order)}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel-bh-content"
+                  id="panel-bh-header"
+                >
+                  <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                    {`${order.createAt}`}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <AccountUserOrdersCard order={order} />
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
+  );
+  return (
+    <>
+      {myOrders === undefined || !myOrders[0] ? (
+        <Message variant="outlined" severity="info">
+          شما هنوز خریدی انچام ندادید
+        </Message>
+      ) : error ? (
+        <Message variant="outlined" severity="error">
+          {error}
+        </Message>
+      ) : (
+        renderElement()
+      )}
+    </>
   );
 }

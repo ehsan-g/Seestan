@@ -39,12 +39,10 @@ import {
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
   ORDER_CREATE_FAIL,
-  ORDER_LIST_REQUEST,
-  ORDER_LIST_SUCCESS,
-  ORDER_LIST_FAIL,
-  ORDER_DETAILS_REQUEST,
-  ORDER_DETAILS_SUCCESS,
-  ORDER_DETAILS_FAIL,
+  MY_ORDERS_REQUEST,
+  MY_ORDERS_SUCCESS,
+  MY_ORDERS_FAIL,
+  MY_ORDERS_REMOVE_ALL,
 } from '../constants/orderConstants';
 
 export const headerStatus = (status) => async (dispatch) => {
@@ -350,9 +348,39 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-export const fetchOrderDetails = (id) => async (dispatch, getState) => {
+// export const fetchOrderDetails = (id) => async (dispatch, getState) => {
+//   try {
+//     dispatch({ type: ORDER_DETAILS_REQUEST });
+//     const {
+//       userLogin: { userInfo },
+//     } = getState();
+
+//     const config = {
+//       headers: {
+//         'Content-type': 'application/json',
+//         Authorization: `Bearer ${userInfo.token}`,
+//       },
+//     };
+//     const { data } = await axios.get(`/api/orders/${id}`, config);
+
+//     dispatch({
+//       type: ORDER_DETAILS_SUCCESS,
+//       payload: data,
+//     });
+//   } catch (e) {
+//     dispatch({
+//       type: ORDER_DETAILS_FAIL,
+//       payload:
+//         e.response && e.response.data.detail
+//           ? e.response.data.detail
+//           : e.message,
+//     });
+//   }
+// };
+
+export const fetchUserOrderList = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: ORDER_DETAILS_REQUEST });
+    dispatch({ type: MY_ORDERS_REQUEST });
     const {
       userLogin: { userInfo },
     } = getState();
@@ -363,19 +391,28 @@ export const fetchOrderDetails = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(`/api/orders/${id}`, config);
+    const { data } = await axios.get(`/api/orders/all/myOrders`, config);
 
     dispatch({
-      type: ORDER_DETAILS_SUCCESS,
+      type: MY_ORDERS_SUCCESS,
       payload: data,
     });
+
+    localStorage.setItem('myOrders', JSON.stringify(data));
   } catch (e) {
     dispatch({
-      type: ORDER_DETAILS_FAIL,
+      type: MY_ORDERS_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail
           : e.message,
     });
   }
+};
+
+export const cleanMyOrders = () => async (dispatch) => {
+  localStorage.removeItem('myOrders');
+  dispatch({
+    type: MY_ORDERS_REMOVE_ALL,
+  });
 };

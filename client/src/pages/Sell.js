@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '80%',
     margin: 100,
+    minHeight: '100vh',
   },
   buttonWrapper: {
     display: 'flex',
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Confirm the Artist', 'Describe the work', 'Upload photo'];
+const steps = ['هنرمند را انتخاب کنید', 'توضیحات', 'غکس'];
 
 export default function Sell() {
   const classes = useStyles();
@@ -78,9 +79,6 @@ export default function Sell() {
 
   return (
     <div className={classes.root}>
-      <Grid item xs={6} md={8}>
-        Logo
-      </Grid>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -107,7 +105,7 @@ export default function Sell() {
           </Typography>
           <div className={classes.buttonWrapper}>
             <div className={classes.spacer} />
-            <Button onClick={handleReset}>Reset</Button>
+            <Button onClick={handleReset}>شروع مجدد</Button>
           </div>
         </>
       ) : (
@@ -116,27 +114,27 @@ export default function Sell() {
             Form {activeStep + 1}
           </Typography>
           <div className={classes.buttonWrapper}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              className={classes.button}
-            >
-              Back
-            </Button>
-            <div className={classes.spacer} />
             {isStepOptional(activeStep) && (
               <Button
                 color="secondary"
                 onClick={handleSkip}
                 className={classes.button}
               >
-                Skip
+                رد کردن
               </Button>
             )}
 
             <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+              {activeStep === steps.length - 1 ? 'تمام' : 'بعدی'}
+            </Button>
+            <div className={classes.spacer} />
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.button}
+            >
+              برگشت
             </Button>
           </div>
         </>
