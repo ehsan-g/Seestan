@@ -43,6 +43,13 @@ import {
   MY_ORDERS_SUCCESS,
   MY_ORDERS_FAIL,
   MY_ORDERS_REMOVE_ALL,
+  ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_RESET,
 } from '../constants/orderConstants';
 
 export const headerStatus = (status) => async (dispatch) => {
@@ -348,35 +355,35 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-// export const fetchOrderDetails = (id) => async (dispatch, getState) => {
-//   try {
-//     dispatch({ type: ORDER_DETAILS_REQUEST });
-//     const {
-//       userLogin: { userInfo },
-//     } = getState();
+export const fetchOrderDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_DETAILS_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-//     const config = {
-//       headers: {
-//         'Content-type': 'application/json',
-//         Authorization: `Bearer ${userInfo.token}`,
-//       },
-//     };
-//     const { data } = await axios.get(`/api/orders/${id}`, config);
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get(`/api/orders/${id}`, config);
 
-//     dispatch({
-//       type: ORDER_DETAILS_SUCCESS,
-//       payload: data,
-//     });
-//   } catch (e) {
-//     dispatch({
-//       type: ORDER_DETAILS_FAIL,
-//       payload:
-//         e.response && e.response.data.detail
-//           ? e.response.data.detail
-//           : e.message,
-//     });
-//   }
-// };
+    dispatch({
+      type: ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ORDER_DETAILS_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
 
 export const fetchUserOrderList = () => async (dispatch, getState) => {
   try {
@@ -415,4 +422,38 @@ export const cleanMyOrders = () => async (dispatch) => {
   dispatch({
     type: MY_ORDERS_REMOVE_ALL,
   });
+};
+
+export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_PAY_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(
+      `/api/orders/${id}/pay`,
+      paymentResult,
+      config
+    );
+
+    dispatch({
+      type: ORDER_PAY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ORDER_PAY_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
 };

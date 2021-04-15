@@ -10,12 +10,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Paper } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router';
+import { CartReceipt } from '../components/cart/CartReceipt';
 import CartShipForm from '../components/cart/CartShipForm';
-import CartReview from '../components/cart/CartOrder';
+import CartReview from '../components/cart/CartPlaceOrder';
+import PlaceOrder from '../components/cart/CartPayOrder';
 import { headerStatus } from '../actions/index';
 import LoginForm from './auth/LoginForm';
 import PurchaseCard from '../components/cart/PurchaseCard';
+import Loader from '../components/Loader';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,16 +27,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Cart({ match, history }) {
+export default function Cart() {
+  const history = useHistory();
+  const { workId, orderId } = useParams();
   const theCart = useSelector((state) => state.theCart);
   const { step } = theCart;
 
-  const artworkId = match.params.workId;
+  const artworkId = workId;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('CART');
-
     if (artworkId) {
       dispatch(headerStatus(false));
       return function cleanup() {
@@ -43,6 +46,12 @@ export default function Cart({ match, history }) {
     }
   }, []);
 
+  // if the direct order link is entered
+  if (orderId) {
+    theCart.step = '3';
+  }
+  console.log(`work ID : ${workId}`);
+  console.log(`order ID: ${orderId}`);
   let value;
   switch (step) {
     case '1':
@@ -54,6 +63,9 @@ export default function Cart({ match, history }) {
     case '3':
       value = '3';
       break;
+    case '4':
+      value = '4';
+      break;
     default:
       value = '1';
     // code block
@@ -62,10 +74,12 @@ export default function Cart({ match, history }) {
 
   try {
     const userLogin = useSelector((state) => state.userLogin);
-    console.log('Checking authentication');
-  } catch (e) {
-    history.push(`/login`);
-    return <LoginForm />;
+    if (!userLogin) {
+      history.push(`/login`);
+      return <LoginForm />;
+    }
+  } catch (error) {
+    alert(error);
   }
 
   return (
@@ -87,7 +101,7 @@ export default function Cart({ match, history }) {
         sx={{ padding: 0 }}
       >
         <Grid item>
-          <PurchaseCard workId={match.params.workId} />
+          {!theCart.cartItems ? <Loader /> : <PurchaseCard workId={workId} />}
         </Grid>
       </Grid>
       <Grid item xs={12} md={8}>
@@ -100,7 +114,8 @@ export default function Cart({ match, history }) {
               >
                 <Tab disabled label="آدرس" value="1" />
                 <Tab disabled label="تایید" value="2" />
-                <Tab disabled label="رسید" value="3" />
+                <Tab disabled label="پرداخت" value="3" />
+                <Tab disabled label="رسید" value="4" />
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -110,10 +125,10 @@ export default function Cart({ match, history }) {
               <CartReview />
             </TabPanel>
             <TabPanel value="3">
-              <Paper sx={{ height: 150 }} square elevation={2}>
-                پرداخت انجام شد
-                <Link to="/">برگشت</Link>
-              </Paper>
+              <PlaceOrder />
+            </TabPanel>
+            <TabPanel value="4">
+              <CartReceipt />
             </TabPanel>
           </TabContext>
         </Box>

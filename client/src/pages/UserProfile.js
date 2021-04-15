@@ -7,12 +7,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { Grid, Typography, Button, Paper } from '@material-ui/core';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Avatar from '@material-ui/core/Avatar';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
-import ShareLocationIcon from '@material-ui/icons/ShareLocation';
 import AccountUserTab from '../components/account/AccountUserForm';
 import { headerStatus } from '../actions/index';
 import AccountUserOrders from '../components/account/AccountUserOrders';
@@ -60,7 +58,7 @@ export default function FullWidthTabs() {
                   disabled
                   value="2"
                 />
-                <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="4" />
+                <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="3" />
               </TabList>
             </Box>
 
@@ -69,7 +67,7 @@ export default function FullWidthTabs() {
                 <AccountUserTab />
               </TabPanel>
               <TabPanel value="2">ki</TabPanel>
-              <TabPanel value="4">
+              <TabPanel value="3">
                 <AccountUserOrders />
               </TabPanel>
             </Box>

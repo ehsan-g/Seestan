@@ -6,6 +6,7 @@ from artworks.serializer import ArtworkSerializer, OrderItemSerializer, OrderSer
 from django.contrib.auth.models import User
 from artworks.models import Artwork, Order, ShippingAddress, OrderItem
 from rest_framework import status
+from datetime import datetime
 
 
 @api_view(['POST'])
@@ -58,20 +59,20 @@ def addOrderItems(request):
         return Response(serializer.data)
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def getOrderById(request, pk):
-#     user = request.user
-#     try:
-#         order = Order.objects.get(_id=pk)
-#         if user.is_staff or order.user == user:
-#             serializer = OrderSerializer(order, many=False)
-#             return Response(serializer.data)
-#         else:
-#             Response({'Sorry: (, You are not authorized to view this order'},
-#                      status=status.HTTP_400_BAD_REQUEST)
-#     except:
-#         return Response({'The order you are requesting does not exit'}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrderById(request, pk):
+    user = request.user
+    try:
+        order = Order.objects.get(_id=pk)
+        if user.is_staff or order.user == user:
+            serializer = OrderSerializer(order, many=False)
+            return Response(serializer.data)
+        else:
+            Response({'Sorry: (, You are not authorized to view this order'},
+                     status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'The order you are requesting does not exit'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -81,3 +82,14 @@ def getAllUserOrders(request):
     orders = Order.objects.filter(user=user)
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request, pk):
+    order = Order.object.get(_id=pk)
+
+    order.isPaid = True
+    order, paidAt = datetime.now()
+    order.save()
+    return Response('order was paid')

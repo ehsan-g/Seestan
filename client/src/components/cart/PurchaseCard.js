@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import { useParams } from 'react-router';
+import { fetchOneArtWork, addToCart, headerStatus } from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -24,7 +26,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function PurchaseCard() {
-  const classes = useStyles();
+  const { workId, orderId } = useParams();
+  const dispatch = useDispatch();
 
   const theArtwork = useSelector((state) => state.theArtwork);
   const { artwork } = theArtwork;
@@ -32,7 +35,29 @@ export default function PurchaseCard() {
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
 
+  const orderDetails = useSelector((state) => state.orderDetails);
+  const { orderById } = orderDetails;
+
+  useEffect(() => {
+    dispatch(headerStatus(false));
+  }, []);
+
   // adding shipping price to the cart - toFixed for decimal
+  useEffect(() => {
+    if (workId && (!artwork.price || !theCart.totalCartPrice)) {
+      dispatch(fetchOneArtWork(workId));
+      console.log('nowhere');
+    } else if (!workId && cartItems[0]) {
+      dispatch(fetchOneArtWork(cartItems[0].artworkId));
+      console.log('there');
+    } else if (orderById && orderById.orderItems[0]) {
+      console.log('here');
+      dispatch(fetchOneArtWork(orderById.orderItems[0].artwork));
+      dispatch(addToCart(orderById.orderItems[0].artwork));
+    }
+  }, []);
+
+  console.log(orderById);
   theCart.shippingPrice = (Number(artwork.price) > 100000 ? 0 : 10000).toFixed(
     0
   );
@@ -41,6 +66,8 @@ export default function PurchaseCard() {
     Number(artwork.price) +
     Number(theCart.shippingPrice) +
     Number(theCart.taxPrice);
+  const classes = useStyles();
+
   return (
     <>
       {!cartItems[0] ? null : (

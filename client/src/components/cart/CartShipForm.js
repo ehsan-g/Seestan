@@ -6,7 +6,7 @@ import { TextField, Checkboxes, Radios, Select } from 'mui-rff';
 import { Paper, Grid, Button, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   saveShippingAddress,
   cartStep,
@@ -217,7 +217,7 @@ function CartShipForm() {
     <div style={{ maxWidth: 600 }}>
       <Form
         onSubmit={onSubmit}
-        initialValues={{ saveShipping: false, deliveryMethod: 'delivery' }}
+        initialValues={{ saveShipping: true, deliveryMethod: 'delivery' }}
         validate={validate}
         render={({ handleSubmit, submitting, values }) => (
           <form onSubmit={handleSubmit} noValidate className={classes.root}>

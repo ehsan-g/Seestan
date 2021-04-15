@@ -10,9 +10,10 @@ import {
   artistDetailsReducer,
 } from './userReducer';
 import {
-  orderDetailsReducer,
   orderCreateReducer,
   userOrderListReducer,
+  orderDetailsReducer,
+  orderPayReducer,
 } from './orderReducer';
 import headerReducer from './headerReducer';
 
@@ -29,4 +30,5 @@ export default combineReducers({
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   allOrders: userOrderListReducer,
+  orderPay: orderPayReducer,
 });

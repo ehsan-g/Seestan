@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -12,59 +12,36 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { savePaymentMethod, cartStep, createOrder } from '../../actions';
+import {
+  savePaymentMethod,
+  cartStep,
+  createOrder,
+  payOrder,
+} from '../../actions';
 import Message from '../Message';
 import Loader from '../Loader';
 
 const options = ['پرداخت با شاپرک', 'PayPal Payment', 'Mint NFT'];
 
-export default function CartPaymentButton() {
+export default function PayOrderButton() {
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const theCart = useSelector((state) => state.theCart);
-  const {
-    cartItems,
-    shippingAddress,
-    shippingPrice,
-    taxPrice,
-    totalCartPrice,
-  } = theCart;
-
-  const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, loading, error, success } = orderCreate;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, loading, error, success } = orderCreate;
 
-  const placeOrder = () => {
-    if (options[selectedIndex] === 'پرداخت با شاپرک') {
-      dispatch(savePaymentMethod(options[selectedIndex]));
-      dispatch(
-        createOrder({
-          userInfo,
-          cartItems,
-          shippingAddress,
-          shippingPrice,
-          taxPrice,
-          totalCartPrice,
-          paymentMethod: options[selectedIndex],
-        })
-      );
-    }
-  };
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  // go to receipt page if payment successful
-  useEffect(() => {
-    if (success) {
-      history.push(`/cart/order/${order._id}`);
-      dispatch(cartStep('3'));
-    }
-  }, [history, success]);
+  if (options[selectedIndex] === 'پرداخت با شاپرک') {
+    //
+  } else if (order && options[selectedIndex] === 'PayPal Payment') {
+    const amount = order.totalCartPrice;
+  }
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -92,7 +69,9 @@ export default function CartPaymentButton() {
         aria-label="split button"
         sx={{ direction: 'ltr' }}
       >
-        <Button onClick={placeOrder}>{options[selectedIndex]}</Button>
+        <Button onSuccess={successPaymentHandler} onClick={}>
+          {options[selectedIndex]}
+        </Button>
         <Button
           color="primary"
           size="small"
@@ -105,6 +84,7 @@ export default function CartPaymentButton() {
           <ArrowDropDownIcon />
         </Button>
       </ButtonGroup>
+
       {loading ? (
         <Loader />
       ) : error ? (
@@ -112,7 +92,6 @@ export default function CartPaymentButton() {
           {error}
         </Message>
       ) : null}
-
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -134,7 +113,7 @@ export default function CartPaymentButton() {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      disabled={index === 1 || index === 2}
+                      disabled={index === 2}
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
                     >
