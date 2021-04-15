@@ -1,29 +1,21 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { Form } from 'react-final-form';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Button, Grid, Paper } from '@material-ui/core';
-import { useHistory, useParams } from 'react-router-dom';
+import { Button, Grid } from '@material-ui/core';
+import { useParams } from 'react-router-dom';
 import SelectInput from '@material-ui/core/Select/SelectInput';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { cartStep, payOrder, fetchOrderDetails } from '../../actions/index';
 import Loader from '../Loader';
+import { ORDER_PAY_RESET } from '../../constants/orderConstants';
 
 function CartPayOrder() {
   const { orderId } = useParams();
-
-  const history = useHistory();
   const dispatch = useDispatch();
 
   // our PayPal sdk ready or no
   const [sdkReady, setSdkReady] = useState(false);
-
-  // for progress bar
-  const [step, setStep] = useState(0);
-
-  const theArtwork = useSelector((state) => state.theArtwork);
-  const { artwork } = theArtwork;
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { orderById } = orderDetails;
@@ -47,9 +39,12 @@ function CartPayOrder() {
 
   // go to receipt page if payment successful
   useEffect(() => {
-    if (!orderById || successPay || orderById._id !== Number(orderId)) {
+    if (successPay) {
       dispatch(fetchOrderDetails(orderId));
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(cartStep('4'));
+    } else if (!orderById || orderById._id !== Number(orderId)) {
+      dispatch(fetchOrderDetails(orderId));
     } else if (orderById && !orderById.isPaid) {
       if (!window.paypal) {
         addPayPalScript();
@@ -63,24 +58,6 @@ function CartPayOrder() {
     dispatch(payOrder(orderId, paymentResult));
   };
 
-  const onSubmit = async () => {
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await sleep(300);
-    dispatch(cartStep(step));
-  };
-
-  // const deleteOrder = async () => {
-  //   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  //   await sleep(300);
-  //   dispatch(cartStep('3'));
-  // };
-
-  const onEdit = async () => {
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await sleep(300);
-    dispatch(cartStep(step));
-    history.push(`/cart/shippingAddress/${artwork._id}?title=${artwork.title}`);
-  };
   return (
     <div>
       <Grid container direction="row-reverse" spacing={2}>
@@ -95,12 +72,26 @@ function CartPayOrder() {
             orderById.paymentMethod === 'PayPal Payment' ? (
               <Grid>
                 {loadingPay && <Loader />}
-                {!sdkReady ? (
+                {!sdkReady || !orderById.totalPrice ? (
                   <Loader />
                 ) : (
                   <PayPalButton
-                    amount={orderById.totalCartPrice}
-                    onSuccess={successPaymentHandler}
+                    amount={orderById.totalPrice.toString()}
+                    // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                    onSuccess={(details, data) => {
+                      successPaymentHandler();
+                      alert(
+                        `Transaction completed by ${details.payer.name.given_name}`
+                      );
+
+                      // // OPTIONAL: Call your server to save the transaction
+                      // return fetch('/paypal-transaction-complete', {
+                      //   method: 'post',
+                      //   body: JSON.stringify({
+                      //     orderID: data.orderID,
+                      //   }),
+                      // });
+                    }}
                   />
                 )}
               </Grid>

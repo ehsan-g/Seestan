@@ -87,9 +87,9 @@ def getAllUserOrders(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateOrderToPaid(request, pk):
-    order = Order.object.get(_id=pk)
+    order = Order.objects.get(_id=pk)
 
     order.isPaid = True
-    order, paidAt = datetime.now()
+    order.paidAt = datetime.now()
     order.save()
     return Response('order was paid')

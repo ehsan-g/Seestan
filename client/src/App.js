@@ -23,19 +23,19 @@ const App = () => (
       {/*  use Toastontainer here to access it in the whole project */}
       <ToastContainer />
       <Container maxWidth="lg">
-        <React.StrictMode>
-          <Switch>
-            <Route exact path="/" component={ArtWorks} />
-            <Route exact path="/sell" component={Sell} />
-            <Route path="/artworks/:workId" component={ArtWork} />
-            <Route path="/cart/shippingAddress/:workId?" component={Cart} />
-            <Route path="/cart/placeOrder/:workId?" component={Cart} />
-            <Route path="/orders/:orderId" component={Cart} />
-            <Route exact path="/login" component={EnterForm} />
-            <Route exact path="/register" component={RegisterForm} />
-            <Route exact path="/profile" component={userProfile} />
-          </Switch>
-        </React.StrictMode>
+        {/* <React.StrictMode> */}
+        <Switch>
+          <Route exact path="/" component={ArtWorks} />
+          <Route exact path="/sell" component={Sell} />
+          <Route path="/artworks/:workId" component={ArtWork} />
+          <Route path="/cart/shippingAddress/:workId?" component={Cart} />
+          <Route path="/cart/placeOrder/:workId?" component={Cart} />
+          <Route path="/orders/:orderId" component={Cart} />
+          <Route exact path="/login" component={EnterForm} />
+          <Route exact path="/register" component={RegisterForm} />
+          <Route exact path="/profile" component={userProfile} />
+        </Switch>
+        {/* </React.StrictMode> */}
       </Container>
       <Divider style={{ maxWidth: '70%', margin: 'auto' }} variant="middle" />
       <Footer />

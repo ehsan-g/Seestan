@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { cartStep } from '../../actions/index';
 import PlaceOrderButton from './PlaceOrderButton';
 import Message from '../Message';
-import { ORDER_PAY_RESET } from '../../constants/orderConstants';
 
 function CartPlaceOrder() {
   const history = useHistory();
@@ -36,7 +35,6 @@ function CartPlaceOrder() {
   // go to receipt page if payment successful
   useEffect(() => {
     if (success) {
-      dispatch({ type: ORDER_PAY_RESET });
       history.push(`/orders/${order._id}`);
       dispatch(cartStep('3'));
     }
