@@ -13,6 +13,7 @@ import Cart from './pages/Cart';
 import Sell from './pages/Sell';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
+import UserList from './pages/adminPanel/UserList';
 
 // Create an enhanced history that syncs navigation events with the store
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route exact path="/login" component={EnterForm} />
           <Route exact path="/register" component={RegisterForm} />
           <Route exact path="/profile" component={userProfile} />
+          <Route exact path="/users/all" component={UserList} />
         </Switch>
         {/* </React.StrictMode> */}
       </Container>

@@ -61,7 +61,7 @@ def addOrderItems(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getOrderById(request, pk):
+def fetchOrderById(request, pk):
     user = request.user
     try:
         order = Order.objects.get(_id=pk)
@@ -77,9 +77,10 @@ def getOrderById(request, pk):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getAllUserOrders(request):
+def fetchMyOrders(request):
     user = request.user
-    orders = Order.objects.filter(user=user)
+    # orders = Order.objects.filter(user=user)
+    orders = user.order_set.all()
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 

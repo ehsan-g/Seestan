@@ -13,32 +13,32 @@ import { AccountUserOrdersCard } from './AccountUserOrdersCard';
 
 export default function AccountUserOrders() {
   const dispatch = useDispatch();
+  const [expanded, setExpanded] = useState(false);
+
+  const myOrders = useSelector((state) => state.myOrders);
+  const { theMyOrders, loading, error } = myOrders;
 
   useEffect(() => {
-    dispatch(cleanMyOrders());
-    dispatch(fetchUserOrderList());
+    if (!theMyOrders || !theMyOrders[0] || loading) {
+      dispatch(fetchUserOrderList());
+    }
     return () => {
       dispatch(cleanMyOrders());
     };
   }, [dispatch]);
 
-  const allOrders = useSelector((state) => state.allOrders);
-  const { myOrders, loading, error } = allOrders;
-
-  const [expanded, setExpanded] = useState(false);
-
   const handleChange = (order) => (event, isExpanded) => {
     setExpanded(isExpanded ? `panel${order._id}` : false);
-    dispatch(fetchUserOrderList());
+    // dispatch(fetchUserOrderList());
   };
 
   const renderElement = () => (
     <>
-      {!myOrders || !myOrders.map ? (
+      {!theMyOrders || !theMyOrders.map ? (
         <Loader />
       ) : (
         <div>
-          {myOrders.map((order) => (
+          {theMyOrders.map((order) => (
             <div key={order._id}>
               <Accordion
                 expanded={expanded === `panel${order._id}`}
@@ -50,7 +50,7 @@ export default function AccountUserOrders() {
                   id="panel-bh-header"
                 >
                   <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                    {`${order.createAt}`}
+                    {`تاریخ ثبت: ${order.createAt} `}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -65,7 +65,7 @@ export default function AccountUserOrders() {
   );
   return (
     <>
-      {myOrders === undefined || !myOrders[0] ? (
+      {!loading && (theMyOrders === undefined || !theMyOrders[0]) ? (
         <Message variant="outlined" severity="info">
           شما هنوز خریدی انچام ندادید
         </Message>

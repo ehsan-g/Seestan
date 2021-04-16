@@ -63,19 +63,18 @@ export const orderDetailsReducer = (
 };
 
 export const userOrderListReducer = (
-  state = { loading: true, orderItems: [], shippingAddress: {} },
+  state = { loading: true, orderItems: [] },
   action
 ) => {
   switch (action.type) {
     case MY_ORDERS_REQUEST:
       return {
-        ...state,
         loading: true,
       };
     case MY_ORDERS_SUCCESS:
       return {
         loading: false,
-        myOrders: action.payload,
+        theMyOrders: action.payload,
       };
     case MY_ORDERS_FAIL:
       return {
@@ -83,7 +82,7 @@ export const userOrderListReducer = (
         error: action.payload,
       };
     case MY_ORDERS_REMOVE_ALL:
-      return {};
+      return { orderItems: [] };
     default:
       return state;
   }
