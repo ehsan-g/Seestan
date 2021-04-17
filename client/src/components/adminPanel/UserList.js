@@ -1,5 +1,6 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -25,9 +26,15 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { visuallyHidden } from '@material-ui/utils';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { listUsers, deleteUser } from '../../actions';
-import Loader from '../Loader';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Message from '../Message';
+import Loader from '../Loader';
+import { listUsers, deleteUser } from '../../actions';
 
 function createData(_id, firstName, lastName, email, isAdmin) {
   console.log(lastName);
@@ -254,13 +261,18 @@ EnhancedTableToolbar.propTypes = {
 export default function UserList() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
@@ -268,9 +280,22 @@ export default function UserList() {
   const { success: successDelete } = userDeleteList;
 
   const deleteHandler = () => {
-    console.log(selected);
-    dispatch(deleteUser(selected));
+    setOpen(true);
   };
+
+  const confirmHandler = () => {
+    for (let i = 0; i < selected.length; i++) {
+      const found = rows.find((element) => element._id === selected[i]);
+      console.log(found);
+      console.log(i);
+
+      const elementIndex = rows.indexOf(found);
+      rows.splice(elementIndex, 1);
+    }
+    dispatch(deleteUser(selected));
+    setOpen(false);
+  };
+
   useEffect(() => {
     dispatch(listUsers());
   }, [dispatch, successDelete]);
@@ -449,6 +474,27 @@ export default function UserList() {
           />
         </div>
       )}
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">پاک‌کردن</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              شما کاربران انتخابی را از سرور پاک خواهید کرد
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>خیر</Button>
+            <Button onClick={confirmHandler} autoFocus>
+              بله
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }
