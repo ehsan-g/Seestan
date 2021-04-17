@@ -9,6 +9,7 @@ import {
   userUpdateProfileReducer,
   artistDetailsReducer,
   userListReducer,
+  userDeleteReducer,
 } from './userReducer';
 import {
   orderCreateReducer,
@@ -28,6 +29,7 @@ export default combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userList: userListReducer,
+  userDeleteList: userDeleteReducer,
   artistDetails: artistDetailsReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,

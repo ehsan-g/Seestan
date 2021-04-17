@@ -10,4 +10,5 @@ urlpatterns = [
     path('artist/<int:pk>/', views.fetchArtist, name='artist'),
     path('profile/update/', views.updateUserProfile, name='users-profile-update'),
     path('', views.fetchUsers, name='users'),
+    path('delete/', views.deleteUser, name='user-delete'),
 ]

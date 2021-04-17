@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -24,17 +25,17 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { visuallyHidden } from '@material-ui/utils';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { listUsers } from '../../actions';
+import { fetchAllArtWorks } from '../../actions';
+import Loader from '../Loader';
+import Message from '../Message';
 
-function createData(_id, firstName, lastName, email, isAdmin) {
-  console.log(lastName);
-
+function createData(_id, title, subtitle, artist, price) {
   return {
     _id,
-    firstName,
-    lastName,
-    email,
-    isAdmin,
+    title,
+    subtitle,
+    artist,
+    price,
   };
 }
 
@@ -74,35 +75,36 @@ const headCells = [
     label: 'آی‌دی',
   },
   {
-    id: 'first_name',
+    id: 'title',
     numeric: false,
     disablePadding: false,
-    label: 'نام',
+    label: 'عنوان',
   },
   {
-    id: 'last_name',
+    id: 'subtitle',
     numeric: false,
     disablePadding: false,
-    label: 'نام‌خانوادگی',
+    label: 'ساب‌عنوان',
   },
   {
-    id: 'email',
-    numeric: false,
+    id: 'artist',
+    numeric: true,
     disablePadding: false,
-    label: 'ایمیل',
+    label: 'هنرمند',
   },
   {
-    id: 'is_Admin',
-    numeric: false,
+    id: 'price',
+    numeric: true,
     disablePadding: false,
-    label: 'مدیر',
+    label: 'قیمت',
   },
 ];
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    marginTop: 100,
+    marginTop: 30,
+    minHeight: '100vh',
   },
   paper: {
     width: '100%',
@@ -221,7 +223,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          کاربران
+          آثار
         </Typography>
       )}
 
@@ -246,7 +248,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function UserList() {
+export default function ArtworkList() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [order, setOrder] = React.useState('asc');
@@ -256,25 +258,21 @@ export default function UserList() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
+  const artworksList = useSelector((state) => state.artworks);
+  const { loading, error, artworks } = artworksList;
 
   useEffect(() => {
-    dispatch(listUsers());
+    dispatch(fetchAllArtWorks());
   }, [dispatch]);
 
-  if (users && users[0] && !rows[0]) {
-    users.forEach((user) => {
+  if (artworks && artworks[0] && !rows[0]) {
+    artworks.forEach((artwork) => {
       const data = createData(
-        user._id,
-        user.firstName,
-        user.lastName,
-        user.email,
-        user.isAdmin ? (
-          <CheckCircleOutlineIcon sx={{ color: 'green' }} />
-        ) : (
-          <HighlightOffIcon sx={{ color: 'red' }} />
-        )
+        artwork._id,
+        artwork.title,
+        artwork.subtitle,
+        artwork.artist,
+        artwork.price
       );
       rows.push(data);
     });
@@ -335,93 +333,105 @@ export default function UserList() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row._id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+    <>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <div className={classes.root}>
+          <Message variant="outlined" severity="error">
+            {error}
+          </Message>
+        </div>
+      ) : (
+        <div className={classes.root}>
+          <Paper className={classes.paper}>
+            <EnhancedTableToolbar numSelected={selected.length} />
+            <TableContainer>
+              <Table
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                size={dense ? 'small' : 'medium'}
+              >
+                <EnhancedTableHead
+                  classes={classes}
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  {stableSort(rows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const isItemSelected = isSelected(row._id);
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
+                      return (
+                        <TableRow
+                          hover
+                          onClick={(event) => handleClick(event, row._id)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row._id}
+                          selected={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              checked={isItemSelected}
+                              inputProps={{
+                                'aria-labelledby': labelId,
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            id={labelId}
+                            scope="row"
+                            padding="none"
+                            align="center"
+                            size="small"
+                          >
+                            {row._id}
+                          </TableCell>
+                          <TableCell align="right">{row.title}</TableCell>
+                          <TableCell align="right">{row.subtitle}</TableCell>
+                          <TableCell align="right">{row.artist}</TableCell>
+                          <TableCell align="right">{row.price}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
                     <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row._id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row._id}
-                      selected={isItemSelected}
+                      style={{
+                        height: (dense ? 33 : 53) * emptyRows,
+                      }}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                        align="center"
-                        size="small"
-                      >
-                        {row._id}
-                      </TableCell>
-                      <TableCell align="right">{row.firstName}</TableCell>
-                      <TableCell align="right">{row.lastName}</TableCell>
-                      <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.isAdmin}</TableCell>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
-    </div>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+          <FormControlLabel
+            control={<Switch checked={dense} onChange={handleChangeDense} />}
+            label="Dense padding"
+          />
+        </div>
+      )}
+    </>
   );
 }

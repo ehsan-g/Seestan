@@ -35,6 +35,9 @@ import {
   USER_LIST_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
   ARTIST_DETAILS_REQUEST,
   ARTIST_DETAILS_SUCCESS,
   ARTIST_DETAILS_FAIL,
@@ -480,12 +483,7 @@ export const listUsers = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(
-      `/api/users`,
-
-      config
-    );
-
+    const { data } = await axios.get(`/api/users`, config);
     dispatch({
       type: USER_LIST_SUCCESS,
       payload: data,
@@ -494,6 +492,42 @@ export const listUsers = () => async (dispatch, getState) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: USER_LIST_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const deleteUser = (selectedUsers) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const { data } = await axios.delete(`/api/users/delete`, {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      data: {
+        selectedUsers,
+      },
+    });
+
+    console.log('config');
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail
