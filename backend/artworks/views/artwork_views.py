@@ -32,3 +32,21 @@ def deleteArtwork(request):
         artworkDeleting = Artwork.objects.get(_id=_id)
         artworkDeleting.delete()
     return Response('artworks were deleted')
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def createTheArtWork(request):
+    user = request.user
+    artwork = Artwork.objects.create(
+        AccountOwner=user,
+        Artist=user,
+        title= 'Default Title',
+        subtitle= 'Default subitle',
+        width=234,
+        height=323,
+        depth=35,
+        price=111000,
+    )
+    serializer = ArtworkSerializer(artwork, many=False)
+
+    return Response(serializer.data)

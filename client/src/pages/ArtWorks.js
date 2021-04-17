@@ -9,6 +9,7 @@ import ImageList from '@material-ui/core/ImageList';
 import { Grid, Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
+import Skeleton from '@material-ui/core/Skeleton';
 import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
@@ -68,9 +69,17 @@ function Artworks() {
                   gap={50}
                   style={{ paddingBottom: 80 }}
                 >
-                  {artworks.map((artwork) => (
-                    <ArtCard key={artwork._id} artwork={artwork} />
-                  ))}
+                  {artworks.map((artwork) =>
+                    artwork ? (
+                      <ArtCard key={artwork._id} artwork={artwork} />
+                    ) : (
+                      <Skeleton
+                        variant="rectangular"
+                        width={210}
+                        height={218}
+                      />
+                    )
+                  )}
                 </ImageList>
               </Box>
             </Grid>

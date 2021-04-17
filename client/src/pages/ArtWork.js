@@ -47,6 +47,7 @@ function Artwork({ match, history }) {
   const { userInfo } = userLogin;
 
   useEffect(() => {
+    console.log('artwork');
     dispatch(fetchOneArtWork(match.params.workId));
   }, [dispatch, match]);
 

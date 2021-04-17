@@ -22,7 +22,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { visuallyHidden } from '@material-ui/utils';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -32,17 +32,19 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Message from '../Message';
 import Loader from '../Loader';
 import { listUsers, deleteUser } from '../../actions';
 
-function createData(_id, firstName, lastName, email, isAdmin) {
+function createData(_id, firstName, lastName, email, isAdmin, editIcon) {
   return {
     _id,
     firstName,
     lastName,
     email,
     isAdmin,
+    editIcon,
   };
 }
 
@@ -104,6 +106,12 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: 'مدیر',
+  },
+  {
+    id: 'editIcon',
+    numeric: false,
+    disablePadding: false,
+    label: 'ویرایش',
   },
 ];
 
@@ -241,9 +249,9 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="فیلتر">
+        <Tooltip title="اضافه کزدن">
           <IconButton>
-            <FilterListIcon />
+            <AddCircleIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -310,7 +318,10 @@ export default function UserList() {
           <CheckCircleOutlineIcon sx={{ color: 'green' }} />
         ) : (
           <HighlightOffIcon sx={{ color: 'red' }} />
-        )
+        ),
+        <IconButton onClick={() => console.log('edit')}>
+          <EditOutlinedIcon />
+        </IconButton>
       );
       rows.push(data);
     });
@@ -413,14 +424,16 @@ export default function UserList() {
                       return (
                         <TableRow
                           hover
-                          onClick={(event) => handleClick(event, row._id)}
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
                           key={row._id}
                           selected={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
+                          <TableCell
+                            padding="checkbox"
+                            onClick={(event) => handleClick(event, row._id)}
+                          >
                             <Checkbox
                               color="primary"
                               checked={isItemSelected}
@@ -443,6 +456,7 @@ export default function UserList() {
                           <TableCell align="right">{row.lastName}</TableCell>
                           <TableCell align="right">{row.email}</TableCell>
                           <TableCell align="right">{row.isAdmin}</TableCell>
+                          <TableCell align="right">{row.editIcon}</TableCell>
                         </TableRow>
                       );
                     })}

@@ -36,7 +36,8 @@ class Artwork(models.Model):
     artist = models.ForeignKey(
         Artist, on_delete=models.CASCADE, null=False)
     # user type: artist, gallery, buyer/seller, admin
-    title = models.CharField(max_length=200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True,
+                             blank=True, default='no title')
     subtitle = models.CharField(max_length=200, null=True, blank=True)
     year = models.CharField(
         _('year'), choices=year_choices(), default=current_year, max_length=200)
@@ -46,7 +47,7 @@ class Artwork(models.Model):
     classifications = models.CharField(
         max_length=20, choices=CLASSIFICATION, default="")
     # uploads to MEDIA_ROOT in setting
-    image = models.ImageField(null=True)
+    image = models.ImageField(null=True, default='/defaultImage.png')
     width = models.IntegerField(null=True)
     height = models.IntegerField(null=True)
     depth = models.IntegerField(null=True)
@@ -122,7 +123,6 @@ class ShippingAddress(models.Model):
     postalcode = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=200, null=True, blank=True)
     deliverymethod = models.CharField(max_length=200, null=True, blank=True)
-
 
     def __str__(self):
         return self.address
