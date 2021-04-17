@@ -3,6 +3,7 @@ from artworks.views import artwork_views as views
 
 
 urlpatterns = [
-    path('', views.getArtWorks, name='artWorks'),
-    path('<str:pk>/', views.getTheArtWork, name='theArtWork'),
+    path('', views.fetchArtWorks, name='artWorks'),
+    path('delete/', views.deleteArtwork, name='artwork-delete'),
+    path('<str:pk>/', views.fetchArtWorks, name='theArtWork'),
 ]

@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import artworksReducer from './artworksReducer.js';
+import { artworksReducer, artworkDeleteReducer } from './artworksReducer.js';
 import artworkReducer from './artworkReducer.js';
 import cartReducer from './cartReducer.js';
 import {
@@ -23,6 +23,7 @@ export default combineReducers({
   headerStatus: headerReducer,
   artworks: artworksReducer,
   theArtwork: artworkReducer,
+  artworkDeleteList: artworkDeleteReducer,
   theCart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,

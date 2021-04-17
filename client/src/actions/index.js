@@ -7,6 +7,9 @@ import {
   ARTWORK_DETAILS_REQUEST,
   ARTWORK_DETAILS_SUCCESS,
   ARTWORK_DETAILS_FAIL,
+  ARTWORK_DELETE_REQUEST,
+  ARTWORK_DELETE_SUCCESS,
+  ARTWORK_DELETE_FAIL,
 } from '../constants/artworkConstants';
 import {
   CART_ADD_REQUEST,
@@ -518,8 +521,6 @@ export const deleteUser = (selectedUsers) => async (dispatch, getState) => {
       },
     });
 
-    console.log('config');
-
     dispatch({
       type: USER_DELETE_SUCCESS,
       payload: data,
@@ -528,6 +529,43 @@ export const deleteUser = (selectedUsers) => async (dispatch, getState) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: USER_DELETE_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const deleteArtwork = (selectedArtworks) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: ARTWORK_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const { data } = await axios.delete(`/api/artworks/delete`, {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      data: {
+        selectedArtworks,
+      },
+    });
+
+    dispatch({
+      type: ARTWORK_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: ARTWORK_DELETE_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail

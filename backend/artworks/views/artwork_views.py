@@ -9,15 +9,26 @@ from rest_framework import status
 
 
 @api_view(['GET'])
-def getArtWorks(request):
+def fetchArtWorks(request):
     artworks = Artwork.objects.all()
     serializer = ArtworkSerializer(artworks, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
-def getTheArtWork(request, pk):
+def fetchTheArtWork(request, pk):
     artwork = Artwork.objects.get(_id=pk)
     serializer = ArtworkSerializer(artwork, many=False)
 
     return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteArtwork(request):
+    data = request.data
+    selectedArtworks = data['selectedArtworks']
+    for _id in selectedArtworks:
+        artworkDeleting = Artwork.objects.get(_id=_id)
+        artworkDeleting.delete()
+    return Response('artworks were deleted')

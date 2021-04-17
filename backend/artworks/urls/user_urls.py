@@ -11,4 +11,7 @@ urlpatterns = [
     path('profile/update/', views.updateUserProfile, name='users-profile-update'),
     path('', views.fetchUsers, name='users'),
     path('delete/', views.deleteUser, name='user-delete'),
+    path('update/<int:pk>', views.updateUserById, name='user-update_by_id'),
+    path('<int:pk>', views.fetchUsersById, name='user_by_id'),
+
 ]

@@ -37,8 +37,6 @@ import Loader from '../Loader';
 import { listUsers, deleteUser } from '../../actions';
 
 function createData(_id, firstName, lastName, email, isAdmin) {
-  console.log(lastName);
-
   return {
     _id,
     firstName,
@@ -268,6 +266,7 @@ export default function UserList() {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  // Dialog from here
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -286,8 +285,6 @@ export default function UserList() {
   const confirmHandler = () => {
     for (let i = 0; i < selected.length; i++) {
       const found = rows.find((element) => element._id === selected[i]);
-      console.log(found);
-      console.log(i);
 
       const elementIndex = rows.indexOf(found);
       rows.splice(elementIndex, 1);
@@ -297,7 +294,9 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    dispatch(listUsers());
+    if (!rows[0] || successDelete) {
+      dispatch(listUsers());
+    }
   }, [dispatch, successDelete]);
 
   if (users && users[0] && !rows[0]) {
@@ -316,6 +315,7 @@ export default function UserList() {
       rows.push(data);
     });
   }
+  //  Dialog to here
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

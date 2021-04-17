@@ -64,7 +64,6 @@ def registerUser(request):
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
     user = request.user
-    serializer = UserSerializerWithToken(user, many=False)
 
     data = request.data
     user.first_name = data['firstName']
@@ -76,6 +75,7 @@ def updateUserProfile(request):
         user.password = make_password(data['password'])
 
     user.save()
+    serializer = UserSerializerWithToken(user, many=False)
 
     return Response(serializer.data)
 
@@ -107,6 +107,33 @@ def fetchUsers(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def fetchUsersById(request, pk):
+    user = User.objects.get(id=pk)
+    # user = request.user
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserById(request, pk):
+    user = User.objects.get(id=pk)
+
+    data = request.data
+    user.first_name = data['firstName']
+    user.last_name = data['lastName']
+    if 'email' in data:
+        user.email = data['email']
+        user.username = data['email']
+    user.is_staff = data['isAdmin']
+    user.save()
+    serializer = UserSerializer(user, many=False)
+
+    return Response(serializer.data)
+
+
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
 def deleteUser(request):
@@ -115,4 +142,4 @@ def deleteUser(request):
     for id in selectedUsers:
         userDeleting = User.objects.get(id=id)
         userDeleting.delete()
-    return Response('user were deleted')
+    return Response('users were deleted')

@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,17 +26,23 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { visuallyHidden } from '@material-ui/utils';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { fetchAllArtWorks } from '../../actions';
-import Loader from '../Loader';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Message from '../Message';
+import Loader from '../Loader';
+import { listUsers, deleteUser } from '../../actions';
 
-function createData(_id, title, subtitle, artist, price) {
+function createData(_id, firstName, lastName, email, isAdmin) {
   return {
     _id,
-    title,
-    subtitle,
-    artist,
-    price,
+    firstName,
+    lastName,
+    email,
+    isAdmin,
   };
 }
 
@@ -199,7 +206,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, deleteHandler } = props;
 
   return (
     <Toolbar
@@ -229,7 +236,7 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="پاک‌کردن">
-          <IconButton>
+          <IconButton onClick={() => deleteHandler()}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -246,33 +253,60 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  deleteHandler: PropTypes.func.isRequired,
 };
 
 export default function UserList() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const artworksList = useSelector((state) => state.userList);
-  const { loading, error, artworks } = artworksList;
+  // Dialog from here
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const userList = useSelector((state) => state.userList);
+  const { loading, error, users } = userList;
+
+  const userDeleteList = useSelector((state) => state.userDeleteList);
+  const { success: successDelete } = userDeleteList;
+
+  const deleteHandler = () => {
+    setOpen(true);
+  };
+
+  const confirmHandler = () => {
+    for (let i = 0; i < selected.length; i++) {
+      const found = rows.find((element) => element._id === selected[i]);
+
+      const elementIndex = rows.indexOf(found);
+      rows.splice(elementIndex, 1);
+    }
+    dispatch(deleteUser(selected));
+    setOpen(false);
+  };
 
   useEffect(() => {
-    dispatch(fetchAllArtWorks());
-  }, [dispatch]);
+    if (!rows[0] || successDelete) {
+      dispatch(listUsers());
+    }
+  }, [dispatch, successDelete]);
 
-  if (artworks && artworks[0] && !rows[0]) {
-    artworks.forEach((artwork) => {
+  if (users && users[0] && !rows[0]) {
+    users.forEach((user) => {
       const data = createData(
-        artwork._id,
-        artwork.title,
-        artwork.subtitle,
-        artwork.artist,
-        artwork.price ? (
+        user._id,
+        user.firstName,
+        user.lastName,
+        user.email,
+        user.isAdmin ? (
           <CheckCircleOutlineIcon sx={{ color: 'green' }} />
         ) : (
           <HighlightOffIcon sx={{ color: 'red' }} />
@@ -281,6 +315,7 @@ export default function UserList() {
       rows.push(data);
     });
   }
+  //  Dialog to here
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -349,7 +384,10 @@ export default function UserList() {
       ) : (
         <div className={classes.root}>
           <Paper className={classes.paper}>
-            <EnhancedTableToolbar numSelected={selected.length} />
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              deleteHandler={deleteHandler}
+            />
             <TableContainer>
               <Table
                 className={classes.table}
@@ -436,6 +474,27 @@ export default function UserList() {
           />
         </div>
       )}
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">پاک‌کردن</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              شما کاربران انتخابی را از سرور پاک خواهید کرد
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>خیر</Button>
+            <Button onClick={confirmHandler} autoFocus>
+              بله
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }
