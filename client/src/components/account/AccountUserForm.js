@@ -57,16 +57,14 @@ function AccountUserForm() {
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
-    } else if (!user || !user.email || success) {
-      // clean the field and update again using reset
-      dispatch({ type: USER_UPDATE_PROFILE_RESET });
+    } else if (!user || !user.firstName) {
       dispatch(fetchUserDetails('profile'));
     } else {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
     }
-  }, [dispatch, history, userInfo, user, success]);
+  }, [dispatch, history, userInfo, user]);
 
   const onSubmit = async () => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -84,6 +82,8 @@ function AccountUserForm() {
         })
       );
       setMessage('');
+
+      dispatch(fetchUserDetails('profile'));
     }
   };
   const classes = useStyles();

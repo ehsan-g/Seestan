@@ -259,10 +259,6 @@ export const fetchUserDetails = (id) => async (dispatch, getState) => {
       type: USER_DETAILS_SUCCESS,
       payload: data,
     });
-    dispatch({
-      type: USER_DETAILS_RESET,
-      payload: data,
-    });
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
