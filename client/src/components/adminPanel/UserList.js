@@ -33,6 +33,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { useHistory } from 'react-router';
 import Message from '../Message';
 import Loader from '../Loader';
 import { listUsers, deleteUser } from '../../actions';
@@ -267,6 +268,7 @@ EnhancedTableToolbar.propTypes = {
 export default function UserList() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [selected, setSelected] = useState([]);
@@ -307,6 +309,11 @@ export default function UserList() {
     }
   }, [dispatch, successDelete]);
 
+  const onEdit = (id) => {
+    console.log(id);
+    history.push(`/admin/user/${id}/edit`);
+  };
+
   if (users && users[0] && !rows[0]) {
     users.forEach((user) => {
       const data = createData(
@@ -319,7 +326,7 @@ export default function UserList() {
         ) : (
           <HighlightOffIcon sx={{ color: 'red' }} />
         ),
-        <IconButton onClick={() => console.log('edit')}>
+        <IconButton onClick={() => onEdit(user._id)}>
           <EditOutlinedIcon />
         </IconButton>
       );

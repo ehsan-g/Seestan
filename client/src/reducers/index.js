@@ -10,6 +10,7 @@ import {
   artistDetailsReducer,
   userListReducer,
   userDeleteReducer,
+  userUpdateReducer,
 } from './userReducer';
 import {
   orderCreateReducer,
@@ -31,6 +32,7 @@ export default combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   userList: userListReducer,
   userDeleteList: userDeleteReducer,
+  userUpdate: userUpdateReducer, // update user from admin
   artistDetails: artistDetailsReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,

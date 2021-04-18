@@ -2,16 +2,15 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactDOM from 'react-dom';
 import { Form } from 'react-final-form';
-import { TextField, Checkboxes, Radios, Select } from 'mui-rff';
-import { Paper, Grid, Button, CssBaseline, MenuItem } from '@material-ui/core';
+import { TextField } from 'mui-rff';
+import { Paper, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { fetchUserDetails, updateUserProfile } from '../../actions/index';
-import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants';
 import Message from '../Message';
 import Loader from '../Loader';
+import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,14 +56,15 @@ function AccountUserForm() {
   useEffect(() => {
     if (!userInfo) {
       history.push('/login');
-    } else if (!user || !user.firstName) {
+    } else if (!user || !user.firstName || success) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
       dispatch(fetchUserDetails('profile'));
     } else {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
     }
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, user, success]);
 
   const onSubmit = async () => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -174,7 +174,6 @@ function AccountUserForm() {
 
   return (
     <div style={{ maxWidth: 600 }}>
-      <CssBaseline />
       <Form
         onSubmit={onSubmit}
         validate={validate}

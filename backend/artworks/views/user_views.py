@@ -111,7 +111,6 @@ def fetchUsers(request):
 @permission_classes([IsAdminUser])
 def fetchUsersById(request, pk):
     user = User.objects.get(id=pk)
-    # user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 

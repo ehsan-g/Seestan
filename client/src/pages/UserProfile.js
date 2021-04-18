@@ -15,7 +15,7 @@ import AccountUserTab from '../components/account/AccountUserForm';
 import { headerStatus } from '../actions/index';
 import AccountUserOrders from '../components/account/AccountUserOrders';
 
-export default function FullWidthTabs() {
+export default function UserProfile() {
   const dispatch = useDispatch();
 
   useEffect(() => {
