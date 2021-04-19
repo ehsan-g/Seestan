@@ -11,7 +11,6 @@ from rest_framework import status
 def fetchArtist(request, pk):
     artist = Artist.objects.get(_id=pk)
     serializer = ArtistSerializer(artist, many=False)
-    print((serializer.data))
     return Response(serializer.data)
 
 

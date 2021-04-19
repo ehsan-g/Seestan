@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
-import { Typography, Grid, Button, ownerDocument } from '@material-ui/core';
+import { Typography, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -10,7 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import {
@@ -46,13 +46,29 @@ export default function ArtworkEdit() {
   const [accountOwner, setAccountOwner] = useState('');
   const [artist, setArtist] = useState('');
   const [title, setTitle] = useState('');
-  //   const [title, setTitle] = useState('');
-  //   const [title, setTitle] = useState('');
-  //   const [title, setTitle] = useState('');
-  //   const [title, setTitle] = useState('');
-  //   const [title, setTitle] = useState('');
-  //   const [title, setTitle] = useState('');
-  //   const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [year, setYear] = useState('');
+  const [category, setCategory] = useState('');
+  const [medium, setMedium] = useState('');
+  const [condition, setCondition] = useState('');
+  const [classifications, setClassifications] = useState('');
+  const [image, setImage] = useState('');
+  const [width, setWidth] = useState('');
+  const [height, setHeight] = useState('');
+  const [depth, setDepth] = useState('');
+  const [unit, setUnit] = useState('');
+  const [isAnEdition, setIsAnEdition] = useState(false);
+  const [editionNum, setEditionNum] = useState('');
+  const [editionSize, setEditionSize] = useState('');
+  const [isSigned, setIsSigned] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState('');
+  const [frame, setFrame] = useState('');
+  const [isPrice, setIsPrice] = useState(false);
+  const [price, setPrice] = useState('');
+  const [aboutWork, setAboutWork] = useState('');
+  const [provenance, setProvenance] = useState('');
+  const [artLocation, setArtLocation] = useState('');
+  const [quantity, setQuantity] = useState('');
 
   const dispatch = useDispatch();
   const { artworkId } = useParams();
@@ -64,7 +80,7 @@ export default function ArtworkEdit() {
   const { error, loading, artwork } = theArtwork;
 
   const artistList = useSelector((state) => state.artistList);
-  const { artists } = artistList;
+  const { artists, loading: loadingArtistList } = artistList;
 
   const artistDetails = useSelector((state) => state.artistDetails);
   const { theArtist, loading: loadingTheArtist } = artistDetails;
@@ -83,12 +99,34 @@ export default function ArtworkEdit() {
       dispatch(fetchOneArtWork(artworkId));
       dispatch(fetchUsers());
       dispatch(fetchArtists());
-    } else if (artwork.artist) {
-      dispatch(fetchArtistDetails(artwork.artist));
     } else {
+      dispatch(fetchArtistDetails(artwork.artist));
       setAccountOwner(artwork.accountOwner);
-      // setTitle(artwork.title);
-      // setArtist(artwork.artist);
+      setArtist(artwork.artist);
+      setTitle(artwork.title);
+      setSubtitle(artwork.subtitle);
+      setYear(artwork.year);
+      setCategory(artwork.category);
+      setMedium(artwork.medium);
+      setCondition(artwork.condition);
+      setClassifications(artwork.classifications);
+      setImage(artwork.image);
+      setWidth(artwork.width);
+      setHeight(artwork.height);
+      setDepth(artwork.depth);
+      setUnit(artwork.unit);
+      setIsAnEdition(artwork.isAnEdition);
+      setEditionNum(artwork.editionNum);
+      setEditionSize(artwork.editionSize);
+      setIsSigned(artwork.isSigned);
+      setIsAuthenticated(artwork.isAuthenticated);
+      setIsPrice(artwork.isPrice);
+      setFrame(artwork.frame);
+      setPrice(artwork.price);
+      setAboutWork(artwork.aboutWork);
+      setProvenance(artwork.provenance);
+      setArtLocation(artwork.artLocation);
+      setQuantity(artwork.quantity);
     }
   }, [artwork, dispatch, successUpdate, history, artworkId]);
 
@@ -104,7 +142,7 @@ export default function ArtworkEdit() {
     await sleep(300);
     dispatch(updateArtwork({ _id: artwork._id, title }));
   };
-  console.log(artwork.accountOwner);
+  console.log(artwork.isAnEdition);
   const formFields = [
     {
       size: 6,
@@ -185,7 +223,7 @@ export default function ArtworkEdit() {
       ),
     },
     {
-      size: 12,
+      size: 6,
       field: (
         <TextField
           variant="outlined"
@@ -199,71 +237,71 @@ export default function ArtworkEdit() {
       ),
     },
     {
-      size: 12,
+      size: 6,
       field: (
         <TextField
           variant="outlined"
           type="name"
           label="ساب عنوان"
-          name="Subtitle"
-          //   value={Subtitle || ''}
-          //   onChange={(e) => setSubtitle(e.target.value)}
+          name="subtitle"
+          value={subtitle || ''}
+          onChange={(e) => setSubtitle(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 6,
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
+          type="number"
+          label="سال"
           name="year"
-          //   value={year || ''}
-          //   onChange={(e) => setYear(e.target.value)}
+          value={year || ''}
+          onChange={(e) => setYear(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 6,
       field: (
         <TextField
           variant="outlined"
           type="name"
-          label="نام"
+          label="دسته‌بندی"
           name="category"
-          //   value={category || ''}
-          //   onChange={(e) => setCategory(e.target.value)}
+          value={category || ''}
+          onChange={(e) => setCategory(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 6,
       field: (
         <TextField
           variant="outlined"
           type="name"
-          label="نام"
+          label="مدیوم"
           name="medium"
-          //   value={medium || ''}
-          //   onChange={(e) => setMedium(e.target.value)}
+          value={medium || ''}
+          onChange={(e) => setMedium(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 6,
       field: (
         <TextField
           variant="outlined"
           type="name"
-          label="نام"
+          label="وضعیت"
           name="condition"
-          //   value={condition || ''}
-          //   onChange={(e) => setCondition(e.target.value)}
+          value={condition || ''}
+          onChange={(e) => setCondition(e.target.value)}
           margin="normal"
         />
       ),
@@ -271,15 +309,43 @@ export default function ArtworkEdit() {
     {
       size: 12,
       field: (
-        <TextField
+        <FormControl
           variant="outlined"
-          type="name"
-          label="نام"
-          name="classifications"
-          //   value={classifications || ''}
-          //   onChange={(e) => setClassifications(e.target.value)}
           margin="normal"
-        />
+          style={{ minWidth: '100%' }}
+        >
+          {artwork && artwork.accountOwner && users && (
+            <>
+              <InputLabel
+                htmlFor="uncontrolled-native"
+                style={{ paddingRight: 5 }}
+              >
+                {' '}
+                classifications
+              </InputLabel>
+              <Select
+                defaultValue={artwork.classifications}
+                labelId="Classification"
+                id="demo-simple-select-outlined"
+                onChange={(e) => setClassifications(e.target.value)}
+                label="classifications"
+              >
+                <MenuItem value={1} key={1}>
+                  Unique
+                </MenuItem>
+                <MenuItem value={2} key={2}>
+                  Limited edition
+                </MenuItem>
+                <MenuItem value={3} key={3}>
+                  Open edition
+                </MenuItem>
+                <MenuItem value={4} key={4}>
+                  Unknown edition
+                </MenuItem>
+              </Select>
+            </>
+          )}
+        </FormControl>
       ),
     },
     {
@@ -287,237 +353,277 @@ export default function ArtworkEdit() {
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
+          type="image"
+          label="عکس"
           name="image"
-          //   value={image || ''}
-          //   onChange={(e) => setImage(e.target.value)}
+          value={image || ''}
+          onChange={(e) => setImage(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 3,
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
+          type="number"
+          label="عرض"
           name="width"
-          //   value={width || ''}
-          //   onChange={(e) => setWidth(e.target.value)}
+          value={width || ''}
+          onChange={(e) => setWidth(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 3,
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
+          type="number"
+          label="طول"
           name="height"
-          //   value={height || ''}
-          //   onChange={(e) => setHeight(e.target.value)}
+          value={height || ''}
+          onChange={(e) => setHeight(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 3,
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
+          type="number"
+          label="عمق"
           name="depth"
-          //   value={depth || ''}
-          //   onChange={(e) => setDepth(e.target.value)}
+          value={depth || ''}
+          onChange={(e) => setDepth(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 3,
       field: (
-        <TextField
+        <FormControl
           variant="outlined"
-          type="name"
-          label="نام"
-          name="unit"
-          //   value={unit || ''}
-          //   onChange={(e) => setUnit(e.target.value)}
           margin="normal"
-        />
+          style={{ minWidth: '100%' }}
+        >
+          <>
+            <InputLabel
+              htmlFor="uncontrolled-native"
+              style={{ paddingRight: 5 }}
+            >
+              {' '}
+              unit
+            </InputLabel>
+            <Select
+              defaultValue={artwork.unit}
+              labelId="unit"
+              id="demo-simple-select-outlined"
+              onChange={(e) => setUnit(e.target.value)}
+              label="unit"
+            >
+              <MenuItem value={0} key={1}>
+                Inch
+              </MenuItem>
+              <MenuItem value={1} key={2}>
+                Cm
+              </MenuItem>
+            </Select>
+          </>
+        </FormControl>
       ),
     },
     {
       size: 12,
       field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
+        <Checkboxes
           name="isAnEdition"
-          //   value={isAnEdition || ''}
-          //   onChange={(e) => setIsAnEdition(e.target.value)}
-          margin="normal"
+          formControlProps={{ margin: 'none' }}
+          data={{ label: 'مجموعه', value: isAnEdition }}
+          onChange={(e) => setIsAnEdition(e.target.checked)}
         />
       ),
     },
     {
-      size: 12,
+      size: 4,
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
+          type="number"
+          label="شماره کار"
           name="editionNum"
-          //   value={editionNum || ''}
-          //   onChange={(e) => setEditionNum(e.target.value)}
+          value={editionNum || ''}
+          onChange={(e) => setEditionNum(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 4,
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
+          type="number"
+          label="تعداد کل کار"
           name="editionSize"
-          //   value={editionSize || ''}
-          //   onChange={(e) => setEditionSize(e.target.value)}
+          value={editionSize || ''}
+          onChange={(e) => setEditionSize(e.target.value)}
           margin="normal"
         />
       ),
     },
     {
-      size: 12,
+      size: 4,
       field: (
         <TextField
           variant="outlined"
-          type="name"
-          label="نام"
-          name="isSigned"
-          //   value={isSigned || ''}
-          //   onChange={(e) => setIsSigned(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
-          name="isAuthenticated"
-          //   value={isAuthenticated || ''}
-          //   onChange={(e) => setIsAuthenticated(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
-          name="frame"
-          //   value={frame || ''}
-          //   onChange={(e) => setFrame(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
-          name="isPrice"
-          //   value={isPrice || ''}
-          //   onChange={(e) => setIsPrice(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
-          name="pice"
-          //   value={pice || ''}
-          //   onChange={(e) => setPrice(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
-          name="aboutWork"
-          //   value={aboutWork || ''}
-          //   onChange={(e) => setAboutWork(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
-          name="provenance"
-          //   value={provenance || ''}
-          //   onChange={(e) => setProvenance(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
-          name="artLocation"
-          //   value={artLocation || ''}
-          //   onChange={(e) => setArtLocation(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="name"
-          label="نام"
+          type="number"
+          label="تعداد"
           name="quantity"
-          //   value={quantity || ''}
-          //   onChange={(e) => setQuantity(e.target.value)}
+          value={quantity || ''}
+          onChange={(e) => setQuantity(e.target.value)}
           margin="normal"
         />
+      ),
+    },
+    {
+      size: 6,
+      field: (
+        <Checkboxes
+          name="isSigned"
+          formControlProps={{ margin: 'none' }}
+          data={{ label: 'امضا شده', value: isSigned }}
+          onChange={(e) => setIsSigned(e.target.checked)}
+        />
+      ),
+    },
+    {
+      size: 6,
+      field: (
+        <Checkboxes
+          name="isAuthenticated"
+          formControlProps={{ margin: 'none' }}
+          data={{ label: 'بررسی اصالت شده', value: isAuthenticated }}
+          onChange={(e) => setIsAuthenticated(e.target.checked)}
+        />
+      ),
+    },
+    {
+      size: 12,
+      field: (
+        <TextField
+          variant="outlined"
+          type="name"
+          label="قاب"
+          name="frame"
+          value={frame || ''}
+          onChange={(e) => setFrame(e.target.value)}
+          margin="normal"
+        />
+      ),
+    },
+    {
+      size: 6,
+      field: (
+        <Checkboxes
+          name="isPrice"
+          formControlProps={{ margin: 'none' }}
+          data={{ label: 'بدون قیمت', value: isPrice }}
+          onChange={(e) => setIsPrice(e.target.checked)}
+          disabled
+        />
+      ),
+    },
+    {
+      size: 6,
+      field: (
+        <TextField
+          variant="outlined"
+          type="number"
+          label="هزینه"
+          name="pice"
+          value={price || ''}
+          onChange={(e) => setPrice(e.target.value)}
+          margin="normal"
+        />
+      ),
+    },
+    {
+      size: 12,
+      field: (
+        <>
+          <InputLabel htmlFor="uncontrolled-native" style={{ paddingRight: 5 }}>
+            {' '}
+            در مورد اثر
+          </InputLabel>
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={3}
+            placeholder="Minimum 3 rows"
+            style={{ maxWidth: '100%', minWidth: '100%' }}
+            value={aboutWork || ''}
+            margin="normal"
+            onChange={(e) => setAboutWork(e.target.value)}
+          />
+        </>
+      ),
+    },
+    {
+      size: 12,
+      field: (
+        <>
+          <InputLabel htmlFor="uncontrolled-native" style={{ paddingRight: 5 }}>
+            {' '}
+            پیشنه
+          </InputLabel>
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={3}
+            placeholder="Minimum 3 rows"
+            style={{ maxWidth: '100%', minWidth: '100%' }}
+            value={provenance || ''}
+            margin="normal"
+            onChange={(e) => setProvenance(e.target.value)}
+          />
+        </>
+      ),
+    },
+    {
+      size: 12,
+      field: (
+        <FormControl
+          variant="outlined"
+          margin="normal"
+          style={{ minWidth: '100%' }}
+        >
+          {artwork && artwork.accountOwner && users && (
+            <>
+              <InputLabel
+                htmlFor="uncontrolled-native"
+                style={{ paddingRight: 5 }}
+              >
+                {' '}
+                شهر اثر
+              </InputLabel>
+              <Select
+                defaultValue={1}
+                labelId="Classification"
+                id="demo-simple-select-outlined"
+                onChange={(e) => setArtLocation(e.target.value)}
+                label="artLocation"
+              >
+                <MenuItem value={1} key={1}>
+                  تهران
+                </MenuItem>
+              </Select>
+            </>
+          )}
+        </FormControl>
       ),
     },
   ];
@@ -533,13 +639,13 @@ export default function ArtworkEdit() {
       </Typography>
       {error ? (
         <Message severity="error">{error}</Message>
-      ) : loading || loadingUsers ? (
+      ) : loading || loadingUsers || loadingArtistList || loadingTheArtist ? (
         <Loader />
       ) : (
         <Form
           onSubmit={onSubmit}
           validate={validate}
-          initialValues={{}}
+          initialValues={{ isAnEdition, isSigned, isAuthenticated, isPrice }}
           render={({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit} noValidate>
               <Grid container alignItems="flex-start" spacing={2}>

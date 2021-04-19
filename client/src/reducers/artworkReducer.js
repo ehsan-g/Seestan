@@ -6,6 +6,7 @@ import {
   ARTWORK_UPDATE_SUCCESS,
   ARTWORK_UPDATE_FAIL,
   ARTWORK_UPDATE_RESET,
+  ARTWORK_DETAILS_RESET,
 } from '../constants/artworkConstants';
 
 export const artworkReducer = (state = { artwork: {} }, action) => {
@@ -16,6 +17,8 @@ export const artworkReducer = (state = { artwork: {} }, action) => {
       return { loading: false, artwork: action.payload };
     case ARTWORK_DETAILS_FAIL:
       return { loading: false, error: action.payload };
+    case ARTWORK_DETAILS_RESET:
+      return { artwork: {} };
     default:
       return state;
   }

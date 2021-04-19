@@ -30,6 +30,15 @@ class Artwork(models.Model):
     def current_year():
         return str((datetime.date.today().year))
 
+        # Overwrite the default get_context_data function
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add extra information here, like the first MainDescription Object
+        context['form'] = Artwork.CLASSIFICATION
+        print(context['form'])
+        return context
+
     _id = models.AutoField(primary_key=True, editable=False)
     accountOwner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True)

@@ -14,6 +14,7 @@ import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { ARTWORK_DETAILS_RESET } from '../constants/artworkConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +38,7 @@ function Artworks() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(cleanTheCart());
+    dispatch({ type: ARTWORK_DETAILS_RESET });
     return () => {
       dispatch(cleanTheCart());
     };
@@ -50,6 +52,7 @@ function Artworks() {
 
   const classes = useStyles();
 
+  console.log(artworks);
   return (
     <div style={{ minHeight: '100vh', marginTop: 100 }}>
       {loading === undefined ? (
