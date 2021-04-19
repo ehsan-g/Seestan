@@ -34,7 +34,7 @@ class Artwork(models.Model):
     accountOwner = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True)
     artist = models.ForeignKey(
-        Artist, on_delete=models.CASCADE, null=False)
+        Artist, on_delete=models.SET_NULL, null=True)
     # user type: artist, gallery, buyer/seller, admin
     title = models.CharField(max_length=200, null=True,
                              blank=True, default='no title')

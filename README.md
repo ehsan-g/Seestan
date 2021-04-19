@@ -53,7 +53,7 @@ $ git pull https://github.com/ehsan-g/dazain.git
 ## Installing
  **Start back-end locally**
 ```
-$ cd Dazain/
+$ cd Seestan/
 $ source myenv/bin/activate
 $ cd backend/
 $ pip3 install -r requirements.txt

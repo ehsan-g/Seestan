@@ -34,9 +34,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import Message from '../Message';
 import Loader from '../Loader';
-import { listUsers, deleteUser } from '../../actions';
+import { fetchUsers, deleteUser } from '../../actions';
+import { USER_UPDATE_RESET } from '../../constants/userConstants';
 
 function createData(_id, firstName, lastName, email, isAdmin, editIcon) {
   return {
@@ -120,7 +122,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     marginTop: 30,
-    minHeight: '100vh',
   },
   paper: {
     width: '100%',
@@ -288,6 +289,9 @@ export default function UserList() {
   const userDeleteList = useSelector((state) => state.userDeleteList);
   const { success: successDelete } = userDeleteList;
 
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const { success: successUpdate } = userUpdate;
+
   const deleteHandler = () => {
     setOpen(true);
   };
@@ -305,16 +309,24 @@ export default function UserList() {
 
   useEffect(() => {
     if (!rows[0] || successDelete) {
-      dispatch(listUsers());
+      dispatch(fetchUsers());
+    } else if (successUpdate) {
+      dispatch({ type: USER_UPDATE_RESET });
+      toast.success(`ذخیره شد`);
+      dispatch(fetchUsers());
+
+      rows.splice(0, rows.length);
+      while (rows.length > 0) {
+        rows.pop();
+      }
     }
-  }, [dispatch, successDelete]);
+  }, [dispatch, successDelete, successUpdate]);
 
   const onEdit = (id) => {
-    console.log(id);
     history.push(`/admin/user/${id}/edit`);
   };
 
-  if (users && users[0] && !rows[0]) {
+  if ((users && users[0] && !rows[0]) || successUpdate) {
     users.forEach((user) => {
       const data = createData(
         user._id,

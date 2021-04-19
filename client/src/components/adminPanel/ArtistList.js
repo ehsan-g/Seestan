@@ -1,5 +1,6 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -21,23 +22,32 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { visuallyHidden } from '@material-ui/utils';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { listUsers } from '../../actions';
-import Loader from '../Loader';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import Message from '../Message';
+import Loader from '../Loader';
+import { fetchUsers, deleteUser } from '../../actions';
+import { USER_UPDATE_RESET } from '../../constants/userConstants';
 
-function createData(_id, firstName, lastName, email, isAdmin) {
-  console.log(lastName);
-
+function createData(_id, firstName, lastName, email, isAdmin, editIcon) {
   return {
     _id,
     firstName,
     lastName,
     email,
     isAdmin,
+    editIcon,
   };
 }
 
@@ -100,13 +110,18 @@ const headCells = [
     disablePadding: false,
     label: 'مدیر',
   },
+  {
+    id: 'editIcon',
+    numeric: false,
+    disablePadding: false,
+    label: 'ویرایش',
+  },
 ];
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     marginTop: 30,
-    minHeight: '100vh',
   },
   paper: {
     width: '100%',
@@ -201,7 +216,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, deleteHandler } = props;
 
   return (
     <Toolbar
@@ -231,14 +246,14 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="پاک‌کردن">
-          <IconButton>
+          <IconButton onClick={() => deleteHandler()}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="فیلتر">
+        <Tooltip title="اضافه کزدن">
           <IconButton>
-            <FilterListIcon />
+            <AddCircleIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -248,26 +263,70 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  deleteHandler: PropTypes.func.isRequired,
 };
 
 export default function UserList() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const history = useHistory();
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  // Dialog from here
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
-  useEffect(() => {
-    dispatch(listUsers());
-  }, [dispatch]);
+  const userDeleteList = useSelector((state) => state.userDeleteList);
+  const { success: successDelete } = userDeleteList;
 
-  if (users && users[0] && !rows[0]) {
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const { success: successUpdate } = userUpdate;
+
+  const deleteHandler = () => {
+    setOpen(true);
+  };
+
+  const confirmHandler = () => {
+    for (let i = 0; i < selected.length; i++) {
+      const found = rows.find((element) => element._id === selected[i]);
+
+      const elementIndex = rows.indexOf(found);
+      rows.splice(elementIndex, 1);
+    }
+    dispatch(deleteUser(selected));
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (!rows[0] || successDelete) {
+      dispatch(fetchUsers());
+    } else if (successUpdate) {
+      dispatch({ type: USER_UPDATE_RESET });
+      toast.success(`ذخیره شد`);
+      dispatch(fetchUsers());
+
+      rows.splice(0, rows.length);
+      while (rows.length > 0) {
+        rows.pop();
+      }
+    }
+  }, [dispatch, successDelete, successUpdate]);
+
+  const onEdit = (id) => {
+    history.push(`/admin/user/${id}/edit`);
+  };
+
+  if ((users && users[0] && !rows[0]) || successUpdate) {
     users.forEach((user) => {
       const data = createData(
         user._id,
@@ -278,11 +337,15 @@ export default function UserList() {
           <CheckCircleOutlineIcon sx={{ color: 'green' }} />
         ) : (
           <HighlightOffIcon sx={{ color: 'red' }} />
-        )
+        ),
+        <IconButton onClick={() => onEdit(user._id)}>
+          <EditOutlinedIcon />
+        </IconButton>
       );
       rows.push(data);
     });
   }
+  //  Dialog to here
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -351,7 +414,10 @@ export default function UserList() {
       ) : (
         <div className={classes.root}>
           <Paper className={classes.paper}>
-            <EnhancedTableToolbar numSelected={selected.length} />
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              deleteHandler={deleteHandler}
+            />
             <TableContainer>
               <Table
                 className={classes.table}
@@ -377,14 +443,16 @@ export default function UserList() {
                       return (
                         <TableRow
                           hover
-                          onClick={(event) => handleClick(event, row._id)}
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
                           key={row._id}
                           selected={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
+                          <TableCell
+                            padding="checkbox"
+                            onClick={(event) => handleClick(event, row._id)}
+                          >
                             <Checkbox
                               color="primary"
                               checked={isItemSelected}
@@ -407,6 +475,7 @@ export default function UserList() {
                           <TableCell align="right">{row.lastName}</TableCell>
                           <TableCell align="right">{row.email}</TableCell>
                           <TableCell align="right">{row.isAdmin}</TableCell>
+                          <TableCell align="right">{row.editIcon}</TableCell>
                         </TableRow>
                       );
                     })}
@@ -438,6 +507,27 @@ export default function UserList() {
           />
         </div>
       )}
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">پاک‌کردن</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              شما کاربران انتخابی را از سرور پاک خواهید کرد
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>خیر</Button>
+            <Button onClick={confirmHandler} autoFocus>
+              بله
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }

@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
 import AdminPanel from './pages/AdminPanel';
 import UserEdit from './pages/UserEdit';
+import ArtworkEdit from './pages/ArtworkEdit';
 
 // Create an enhanced history that syncs navigation events with the store
 
@@ -30,6 +31,10 @@ const App = () => (
             <Route exact path="/" component={ArtWorks} />
             <Route exact path="/sell" component={Sell} />
             <Route path="/artworks/:workId" component={ArtWork} />
+            <Route
+              path="/admin/artwork/:artworkId/edit"
+              component={ArtworkEdit}
+            />
             <Route path="/cart/shippingAddress/:workId?" component={Cart} />
             <Route path="/cart/placeOrder/:workId?" component={Cart} />
             <Route path="/orders/:orderId" component={Cart} />

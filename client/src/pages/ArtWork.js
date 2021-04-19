@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import IconButton from '@material-ui/core/IconButton';
 import { Typography, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Divider from '@material-ui/core/Divider';
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
@@ -39,20 +39,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // match params has the id from the router /:workId
-function Artwork({ match, history }) {
+function Artwork() {
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { workId } = useParams();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  useEffect(() => {
-    console.log('artwork');
-    dispatch(fetchOneArtWork(match.params.workId));
-  }, [dispatch, match]);
-
   const theArtwork = useSelector((state) => state.theArtwork);
   const { error, loading, artwork } = theArtwork;
+
+  const theCart = useSelector((state) => state.theCart);
+  const { loadingCart } = theCart;
+
+  const artistDetails = useSelector((state) => state.artistDetails);
+  const { theArtist } = artistDetails;
+
+  useEffect(() => {
+    if (!artwork._id) {
+      dispatch(fetchOneArtWork(workId));
+    } else if (artwork.artist) {
+      dispatch(fetchArtistDetails(artwork.artist));
+    }
+  }, [dispatch, workId, artwork]);
 
   useEffect(() => {
     if (artwork.quantity < 1) {
@@ -60,24 +71,10 @@ function Artwork({ match, history }) {
     }
   }, [artwork]);
 
-  useEffect(() => {
-    if (artwork.artist) {
-      dispatch(fetchArtistDetails(artwork.artist));
-    }
-  }, [artwork.artist]);
-
-  const theCart = useSelector((state) => state.theCart);
-  const { loadingCart } = theCart;
-
-  const artistDetails = useSelector((state) => state.artistDetails);
-  const { artist } = artistDetails;
-
   const onAddToCart = () => {
     if (userInfo) {
-      dispatch(addToCart(match.params.workId));
-      history.push(
-        `/cart/shippingAddress/${match.params.workId}?title=${artwork.title}`
-      );
+      dispatch(addToCart(workId));
+      history.push(`/cart/shippingAddress/${workId}?title=${artwork.title}`);
     } else {
       history.push(`/login`);
     }
@@ -128,10 +125,10 @@ function Artwork({ match, history }) {
             <Paper className={classes.paper} elevation={0}>
               <Grid item xs={12}>
                 <Typography>
-                  {!artist.firstName ? (
+                  {!theArtist && !theArtist.firstName ? (
                     <CircularProgress />
                   ) : (
-                    `${artist.firstName} ${artist.lastName}`
+                    `${theArtist.firstName} ${theArtist.lastName}`
                   )}
                 </Typography>
               </Grid>
@@ -171,7 +168,7 @@ function Artwork({ match, history }) {
                   {theArt.subtitle}
                 </Typography>
                 <Typography color="#666666" variant="body1">
-                  {classification}
+                  {theArt.classification}
                 </Typography>
                 <Typography color="#666666" variant="subtitle1">
                   {theArt.year}

@@ -7,7 +7,6 @@ urlpatterns = [
          name='token_obtain_pair'),
     path('register/', views.registerUser, name='register'),
     path('profile/', views.fetchUserProfile, name='users-profile'),
-    path('artist/<int:pk>/', views.fetchArtist, name='artist'),
     path('profile/update/', views.updateUserProfile, name='users-profile-update'),
     path('update/<int:pk>', views.updateUserById, name='user-update_by_id'),
     path('', views.fetchUsers, name='users'),

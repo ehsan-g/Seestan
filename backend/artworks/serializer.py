@@ -60,6 +60,38 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.last_name
 
 
+class ArtistSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField(read_only=True)
+    firstName = serializers.SerializerMethodField(read_only=True)
+    lastName = serializers.SerializerMethodField(read_only=True)
+    userId = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Artist
+        fields = ['userId', '_id', 'username',
+                  'firstName', 'lastName']
+
+    def get_userId(self, obj):
+        user = obj.user
+        userId = user.id
+        return userId
+
+    def get_username(self, obj):
+        user = obj.user
+        email = user.email
+        return email
+
+    def get_firstName(self, obj):
+        user = obj.user
+        firstName = user.first_name
+        return firstName
+
+    def get_lastName(self, obj):
+        user = obj.user
+        lastName = user.last_name
+        return lastName
+
+
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 

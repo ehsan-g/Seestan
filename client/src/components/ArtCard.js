@@ -6,17 +6,15 @@ import { Grid, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
-import Link from '@material-ui/core/Link';
-import { useDispatch, useSelector } from 'react-redux';
-// import { fetchArtistDetails } from '../actions/index';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function ArtCard({ artwork }) {
   const [theArtist, setTheArtist] = useState('');
 
   useEffect(() => {
     const fetchArtistLocally = async () => {
-      const { data } = await axios.get(`/api/users/artist/${artwork.artist}/`);
+      const { data } = await axios.get(`/api/artists/${artwork.artist}`);
       setTheArtist(data);
     };
     fetchArtistLocally();
@@ -32,7 +30,7 @@ export default function ArtCard({ artwork }) {
     >
       <Link
         style={{ position: 'absolute', width: '100%', height: '100%' }}
-        href={`/artworks/${artwork._id}`}
+        to={`/artworks/${artwork._id}`}
       />
       <img
         srcSet={`${artwork.image}?w=161&fit=crop&auto=format 1x,

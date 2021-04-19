@@ -90,15 +90,6 @@ def fetchUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
-
-@api_view(['GET'])
-def fetchArtist(request, pk):
-    artist = Artist.objects.get(_id=pk)
-    user = artist.user
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
-
-
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def fetchUsers(request):

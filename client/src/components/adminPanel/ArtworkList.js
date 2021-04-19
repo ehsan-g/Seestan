@@ -30,17 +30,23 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { deleteArtwork, fetchAllArtWorks } from '../../actions';
 import Loader from '../Loader';
 import Message from '../Message';
+import { ARTWORK_UPDATE_RESET } from '../../constants/artworkConstants';
 
-function createData(_id, title, subtitle, artist, price) {
+function createData(_id, title, subtitle, artist, price, editIcon) {
   return {
     _id,
     title,
     subtitle,
     artist,
     price,
+    editIcon,
   };
 }
 
@@ -102,6 +108,12 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: 'قیمت',
+  },
+  {
+    id: 'editIcon',
+    numeric: false,
+    disablePadding: false,
+    label: 'ویرایش',
   },
 ];
 
@@ -239,9 +251,9 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="فیلتر">
+        <Tooltip title="اضافه کزدن">
           <IconButton>
-            <FilterListIcon />
+            <AddCircleIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -257,6 +269,7 @@ EnhancedTableToolbar.propTypes = {
 export default function ArtworkList() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -277,28 +290,42 @@ export default function ArtworkList() {
   const artworkDeleteList = useSelector((state) => state.artworkDeleteList);
   const { success: successDelete } = artworkDeleteList;
 
+  const artworkUpdate = useSelector((state) => state.artworkUpdate);
+  const { success: successUpdate } = artworkUpdate;
+
   const deleteHandler = () => {
     setOpen(true);
   };
 
   const confirmHandler = () => {
+    for (let i = 0; i < selected.length; i++) {
+      const found = rows.find((element) => element._id === selected[i]);
+
+      const elementIndex = rows.indexOf(found);
+      rows.splice(elementIndex, 1);
+    }
     dispatch(deleteArtwork(selected));
+    setOpen(false);
   };
 
   useEffect(() => {
     if (!rows[0] || successDelete) {
       dispatch(fetchAllArtWorks());
+    } else if (successUpdate) {
+      dispatch({ type: ARTWORK_UPDATE_RESET });
+      toast.success(`ذخیره شد`);
+      dispatch(fetchAllArtWorks());
 
-      for (let i = 0; i < selected.length; i++) {
-        const found = rows.find((element) => element._id === selected[i]);
-
-        const elementIndex = rows.indexOf(found);
-        rows.splice(elementIndex, 1);
+      rows.splice(0, rows.length);
+      while (rows.length > 0) {
+        rows.pop();
       }
-      setOpen(false);
     }
-  }, [successDelete, dispatch, selected]);
+  }, [dispatch, successDelete, successUpdate]);
 
+  const onEdit = (id) => {
+    history.push(`/admin/artwork/${id}/edit`);
+  };
   if (artworks && artworks[0] && !rows[0]) {
     artworks.forEach((artwork) => {
       const data = createData(
@@ -306,7 +333,10 @@ export default function ArtworkList() {
         artwork.title,
         artwork.subtitle,
         artwork.artist,
-        artwork.price
+        artwork.price,
+        <IconButton onClick={() => onEdit(artwork._id)}>
+          <EditOutlinedIcon />
+        </IconButton>
       );
       rows.push(data);
     });
@@ -410,14 +440,16 @@ export default function ArtworkList() {
                       return (
                         <TableRow
                           hover
-                          onClick={(event) => handleClick(event, row._id)}
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
                           key={row._id}
                           selected={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
+                          <TableCell
+                            padding="checkbox"
+                            onClick={(event) => handleClick(event, row._id)}
+                          >
                             <Checkbox
                               color="primary"
                               checked={isItemSelected}
@@ -440,6 +472,7 @@ export default function ArtworkList() {
                           <TableCell align="right">{row.subtitle}</TableCell>
                           <TableCell align="right">{row.artist}</TableCell>
                           <TableCell align="right">{row.price}</TableCell>
+                          <TableCell align="right">{row.editIcon}</TableCell>
                         </TableRow>
                       );
                     })}

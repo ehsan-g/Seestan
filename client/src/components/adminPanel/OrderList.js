@@ -34,7 +34,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Message from '../Message';
 import Loader from '../Loader';
-import { listUsers, deleteUser } from '../../actions';
+import { fetchUsers, deleteUser } from '../../actions';
 
 function createData(_id, firstName, lastName, email, isAdmin) {
   return {
@@ -256,7 +256,7 @@ EnhancedTableToolbar.propTypes = {
   deleteHandler: PropTypes.func.isRequired,
 };
 
-export default function UserList() {
+export default function OrderList() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [order, setOrder] = useState('asc');
@@ -295,7 +295,7 @@ export default function UserList() {
 
   useEffect(() => {
     if (!rows[0] || successDelete) {
-      dispatch(listUsers());
+      dispatch(fetchUsers());
     }
   }, [dispatch, successDelete]);
 

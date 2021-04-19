@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
 import { Typography, Grid, Button, CssBaseline } from '@material-ui/core';
-import { toast } from 'react-toastify';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -14,7 +13,6 @@ import {
 } from '../actions/index.js';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { USER_UPDATE_RESET } from '../constants/userConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +39,7 @@ export default function UserEdit() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-
+  console.log(isAdmin);
   const dispatch = useDispatch();
   const { userId } = useParams();
 
@@ -57,7 +55,6 @@ export default function UserEdit() {
 
   useEffect(() => {
     if (successUpdate) {
-      dispatch({ type: USER_UPDATE_RESET });
       history.push('/admin/users');
     } else if (!user.firstName || user._id !== Number(userId)) {
       dispatch(fetchUserDetails(userId));
@@ -83,7 +80,6 @@ export default function UserEdit() {
     dispatch(
       updateUser({ _id: user._id, firstName, lastName, email, isAdmin })
     );
-    toast.success(`ذخیزه شد`);
   };
 
   const formFields = [
@@ -138,7 +134,7 @@ export default function UserEdit() {
           name="isAdmin"
           formControlProps={{ margin: 'none' }}
           data={{ label: 'ادمین', value: isAdmin }}
-          onChange={(e) => setIsAdmin(e.target.value)}
+          onChange={(e) => setIsAdmin(e.target.checked)}
         />
       ),
     },
@@ -147,8 +143,9 @@ export default function UserEdit() {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <Link to="/admin/users">برگشت</Link>
+      {loadingUpdate && <Loader />}
+      {errorUpdate && <Message severity="error">{errorUpdate}</Message>}
       <Typography variant="h6" align="center">
         ویرایش کاربر
       </Typography>

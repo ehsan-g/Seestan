@@ -6,6 +6,7 @@ from artworks.serializer import ArtworkSerializer
 from django.contrib.auth.models import User
 from artworks.models import Artwork, Artist
 from rest_framework import status
+from artworks.serializer import UserSerializer
 
 
 @api_view(['GET'])
@@ -26,7 +27,7 @@ def fetchTheArtWork(request, pk):
 @permission_classes([IsAdminUser])
 def createTheArtWork(request):
     user = request.user
-    artist = Artist.objects.get(_id=2)
+    artist = Artist.objects.get(_id=4)
     artwork = Artwork.objects.create(
         accountOwner=user,
         artist=artist,
@@ -46,7 +47,6 @@ def createTheArtWork(request):
 def updateTheArtwork(request, pk):
     data = request.data
     artwork = Artwork.objects.get(_id=pk)
-    artwork.accountOwner = user,
     artwork.artist = data['artist']
     artwork.title = data['title']
     artwork.subtitle = data['subtitle']

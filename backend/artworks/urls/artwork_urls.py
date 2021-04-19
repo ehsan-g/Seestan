@@ -7,5 +7,5 @@ urlpatterns = [
     path('delete/', views.deleteTheArtwork, name='artwork-delete'),
     path('create/', views.createTheArtWork, name='artwork-create'),
     path('update/<int:pk>/', views.updateTheArtwork, name='artwork-update'),
-    path('<str:pk>/', views.fetchTheArtWork, name='theArtWork'),
+    path('<int:pk>/', views.fetchTheArtWork, name='theArtWork'),
 ]

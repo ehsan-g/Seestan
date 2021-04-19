@@ -26,9 +26,9 @@ function AdminPanel() {
     <Grid
       container
       direction="column"
-      justifyContent="center"
+      // justifyContent="center"
       alignItems="center"
-      sx={{ marginTop: 15 }}
+      sx={{ marginTop: 15, minHeight: '100vh' }}
     >
       <AdminBreadcrumbs />
       {route === 'users' ? (
