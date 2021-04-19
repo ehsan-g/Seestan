@@ -90,7 +90,7 @@ export default function ArtworkEdit() {
       // setTitle(artwork.title);
       // setArtist(artwork.artist);
     }
-  }, [artworkId, dispatch, successUpdate, history]);
+  }, [artwork, dispatch, successUpdate, history, artworkId]);
 
   useEffect(() => {
     dispatch(headerStatus(false));
@@ -148,34 +148,39 @@ export default function ArtworkEdit() {
     {
       size: 6,
       field: (
-        <FormControl
-          variant="outlined"
-          style={{ minWidth: '100%' }}
-          margin="normal"
-        >
-          <InputLabel htmlFor="uncontrolled-native" style={{ paddingRight: 5 }}>
-            {' '}
-            هنرمند
-          </InputLabel>
-
-          <NativeSelect
-            defaultValue={theArtist._id}
-            inputProps={{
-              name: 'هنرمند',
-              id: 'artist_uncontrolled-native',
-            }}
-            onChange={(e) => setArtist(e.target.value)}
-          >
-            {theArtist && theArtist._id && artists
-              ? artists.map((item) =>
-                  item._id ? (
-                    <option value={item._id} key={item._id}>
-                      {item._id} - {item.firstName}
-                    </option>
-                  ) : null
-                )
-              : null}
-          </NativeSelect>
+        <FormControl variant="outlined" style={{ minWidth: '100%' }}>
+          {artwork && artwork.artist && artists && (
+            <>
+              <InputLabel
+                htmlFor="uncontrolled-native"
+                style={{ paddingRight: 5 }}
+              >
+                {' '}
+                هنرمند
+              </InputLabel>
+              <Select
+                defaultValue={theArtist._id}
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                onChange={(e) => setArtist(e.target.value)}
+                label="هنرمند"
+              >
+                {artists[0]
+                  ? artists.map((item, idx) =>
+                      item ? (
+                        <MenuItem value={item._id} key={idx}>
+                          {item._id} - {item.firstName}
+                        </MenuItem>
+                      ) : (
+                        <MenuItem value={item.id} key={idx} disabled>
+                          {item._id} - {item.firstName}
+                        </MenuItem>
+                      )
+                    )
+                  : null}
+              </Select>
+            </>
+          )}
         </FormControl>
       ),
     },
