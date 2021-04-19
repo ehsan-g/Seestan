@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
-import { Typography, Grid, Button } from '@material-ui/core';
+import { Typography, Grid, Button, ownerDocument } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -58,7 +58,7 @@ export default function ArtworkEdit() {
   const { artworkId } = useParams();
 
   const userList = useSelector((state) => state.userList);
-  const { users } = userList;
+  const { users, loading: loadingUsers } = userList;
 
   const theArtwork = useSelector((state) => state.theArtwork);
   const { error, loading, artwork } = theArtwork;
@@ -67,7 +67,7 @@ export default function ArtworkEdit() {
   const { artists } = artistList;
 
   const artistDetails = useSelector((state) => state.artistDetails);
-  const { theArtist } = artistDetails;
+  const { theArtist, loading: loadingTheArtist } = artistDetails;
 
   const artworkUpdate = useSelector((state) => state.artworkUpdate);
   const {
@@ -83,14 +83,14 @@ export default function ArtworkEdit() {
       dispatch(fetchOneArtWork(artworkId));
       dispatch(fetchUsers());
       dispatch(fetchArtists());
-      dispatch(fetchArtistDetails(2));
-    } else {
+    } else if (artwork.artist) {
       dispatch(fetchArtistDetails(artwork.artist));
+    } else {
       setAccountOwner(artwork.accountOwner);
-      setTitle(artwork.title);
-      setArtist(artwork.artist);
+      // setTitle(artwork.title);
+      // setArtist(artwork.artist);
     }
-  }, [artwork, artworkId, dispatch, successUpdate, history]);
+  }, [artworkId, dispatch, successUpdate, history]);
 
   useEffect(() => {
     dispatch(headerStatus(false));
@@ -104,39 +104,44 @@ export default function ArtworkEdit() {
     await sleep(300);
     dispatch(updateArtwork({ _id: artwork._id, title }));
   };
-  console.log(theArtist);
+  console.log(artwork.accountOwner);
   const formFields = [
     {
       size: 6,
       field: (
-        <FormControl
-          variant="outlined"
-          style={{ minWidth: '100%' }}
-          margin="normal"
-        >
-          <InputLabel htmlFor="uncontrolled-native" style={{ paddingRight: 5 }}>
-            {' '}
-            صاحب اکانت
-          </InputLabel>
-
-          <NativeSelect
-            defaultValue={accountOwner}
-            inputProps={{
-              name: 'صاحب اکانت',
-              id: 'owner_uncontrolled-native',
-            }}
-            onChange={(e) => setAccountOwner(e.target.value)}
-          >
-            {users
-              ? users.map((user) =>
-                  user.isAdmin ? (
-                    <option value={user.id} key={user.id}>
-                      {user.id} - {user.firstName}
-                    </option>
-                  ) : null
-                )
-              : null}
-          </NativeSelect>
+        <FormControl variant="outlined" style={{ minWidth: '100%' }}>
+          {artwork && artwork.accountOwner && users && (
+            <>
+              <InputLabel
+                htmlFor="uncontrolled-native"
+                style={{ paddingRight: 5 }}
+              >
+                {' '}
+                صاحب اکانت
+              </InputLabel>
+              <Select
+                defaultValue={artwork.accountOwner}
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                onChange={(e) => setAccountOwner(e.target.value)}
+                label="صاحب اکانت"
+              >
+                {users[0]
+                  ? users.map((user, idx) =>
+                      user.isAdmin ? (
+                        <MenuItem value={user.id} key={idx}>
+                          {user.id} - {user.firstName}
+                        </MenuItem>
+                      ) : (
+                        <MenuItem value={user.id} key={idx} disabled>
+                          {user.id} - {user.firstName}
+                        </MenuItem>
+                      )
+                    )
+                  : null}
+              </Select>
+            </>
+          )}
         </FormControl>
       ),
     },
@@ -154,7 +159,7 @@ export default function ArtworkEdit() {
           </InputLabel>
 
           <NativeSelect
-            defaultValue={artist}
+            defaultValue={theArtist._id}
             inputProps={{
               name: 'هنرمند',
               id: 'artist_uncontrolled-native',
@@ -523,7 +528,7 @@ export default function ArtworkEdit() {
       </Typography>
       {error ? (
         <Message severity="error">{error}</Message>
-      ) : loading ? (
+      ) : loading || loadingUsers ? (
         <Loader />
       ) : (
         <Form

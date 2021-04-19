@@ -168,7 +168,7 @@ function Artwork() {
                   {theArt.subtitle}
                 </Typography>
                 <Typography color="#666666" variant="body1">
-                  {theArt.classification}
+                  {classification}
                 </Typography>
                 <Typography color="#666666" variant="subtitle1">
                   {theArt.year}
