@@ -38,7 +38,10 @@ import { toast } from 'react-toastify';
 import Message from '../Message';
 import Loader from '../Loader';
 import { fetchUsers, deleteUser } from '../../actions';
-import { USER_UPDATE_RESET } from '../../constants/userConstants';
+import {
+  USER_UPDATE_RESET,
+  USER_LIST_RESET,
+} from '../../constants/userConstants';
 
 function createData(_id, firstName, lastName, email, isAdmin, editIcon) {
   return {
@@ -50,8 +53,6 @@ function createData(_id, firstName, lastName, email, isAdmin, editIcon) {
     editIcon,
   };
 }
-
-const rows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -276,6 +277,7 @@ export default function UserList() {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rows, setRows] = useState([]);
 
   // Dialog from here
   const [open, setOpen] = useState(false);
@@ -292,41 +294,10 @@ export default function UserList() {
   const userUpdate = useSelector((state) => state.userUpdate);
   const { success: successUpdate } = userUpdate;
 
-  const deleteHandler = () => {
-    setOpen(true);
-  };
-
-  const confirmHandler = () => {
-    for (let i = 0; i < selected.length; i++) {
-      const found = rows.find((element) => element._id === selected[i]);
-
-      const elementIndex = rows.indexOf(found);
-      rows.splice(elementIndex, 1);
-    }
-    dispatch(deleteUser(selected));
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    if (!rows[0] || successDelete) {
-      dispatch(fetchUsers());
-    } else if (successUpdate) {
-      dispatch({ type: USER_UPDATE_RESET });
-      toast.success(`ذخیره شد`);
-      dispatch(fetchUsers());
-
-      rows.splice(0, rows.length);
-      while (rows.length > 0) {
-        rows.pop();
-      }
-    }
-  }, [dispatch, successDelete, successUpdate]);
-
   const onEdit = (id) => {
     history.push(`/admin/user/${id}/edit`);
   };
-
-  if ((users && users[0] && !rows[0]) || successUpdate) {
+  const createTheRows = () => {
     users.forEach((user) => {
       const data = createData(
         user._id,
@@ -344,6 +315,37 @@ export default function UserList() {
       );
       rows.push(data);
     });
+  };
+  const deleteHandler = () => {
+    setOpen(true);
+  };
+
+  const confirmHandler = () => {
+    for (let i = 0; i < selected.length; i++) {
+      const found = rows.find((element) => element._id === selected[i]);
+      const elementIndex = rows.indexOf(found);
+      rows.splice(elementIndex, 1);
+    }
+    dispatch(deleteUser(selected));
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (!rows[0] || successDelete) {
+      dispatch(fetchUsers());
+    } else if (successUpdate) {
+      dispatch({ type: USER_UPDATE_RESET });
+      dispatch({ type: USER_LIST_RESET });
+
+      setRows([]);
+      dispatch(fetchUsers());
+      createTheRows();
+      toast.success(`ذخیره شد`);
+    }
+  }, [dispatch, successDelete, successUpdate, rows]);
+
+  if (users && users[0] && !rows[0]) {
+    createTheRows();
   }
   //  Dialog to here
 
@@ -492,6 +494,7 @@ export default function UserList() {
               </Table>
             </TableContainer>
             <TablePagination
+              labelRowsPerPage="ردیف هر صفحه"
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={rows.length}
@@ -503,7 +506,7 @@ export default function UserList() {
           </Paper>
           <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
+            label="فشرده "
           />
         </div>
       )}

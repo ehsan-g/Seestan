@@ -470,7 +470,7 @@ export default function OrderList() {
           </Paper>
           <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
+            label="فشرده "
           />
         </div>
       )}

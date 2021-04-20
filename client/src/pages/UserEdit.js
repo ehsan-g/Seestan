@@ -63,7 +63,6 @@ export default function UserEdit() {
       setLastName(user.lastName);
       setEmail(user.email);
       setIsAdmin(user.isAdmin);
-      console.log(user.isAdmin);
     }
   }, [user, userId, dispatch, successUpdate, history]);
 
@@ -146,7 +145,7 @@ export default function UserEdit() {
       <Link to="/admin/users">برگشت</Link>
       {loadingUpdate && <Loader />}
       {errorUpdate && <Message severity="error">{errorUpdate}</Message>}
-      <Typography variant="h6" align="center">
+      <Typography variant="h6" align="center" sx={{ padding: 2 }}>
         ویرایش کاربر
       </Typography>
       {error ? (

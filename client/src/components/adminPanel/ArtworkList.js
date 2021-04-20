@@ -37,7 +37,11 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { deleteArtwork, fetchAllArtWorks } from '../../actions';
 import Loader from '../Loader';
 import Message from '../Message';
-import { ARTWORK_UPDATE_RESET } from '../../constants/artworkConstants';
+import {
+  ARTWORK_CREATE_RESET,
+  ARTWORK_UPDATE_RESET,
+  ARTWORK_LIST_RESET,
+} from '../../constants/artworkConstants';
 
 function createData(_id, title, subtitle, artist, price, editIcon) {
   return {
@@ -49,8 +53,6 @@ function createData(_id, title, subtitle, artist, price, editIcon) {
     editIcon,
   };
 }
-
-const rows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -218,6 +220,9 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, deleteHandler } = props;
 
+  const handleOnCreate = () => {
+    console.log('create');
+  };
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -252,7 +257,7 @@ const EnhancedTableToolbar = (props) => {
         </Tooltip>
       ) : (
         <Tooltip title="اضافه کزدن">
-          <IconButton>
+          <IconButton onClick={handleOnCreate}>
             <AddCircleIcon />
           </IconButton>
         </Tooltip>
@@ -276,6 +281,7 @@ export default function ArtworkList() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState([]);
 
   // Dialog from here
   const [open, setOpen] = useState(false);
@@ -290,8 +296,35 @@ export default function ArtworkList() {
   const artworkDeleteList = useSelector((state) => state.artworkDeleteList);
   const { success: successDelete } = artworkDeleteList;
 
+  const artworkCreate = useSelector((state) => state.artworkCreate);
+  const {
+    loading: loadingCreate,
+    success: successCreate,
+    createdArtwork,
+  } = artworkCreate;
+
   const artworkUpdate = useSelector((state) => state.artworkUpdate);
   const { success: successUpdate } = artworkUpdate;
+
+  const onEdit = (id) => {
+    history.push(`/admin/artwork/${id}/edit`);
+  };
+
+  const createTheRows = () => {
+    artworks.forEach((artwork) => {
+      const data = createData(
+        artwork._id,
+        artwork.title,
+        artwork.subtitle,
+        artwork.artist,
+        artwork.price,
+        <IconButton onClick={() => onEdit(artwork._id)}>
+          <EditOutlinedIcon />
+        </IconButton>
+      );
+      rows.push(data);
+    });
+  };
 
   const deleteHandler = () => {
     setOpen(true);
@@ -309,37 +342,22 @@ export default function ArtworkList() {
   };
 
   useEffect(() => {
+    dispatch({ type: ARTWORK_CREATE_RESET });
+
     if (!rows[0] || successDelete) {
       dispatch(fetchAllArtWorks());
     } else if (successUpdate) {
       dispatch({ type: ARTWORK_UPDATE_RESET });
-      toast.success(`ذخیره شد`);
+      dispatch({ type: ARTWORK_LIST_RESET });
+      setRows([]);
       dispatch(fetchAllArtWorks());
-
-      rows.splice(0, rows.length);
-      while (rows.length > 0) {
-        rows.pop();
-      }
+      toast.success(`ذخیره شد`);
+      createTheRows();
     }
-  }, [dispatch, successDelete, successUpdate]);
+  }, [dispatch, successDelete, successUpdate, rows]);
 
-  const onEdit = (id) => {
-    history.push(`/admin/artwork/${id}/edit`);
-  };
   if (artworks && artworks[0] && !rows[0]) {
-    artworks.forEach((artwork) => {
-      const data = createData(
-        artwork._id,
-        artwork.title,
-        artwork.subtitle,
-        artwork.artist,
-        artwork.price,
-        <IconButton onClick={() => onEdit(artwork._id)}>
-          <EditOutlinedIcon />
-        </IconButton>
-      );
-      rows.push(data);
-    });
+    createTheRows();
   }
 
   //  Dialog to here
@@ -489,6 +507,7 @@ export default function ArtworkList() {
               </Table>
             </TableContainer>
             <TablePagination
+              labelRowsPerPage="ردیف هر صفحه"
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={rows.length}
@@ -500,7 +519,7 @@ export default function ArtworkList() {
           </Paper>
           <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
+            label="فشرده "
           />
         </div>
       )}

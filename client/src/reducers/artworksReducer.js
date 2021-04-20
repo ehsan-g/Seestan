@@ -2,6 +2,7 @@ import {
   ARTWORK_LIST_REQUEST,
   ARTWORK_LIST_SUCCESS,
   ARTWORK_LIST_FAIL,
+  ARTWORK_LIST_RESET,
   ARTWORK_DELETE_REQUEST,
   ARTWORK_DELETE_SUCCESS,
   ARTWORK_DELETE_FAIL,
@@ -15,6 +16,8 @@ export const artworksReducer = (state = { artworks: [] }, action) => {
       return { loading: false, artworks: action.payload };
     case ARTWORK_LIST_FAIL:
       return { loading: false, error: action.payload };
+    case ARTWORK_LIST_RESET:
+      return { artworks: [] };
     default:
       return state;
   }

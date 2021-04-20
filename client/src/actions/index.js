@@ -7,6 +7,9 @@ import {
   ARTWORK_DETAILS_REQUEST,
   ARTWORK_DETAILS_SUCCESS,
   ARTWORK_DETAILS_FAIL,
+  ARTWORK_CREATE_FAIL,
+  ARTWORK_CREATE_SUCCESS,
+  ARTWORK_CREATE_REQUEST,
   ARTWORK_DELETE_REQUEST,
   ARTWORK_DELETE_SUCCESS,
   ARTWORK_DELETE_FAIL,
@@ -235,7 +238,6 @@ export const fetchArtistDetails = (id) => async (dispatch) => {
     dispatch({ type: ARTIST_DETAILS_REQUEST });
 
     const { data } = await axios.get(`/api/artists/${id}`);
-    console.log(data);
     dispatch({
       type: ARTIST_DETAILS_SUCCESS,
       payload: data,
@@ -638,7 +640,7 @@ export const updateArtwork = (artwork) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/artworks/update/${artwork._id}`,
+      `/api/artworks/update/${artwork._id}/`,
       artwork,
       config
     );
@@ -686,6 +688,37 @@ export const fetchArtists = () => async (dispatch, getState) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: ARTIST_LIST_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const createArtwork = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ARTWORK_CREATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/artworks/create/`, {}, config);
+    dispatch({
+      type: ARTWORK_CREATE_REQUEST,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ARTWORK_CREATE_REQUEST,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail

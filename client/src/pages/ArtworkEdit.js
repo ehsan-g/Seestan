@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
 
 const validate = (email) => {
   const errors = {};
-  if (!email) {
-    errors.email = 'لطفا ایمیل خود را وارد کنید';
-  }
+  // if (!email) {
+  //   errors.email = 'لطفا ایمیل خود را وارد کنید';
+  // }
   return errors;
 };
 
@@ -140,9 +140,38 @@ export default function ArtworkEdit() {
   const onSubmit = async () => {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(300);
-    dispatch(updateArtwork({ _id: artwork._id, title }));
+    dispatch(
+      updateArtwork({
+        _id: artwork._id,
+        accountOwner,
+        artist,
+        title,
+        subtitle,
+        year,
+        category,
+        medium,
+        condition,
+        classifications,
+        image,
+        width,
+        height,
+        depth,
+        unit,
+        isAnEdition,
+        editionNum,
+        editionSize,
+        isSigned,
+        isAuthenticated,
+        frame,
+        isPrice,
+        price,
+        aboutWork,
+        provenance,
+        artLocation,
+        quantity,
+      })
+    );
   };
-  console.log(artwork.isAnEdition);
   const formFields = [
     {
       size: 6,
@@ -634,8 +663,8 @@ export default function ArtworkEdit() {
       <Link to="/admin/artworks">برگشت</Link>
       {loadingUpdate && <Loader />}
       {errorUpdate && <Message severity="error">{errorUpdate}</Message>}
-      <Typography variant="h6" align="center">
-        ویرایش کاربر
+      <Typography variant="h6" align="center" sx={{ padding: 2 }}>
+        ویرایش {title}
       </Typography>
       {error ? (
         <Message severity="error">{error}</Message>

@@ -1,6 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { artworksReducer, artworkDeleteReducer } from './artworksReducer.js';
-import { artworkReducer, artworkUpdateReducer } from './artworkReducer.js';
+import {
+  artworkReducer,
+  artworkUpdateReducer,
+  artworkCreateReducer,
+} from './artworkReducer.js';
 import { artistDetailsReducer, artistsReducer } from './artistReducer';
 import cartReducer from './cartReducer.js';
 import {
@@ -33,6 +37,7 @@ export default combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   userList: usersReducer,
   userDeleteList: userDeleteReducer,
+  artworkCreate: artworkCreateReducer,
   userUpdate: userUpdateReducer, // update user from admin
   artistList: artistsReducer,
   artistDetails: artistDetailsReducer,

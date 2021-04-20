@@ -56,13 +56,35 @@ def createTheArtWork(request):
 def updateTheArtwork(request, pk):
     data = request.data
     artwork = Artwork.objects.get(_id=pk)
-    artwork.artist = data['artist']
+    artist = Artist.objects.get(_id=data['artist'])
+    accountOwner = User.objects.get(id=data['accountOwner'])
+    artwork.accountOwner = accountOwner
+    artwork.artist = artist
     artwork.title = data['title']
     artwork.subtitle = data['subtitle']
+    artwork.year = data['year']
+    artwork.category = data['category']
+    artwork.medium = data['medium']
+    artwork.condition = data['condition']
+    artwork.classifications = data['classifications']
+    artwork.image = data['image']
     artwork.width = data['width']
     artwork.height = data['height']
     artwork.depth = data['depth']
+    artwork.unit = data['unit']
+    artwork.isAnEdition = data['isAnEdition']
+    artwork.editionNum = data['editionNum']
+    artwork.editionSize = data['editionSize']
+    artwork.isSigned = data['isSigned']
+    artwork.isAuthenticated = data['isAuthenticated']
+    artwork.frame = data['frame']
+    artwork.isPrice = data['isPrice']
     artwork.price = data['price']
+    artwork.aboutWork = data['aboutWork']
+    artwork.provenance = data['provenance']
+    artwork.artLocation = data['artLocation']
+    artwork.quantity = data['quantity']
+
     artwork.save()
     serializer = ArtworkSerializer(artwork, many=False)
     return Response(serializer.data)
