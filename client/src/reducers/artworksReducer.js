@@ -6,6 +6,7 @@ import {
   ARTWORK_DELETE_REQUEST,
   ARTWORK_DELETE_SUCCESS,
   ARTWORK_DELETE_FAIL,
+  ARTWORK_DELETE_RESET,
 } from '../constants/artworkConstants';
 
 export const artworksReducer = (state = { artworks: [] }, action) => {
@@ -31,6 +32,8 @@ export const artworkDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case ARTWORK_DELETE_FAIL:
       return { loading: false, error: action.payload };
+    case ARTWORK_DELETE_RESET:
+      return {};
     default:
       return state;
   }

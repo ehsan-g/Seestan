@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-final-form';
 import { TextField, Checkboxes } from 'mui-rff';
-import { Typography, Grid, Button } from '@material-ui/core';
+import { Typography, Grid, Button, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -11,6 +12,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import axios from 'axios';
+import ImageUploading from 'react-images-uploading';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import {
@@ -21,6 +24,7 @@ import {
   fetchArtistDetails,
   fetchOneArtWork,
 } from '../actions/index.js';
+import UploadTheImage from '../components/UploadTheImage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,14 +36,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const validate = (email) => {
-  const errors = {};
-  // if (!email) {
-  //   errors.email = 'لطفا ایمیل خود را وارد کنید';
-  // }
-  return errors;
-};
 
 export default function ArtworkEdit() {
   const history = useHistory();
@@ -69,6 +65,7 @@ export default function ArtworkEdit() {
   const [provenance, setProvenance] = useState('');
   const [artLocation, setArtLocation] = useState('');
   const [quantity, setQuantity] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
   const { artworkId } = useParams();
@@ -172,12 +169,44 @@ export default function ArtworkEdit() {
       })
     );
   };
+
+  const validate = () => {
+    const errors = {};
+    if (!title) {
+      errors.title = 'لطفا عنوان را وارد کنید';
+    }
+    if (!width) {
+      errors.width = 'لطفا وارد کنید';
+    }
+    if (!height) {
+      errors.height = 'لطفا وارد کنید';
+    }
+    if (!depth) {
+      errors.depth = 'لطفا وارد کنید';
+    }
+
+    return errors;
+  };
   const formFields = [
+    {
+      size: 12,
+      field: (
+        <TextField
+          variant="outlined"
+          type="text"
+          label="عکس "
+          name="category"
+          value={image || ''}
+          margin="normal"
+          disabled
+        />
+      ),
+    },
     {
       size: 6,
       field: (
-        <FormControl variant="outlined" style={{ minWidth: '100%' }}>
-          {artwork && artwork.accountOwner && users && (
+        <FormControl variant="outlined" style={{ minWidth: '100%' }} required>
+          {artwork && artwork._id && users && (
             <>
               <InputLabel
                 htmlFor="uncontrolled-native"
@@ -215,8 +244,8 @@ export default function ArtworkEdit() {
     {
       size: 6,
       field: (
-        <FormControl variant="outlined" style={{ minWidth: '100%' }}>
-          {artwork && artwork.artist && artists && (
+        <FormControl variant="outlined" style={{ minWidth: '100%' }} required>
+          {artwork && theArtist && artists && (
             <>
               <InputLabel
                 htmlFor="uncontrolled-native"
@@ -262,6 +291,7 @@ export default function ArtworkEdit() {
           value={title || ''}
           onChange={(e) => setTitle(e.target.value)}
           margin="normal"
+          required
         />
       ),
     },
@@ -342,6 +372,7 @@ export default function ArtworkEdit() {
           variant="outlined"
           margin="normal"
           style={{ minWidth: '100%' }}
+          required
         >
           {artwork && artwork.accountOwner && users && (
             <>
@@ -378,20 +409,6 @@ export default function ArtworkEdit() {
       ),
     },
     {
-      size: 12,
-      field: (
-        <TextField
-          variant="outlined"
-          type="image"
-          label="عکس"
-          name="image"
-          value={image || ''}
-          onChange={(e) => setImage(e.target.value)}
-          margin="normal"
-        />
-      ),
-    },
-    {
       size: 3,
       field: (
         <TextField
@@ -402,6 +419,7 @@ export default function ArtworkEdit() {
           value={width || ''}
           onChange={(e) => setWidth(e.target.value)}
           margin="normal"
+          required
         />
       ),
     },
@@ -416,6 +434,7 @@ export default function ArtworkEdit() {
           value={height || ''}
           onChange={(e) => setHeight(e.target.value)}
           margin="normal"
+          required
         />
       ),
     },
@@ -430,6 +449,7 @@ export default function ArtworkEdit() {
           value={depth || ''}
           onChange={(e) => setDepth(e.target.value)}
           margin="normal"
+          required
         />
       ),
     },
@@ -658,6 +678,35 @@ export default function ArtworkEdit() {
   ];
   const classes = useStyles();
 
+  const [images, setImages] = useState([]);
+  const maxNumber = 1;
+
+  const onImageChange = async (imageList) => {
+    // data for submit
+    if (imageList[0]) {
+      const formData = new FormData();
+      formData.append('image', imageList[0].file);
+      formData.append('artworkId', artworkId);
+
+      setImages(imageList);
+
+      setUploading(true);
+      try {
+        const config = {
+          headers: { 'content-Type': 'multipart/form-data' },
+        };
+        const { data } = await axios.post(
+          '/api/artworks/upload/',
+          formData,
+          config
+        );
+        setImage(data);
+        setUploading(false);
+      } catch (error) {
+        setUploading(false);
+      }
+    }
+  };
   return (
     <div className={classes.root}>
       <Link to="/admin/artworks">برگشت</Link>
@@ -671,32 +720,107 @@ export default function ArtworkEdit() {
       ) : loading || loadingUsers || loadingArtistList || loadingTheArtist ? (
         <Loader />
       ) : (
-        <Form
-          onSubmit={onSubmit}
-          validate={validate}
-          initialValues={{ isAnEdition, isSigned, isAuthenticated, isPrice }}
-          render={({ handleSubmit, submitting }) => (
-            <form onSubmit={handleSubmit} noValidate>
-              <Grid container alignItems="flex-start" spacing={2}>
-                {formFields.map((item, idx) => (
-                  <Grid item xs={item.size} key={idx}>
-                    {item.field}
+        // image upload section
+        <Grid>
+          <Box
+            sx={{
+              width: '100%',
+              height: 300,
+              marginTop: 2,
+              bgcolor: '#f0f0f0',
+              ':hover': {
+                opacity: [0.9, 0.8, 0.7],
+              },
+            }}
+          >
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <ImageUploading
+                value={images}
+                onChange={onImageChange}
+                maxNumber={maxNumber}
+                dataURLKey="data_url"
+              >
+                {({
+                  imageList,
+                  onImageUpload,
+                  onImageUpdate,
+                  isDragging,
+                  dragProps,
+                }) => (
+                  <Grid className="upload__image-wrapper">
+                    {!imageList[0] && (
+                      <Button
+                        variant="outlined"
+                        style={isDragging ? { color: 'red' } : null}
+                        onClick={onImageUpload}
+                        {...dragProps}
+                      >
+                        آپلود عکس
+                      </Button>
+                    )}
+                    &nbsp;
+                    {imageList.map((theImage, index) => (
+                      <Grid
+                        key={index}
+                        container
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <img
+                          src={theImage.data_url}
+                          alt=""
+                          width="60%"
+                          style={{ maxHeight: 350 }}
+                        />
+
+                        <Grid className="image-item__btn-wrapper">
+                          <Button
+                            variant="outlined"
+                            onClick={() => onImageUpdate(index)}
+                          >
+                            ویرایش
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-                <Grid item xs={12} style={{ marginTop: 16 }}>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={submitting}
-                    fullWidth
-                  >
-                    ذخیره
-                  </Button>
+                )}
+              </ImageUploading>
+            </Grid>
+          </Box>
+          <Form
+            onSubmit={onSubmit}
+            validate={validate}
+            initialValues={{ isAnEdition, isSigned, isAuthenticated, isPrice }}
+            render={({ handleSubmit, submitting }) => (
+              <form onSubmit={handleSubmit} noValidate>
+                <Grid container alignItems="flex-start" spacing={2}>
+                  {formFields.map((item, idx) => (
+                    <Grid item xs={item.size} key={idx}>
+                      {item.field}
+                    </Grid>
+                  ))}
+                  <Grid item xs={12} style={{ marginTop: 16 }}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      disabled={submitting}
+                      fullWidth
+                    >
+                      ذخیره
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>
-          )}
-        />
+              </form>
+            )}
+          />
+        </Grid>
       )}
     </div>
   );

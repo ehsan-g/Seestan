@@ -713,12 +713,12 @@ export const createArtwork = () => async (dispatch, getState) => {
 
     const { data } = await axios.post(`/api/artworks/create/`, {}, config);
     dispatch({
-      type: ARTWORK_CREATE_REQUEST,
+      type: ARTWORK_CREATE_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: ARTWORK_CREATE_REQUEST,
+      type: ARTWORK_CREATE_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail

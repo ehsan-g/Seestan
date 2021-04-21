@@ -49,7 +49,7 @@ export const artworkCreateReducer = (state = {}, action) => {
     case ARTWORK_CREATE_REQUEST:
       return { loading: true };
     case ARTWORK_CREATE_SUCCESS:
-      return { loading: false, success: true, createdArtwork: action.paylod };
+      return { loading: false, success: true, createdArtwork: action.payload };
     case ARTWORK_CREATE_FAIL:
       return { loading: false, error: action.payload };
     case ARTWORK_CREATE_RESET:

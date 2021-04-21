@@ -34,13 +34,19 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { deleteArtwork, fetchAllArtWorks } from '../../actions';
+import {
+  createArtwork,
+  deleteArtwork,
+  fetchAllArtWorks,
+  fetchArtists,
+} from '../../actions';
 import Loader from '../Loader';
 import Message from '../Message';
 import {
   ARTWORK_CREATE_RESET,
   ARTWORK_UPDATE_RESET,
   ARTWORK_LIST_RESET,
+  ARTWORK_DELETE_RESET,
 } from '../../constants/artworkConstants';
 
 function createData(_id, title, subtitle, artist, price, editIcon) {
@@ -218,10 +224,16 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, deleteHandler } = props;
+  const { numSelected, deleteHandler, artists } = props;
 
+  const dispatch = useDispatch();
   const handleOnCreate = () => {
-    console.log('create');
+    // to prevent creating artworks with no artist
+    if (artists[0]) {
+      dispatch(createArtwork());
+    } else {
+      alert('هیچ هنرمندی یافت نشد. حداقل یک هنرمند به دیتا‌بیس اضافه کنید');
+    }
   };
   return (
     <Toolbar
@@ -257,7 +269,7 @@ const EnhancedTableToolbar = (props) => {
         </Tooltip>
       ) : (
         <Tooltip title="اضافه کزدن">
-          <IconButton onClick={handleOnCreate}>
+          <IconButton onClick={() => handleOnCreate()}>
             <AddCircleIcon />
           </IconButton>
         </Tooltip>
@@ -269,17 +281,19 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   deleteHandler: PropTypes.func.isRequired,
+  // dispatch: PropTypes.func.isRequired,
+  artists: PropTypes.array.isRequired,
 };
 
 export default function ArtworkList() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('_id');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
 
@@ -292,6 +306,9 @@ export default function ArtworkList() {
 
   const artworksList = useSelector((state) => state.artworks);
   const { loading, error, artworks } = artworksList;
+
+  const artistList = useSelector((state) => state.artistList);
+  const { loading: loadingArtists, error: errorArtists, artists } = artistList;
 
   const artworkDeleteList = useSelector((state) => state.artworkDeleteList);
   const { success: successDelete } = artworkDeleteList;
@@ -342,10 +359,14 @@ export default function ArtworkList() {
   };
 
   useEffect(() => {
-    dispatch({ type: ARTWORK_CREATE_RESET });
+    dispatch(fetchArtists());
+    dispatch(fetchAllArtWorks());
 
-    if (!rows[0] || successDelete) {
-      dispatch(fetchAllArtWorks());
+    if (successDelete) {
+      dispatch({ type: ARTWORK_DELETE_RESET });
+      dispatch({ type: ARTWORK_LIST_RESET });
+      setRows([]);
+      setSelected([]);
     } else if (successUpdate) {
       dispatch({ type: ARTWORK_UPDATE_RESET });
       dispatch({ type: ARTWORK_LIST_RESET });
@@ -353,8 +374,11 @@ export default function ArtworkList() {
       dispatch(fetchAllArtWorks());
       toast.success(`ذخیره شد`);
       createTheRows();
+    } else if (successCreate) {
+      dispatch({ type: ARTWORK_CREATE_RESET });
+      history.push(`/admin/artwork/${createdArtwork._id}/edit`);
     }
-  }, [dispatch, successDelete, successUpdate, rows]);
+  }, [dispatch, successDelete, successUpdate, rows, successCreate]);
 
   if (artworks && artworks[0] && !rows[0]) {
     createTheRows();
@@ -418,7 +442,7 @@ export default function ArtworkList() {
 
   return (
     <>
-      {loading ? (
+      {loading || loadingCreate ? (
         <Loader />
       ) : error ? (
         <div className={classes.root}>
@@ -432,6 +456,8 @@ export default function ArtworkList() {
             <EnhancedTableToolbar
               numSelected={selected.length}
               deleteHandler={deleteHandler}
+              dispatch={dispatch}
+              artists={artists}
             />
             <TableContainer>
               <Table

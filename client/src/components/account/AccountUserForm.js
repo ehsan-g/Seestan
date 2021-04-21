@@ -125,6 +125,7 @@ function AccountUserForm() {
         <TextField
           label="ایمیل"
           name="email"
+          type="email"
           value={email || ''}
           margin="none"
           variant="filled"

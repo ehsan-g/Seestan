@@ -109,6 +109,7 @@ export default function UserEdit() {
           value={firstName || ''}
           onChange={(e) => setFirstName(e.target.value)}
           margin="normal"
+          required
         />
       ),
     },

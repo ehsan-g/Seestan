@@ -252,11 +252,12 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="اضافه کزدن">
-          <IconButton>
-            <AddCircleIcon />
-          </IconButton>
-        </Tooltip>
+        <></>
+        // <Tooltip title="اضافه کزدن">
+        //   {/* <IconButton>
+        //     <AddCircleIcon />
+        //   </IconButton> */}
+        // </Tooltip>
       )}
     </Toolbar>
   );
@@ -317,7 +318,13 @@ export default function UserList() {
     });
   };
   const deleteHandler = () => {
-    setOpen(true);
+    const foundAdmin = selected.find((element) => element === 1);
+    console.log(rows);
+    if (foundAdmin) {
+      alert('شما اجازه پاک کردن سوپر یوزر را ندارید');
+    } else {
+      setOpen(true);
+    }
   };
 
   const confirmHandler = () => {
@@ -333,6 +340,7 @@ export default function UserList() {
   useEffect(() => {
     if (!rows[0] || successDelete) {
       dispatch(fetchUsers());
+      setSelected([]);
     } else if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET });
       dispatch({ type: USER_LIST_RESET });
