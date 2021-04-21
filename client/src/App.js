@@ -13,9 +13,9 @@ import Cart from './pages/Cart';
 import Sell from './pages/Sell';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
-import AdminPanel from './pages/AdminPanel';
-import UserEdit from './pages/UserEdit';
-import ArtworkEdit from './pages/ArtworkEdit';
+import AdminPanel from './pages/admin/AdminPanel';
+import UserEdit from './pages/admin/UserEdit';
+import ArtworkEdit from './pages/admin/ArtworkEdit.js';
 
 // Create an enhanced history that syncs navigation events with the store
 

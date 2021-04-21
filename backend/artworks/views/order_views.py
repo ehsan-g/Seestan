@@ -94,3 +94,12 @@ def updateOrderToPaid(request, pk):
     order.paidAt = datetime.now()
     order.save()
     return Response('order was paid')
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def fetchOrders(request):
+    orders = Order.objects.all()
+    # orders = Order.objects.filter(user=user)
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+

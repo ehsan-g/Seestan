@@ -10,9 +10,9 @@ import {
   headerStatus,
   fetchUserDetails,
   updateUser,
-} from '../actions/index.js';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
+} from '../../actions/index.js';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
 
 const useStyles = makeStyles((theme) => ({
   root: {

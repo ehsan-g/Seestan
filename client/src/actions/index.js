@@ -56,7 +56,6 @@ import {
   ARTIST_LIST_REQUEST,
   ARTIST_LIST_SUCCESS,
   ARTIST_LIST_FAIL,
-  ARTIST_LIST_RESET,
   ARTIST_DETAILS_REQUEST,
   ARTIST_DETAILS_SUCCESS,
   ARTIST_DETAILS_FAIL,
@@ -69,6 +68,9 @@ import {
   MY_ORDERS_SUCCESS,
   MY_ORDERS_FAIL,
   MY_ORDERS_REMOVE_ALL,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
@@ -719,6 +721,36 @@ export const createArtwork = () => async (dispatch, getState) => {
   } catch (e) {
     dispatch({
       type: ARTWORK_CREATE_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const fetchOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_LIST_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.get(`/api/orders/`, config);
+
+    dispatch({
+      type: ORDER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ORDER_LIST_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail

@@ -23,14 +23,14 @@ export default function AdminBreadcrumbs() {
     >
       آثار
     </Link>,
-    <Typography
+    <Link
       key="3"
       color="inherit"
       to="/admin/orders"
-      style={{ textDecoration: 'none', color: '#d0d0d0' }}
+      style={{ textDecoration: 'none', color: '#5f5f5f' }}
     >
       فروش آثار
-    </Typography>,
+    </Link>,
     <Typography
       key="1"
       color="inherit"

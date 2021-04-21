@@ -21,6 +21,7 @@ import {
   userOrderListReducer,
   orderDetailsReducer,
   orderPayReducer,
+  orderListReducer,
 } from './orderReducer';
 import headerReducer from './headerReducer';
 
@@ -43,6 +44,7 @@ export default combineReducers({
   artistDetails: artistDetailsReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  ordersList: orderListReducer,
   myOrders: userOrderListReducer,
   orderPay: orderPayReducer,
 });

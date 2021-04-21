@@ -3,11 +3,11 @@ import { Grid } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import AdminBreadcrumbs from '../components/adminPanel/Breadcrumbs';
-import OrderList from '../components/adminPanel/OrderList';
-import ArtworkList from '../components/adminPanel/ArtworkList';
-import UserList from '../components/adminPanel/UserList';
-import ArtistList from '../components/adminPanel/ArtistList';
+import AdminBreadcrumbs from '../../components/adminPanel/Breadcrumbs';
+import OrderList from '../../components/adminPanel/OrderList';
+import ArtworkList from '../../components/adminPanel/ArtworkList';
+import UserList from '../../components/adminPanel/UserList';
+import ArtistList from '../../components/adminPanel/ArtistList';
 
 function AdminPanel() {
   const { route } = useParams();

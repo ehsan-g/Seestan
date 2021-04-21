@@ -14,8 +14,8 @@ import Select from '@material-ui/core/Select';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import axios from 'axios';
 import ImageUploading from 'react-images-uploading';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
+import Loader from '../../components/Loader';
+import Message from '../../components/Message';
 import {
   headerStatus,
   fetchUsers,
@@ -23,8 +23,8 @@ import {
   fetchArtists,
   fetchArtistDetails,
   fetchOneArtWork,
-} from '../actions/index.js';
-import UploadTheImage from '../components/UploadTheImage';
+} from '../../actions/index.js';
+import UploadTheImage from '../../components/UploadTheImage';
 
 const useStyles = makeStyles((theme) => ({
   root: {

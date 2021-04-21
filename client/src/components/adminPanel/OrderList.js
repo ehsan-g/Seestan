@@ -22,7 +22,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { visuallyHidden } from '@material-ui/utils';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
@@ -32,21 +32,38 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import Message from '../Message';
 import Loader from '../Loader';
-import { fetchUsers, deleteUser } from '../../actions';
+import { fetchOrders, deleteUser } from '../../actions';
+import {
+  USER_UPDATE_RESET,
+  USER_LIST_RESET,
+} from '../../constants/userConstants';
 
-function createData(_id, firstName, lastName, email, isAdmin) {
+function createData(
+  _id,
+  createAt,
+  paymentMethod,
+  taxPrice,
+  shippingPrice,
+  totalPrice,
+  isPaid,
+  isDelivered
+) {
   return {
     _id,
-    firstName,
-    lastName,
-    email,
-    isAdmin,
+    createAt,
+    paymentMethod,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    isPaid,
+    isDelivered,
   };
 }
-
-const rows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -76,34 +93,52 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: 'createAt',
+    numeric: true,
+    disablePadding: false,
+    label: 'تاریخ ثبت',
+  },
+  {
     id: '_id',
     numeric: true,
     disablePadding: true,
     label: 'آی‌دی',
   },
   {
-    id: 'first_name',
+    id: 'paymentMethod',
     numeric: false,
     disablePadding: false,
-    label: 'نام',
+    label: 'طریقه پرداخت',
   },
   {
-    id: 'last_name',
+    id: 'taxPrice',
     numeric: false,
     disablePadding: false,
-    label: 'نام‌خانوادگی',
+    label: 'مالیات',
   },
   {
-    id: 'email',
+    id: 'shippingPrice',
     numeric: false,
     disablePadding: false,
-    label: 'ایمیل',
+    label: 'خمل و نقل',
   },
   {
-    id: 'is_Admin',
+    id: 'totalPrice',
     numeric: false,
     disablePadding: false,
-    label: 'مدیر',
+    label: 'مبلغ کل',
+  },
+  {
+    id: 'isPaid',
+    numeric: false,
+    disablePadding: false,
+    label: 'وضعیت پرداخت',
+  },
+  {
+    id: 'isDelivered',
+    numeric: false,
+    disablePadding: false,
+    label: 'وضعیت رسال',
   },
 ];
 
@@ -111,7 +146,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     marginTop: 30,
-    minHeight: '100vh',
   },
   paper: {
     width: '100%',
@@ -206,7 +240,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, deleteHandler } = props;
+  const { numSelected } = props;
 
   return (
     <Toolbar
@@ -235,17 +269,19 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="پاک‌کردن">
-          <IconButton onClick={() => deleteHandler()}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <></>
       ) : (
-        <Tooltip title="فیلتر">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        // <Tooltip title="پاک‌کردن">
+        //   <IconButton onClick={() => ()}>
+        //     <DeleteIcon />
+        //   </IconButton>
+        // </Tooltip>
+        <></>
+        // <Tooltip title="اضافه کزدن">
+        //   {/* <IconButton>
+        //     <AddCircleIcon />
+        //   </IconButton> */}
+        // </Tooltip>
       )}
     </Toolbar>
   );
@@ -253,10 +289,9 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  deleteHandler: PropTypes.func.isRequired,
 };
 
-export default function OrderList() {
+export default function UserList() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [order, setOrder] = useState('asc');
@@ -265,48 +300,28 @@ export default function OrderList() {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rows, setRows] = useState([]);
 
   // Dialog from here
-  const [open, setOpen] = useState(false);
+  const ordersList = useSelector((state) => state.ordersList);
+  const { loading, error, orders } = ordersList;
+  console.log(orders);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
-
-  const userDeleteList = useSelector((state) => state.userDeleteList);
-  const { success: successDelete } = userDeleteList;
-
-  const deleteHandler = () => {
-    setOpen(true);
-  };
-
-  const confirmHandler = () => {
-    for (let i = 0; i < selected.length; i++) {
-      const found = rows.find((element) => element._id === selected[i]);
-
-      const elementIndex = rows.indexOf(found);
-      rows.splice(elementIndex, 1);
-    }
-    dispatch(deleteUser(selected));
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    if (!rows[0] || successDelete) {
-      dispatch(fetchUsers());
-    }
-  }, [dispatch, successDelete]);
-
-  if (users && users[0] && !rows[0]) {
-    users.forEach((user) => {
+  const createTheRows = () => {
+    orders.forEach((theOrder) => {
       const data = createData(
-        user._id,
-        user.firstName,
-        user.lastName,
-        user.email,
-        user.isAdmin ? (
+        theOrder._id,
+        theOrder.createAt,
+        theOrder.paymentMethod,
+        theOrder.taxPrice,
+        theOrder.shippingPrice,
+        theOrder.totalPrice,
+        theOrder.isPaid ? (
+          <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+        ) : (
+          <HighlightOffIcon sx={{ color: 'red' }} />
+        ),
+        theOrder.isDelivered ? (
           <CheckCircleOutlineIcon sx={{ color: 'green' }} />
         ) : (
           <HighlightOffIcon sx={{ color: 'red' }} />
@@ -314,7 +329,19 @@ export default function OrderList() {
       );
       rows.push(data);
     });
+  };
+
+  useEffect(() => {
+    if (!rows[0]) {
+      dispatch(fetchOrders());
+      setSelected([]);
+    }
+  }, [dispatch, rows]);
+
+  if (orders && orders[0] && !rows[0]) {
+    createTheRows();
   }
+
   //  Dialog to here
 
   const handleRequestSort = (event, property) => {
@@ -384,10 +411,7 @@ export default function OrderList() {
       ) : (
         <div className={classes.root}>
           <Paper className={classes.paper}>
-            <EnhancedTableToolbar
-              numSelected={selected.length}
-              deleteHandler={deleteHandler}
-            />
+            <EnhancedTableToolbar numSelected={selected.length} />
             <TableContainer>
               <Table
                 className={classes.table}
@@ -413,14 +437,16 @@ export default function OrderList() {
                       return (
                         <TableRow
                           hover
-                          onClick={(event) => handleClick(event, row._id)}
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
                           key={row._id}
                           selected={isItemSelected}
                         >
-                          <TableCell padding="checkbox">
+                          <TableCell
+                            padding="checkbox"
+                            onClick={(event) => handleClick(event, row._id)}
+                          >
                             <Checkbox
                               color="primary"
                               checked={isItemSelected}
@@ -439,10 +465,17 @@ export default function OrderList() {
                           >
                             {row._id}
                           </TableCell>
-                          <TableCell align="right">{row.firstName}</TableCell>
-                          <TableCell align="right">{row.lastName}</TableCell>
-                          <TableCell align="right">{row.email}</TableCell>
-                          <TableCell align="right">{row.isAdmin}</TableCell>
+                          <TableCell align="right">{row.createAt}</TableCell>
+                          <TableCell align="right">
+                            {row.paymentMethod}
+                          </TableCell>
+                          <TableCell align="right">{row.taxPrice}</TableCell>
+                          <TableCell align="right">
+                            {row.shippingPrice}
+                          </TableCell>
+                          <TableCell align="right">{row.totalPrice}</TableCell>
+                          <TableCell align="right">{row.isPaid}</TableCell>
+                          <TableCell align="right">{row.isDelivered}</TableCell>
                         </TableRow>
                       );
                     })}
@@ -459,6 +492,7 @@ export default function OrderList() {
               </Table>
             </TableContainer>
             <TablePagination
+              labelRowsPerPage="ردیف هر صفحه"
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={rows.length}
@@ -474,27 +508,6 @@ export default function OrderList() {
           />
         </div>
       )}
-      <div>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">پاک‌کردن</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              شما کاربران انتخابی را از سرور پاک خواهید کرد
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>خیر</Button>
-            <Button onClick={confirmHandler} autoFocus>
-              بله
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
     </>
   );
 }
