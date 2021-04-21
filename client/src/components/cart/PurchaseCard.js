@@ -40,22 +40,22 @@ export default function PurchaseCard() {
 
   useEffect(() => {
     dispatch(headerStatus(false));
-  }, []);
+  }, [dispatch]);
 
   // adding shipping price to the cart - toFixed for decimal
   useEffect(() => {
-    if (workId && (!artwork.price || !theCart.totalCartPrice)) {
+    if (workId && (!artwork._id || !theCart.totalCartPrice)) {
       dispatch(fetchOneArtWork(workId));
       console.log('nowhere');
     } else if (!workId && cartItems[0]) {
-      dispatch(fetchOneArtWork(cartItems[0].artworkId));
+      // dispatch(fetchOneArtWork(cartItems[0].artworkId));
       console.log('there');
-    } else if (orderById && orderById.orderItems[0]) {
+    } else if (orderById.orderItems) {
       console.log('here');
       dispatch(fetchOneArtWork(orderById.orderItems[0].artwork));
       dispatch(addToCart(orderById.orderItems[0].artwork));
     }
-  }, []);
+  }, [artwork, cartItems, dispatch, orderById, theCart, workId]);
 
   console.log(orderById);
   theCart.shippingPrice = (Number(artwork.price) > 100000 ? 0 : 10000).toFixed(

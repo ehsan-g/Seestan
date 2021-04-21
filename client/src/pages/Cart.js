@@ -9,7 +9,6 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { Paper } from '@material-ui/core';
 import { useHistory, useParams } from 'react-router';
 import { CartReceipt } from '../components/cart/CartReceipt';
 import CartShipForm from '../components/cart/CartShipForm';
@@ -44,14 +43,13 @@ export default function Cart() {
         // dispatch(cleanTheCart());
       };
     }
+    if (orderId) {
+      theCart.step = '3';
+    }
   }, []);
 
   // if the direct order link is entered
-  if (orderId) {
-    theCart.step = '3';
-  }
-  console.log(`work ID : ${workId}`);
-  console.log(`order ID: ${orderId}`);
+
   let value;
   switch (step) {
     case '1':

@@ -54,9 +54,9 @@ def addOrderItems(request):
                 if artwork.editionSize > artwork.editionNum:
                     artwork.editionNum += 1
                 artwork.save()
-                serializer = OrderItemSerializer(item, many=False)
-
+        serializer = OrderSerializer(order, many=False)
         return Response(serializer.data)
+            
 
 
 @api_view(['GET'])

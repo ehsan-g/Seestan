@@ -84,7 +84,7 @@ function CartPayOrder() {
                         `Transaction completed by ${details.payer.name.given_name}`
                       );
 
-                      // // OPTIONAL: Call your server to save the transaction
+                      // OPTIONAL: Call your server to save the transaction
                       // return fetch('/paypal-transaction-complete', {
                       //   method: 'post',
                       //   body: JSON.stringify({

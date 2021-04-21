@@ -79,9 +79,9 @@ export default function PlaceOrderButton() {
     setOpen(false);
   };
 
-  const successPaymentHandler = (paymentResult) => {
-    dispatch(payOrder(order.orderId, paymentResult));
-  };
+  // const successPaymentHandler = (paymentResult) => {
+  //   dispatch(payOrder(order.orderId, paymentResult));
+  // };
   return (
     <>
       <ButtonGroup

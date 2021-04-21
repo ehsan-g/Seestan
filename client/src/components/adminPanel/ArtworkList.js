@@ -281,8 +281,7 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   deleteHandler: PropTypes.func.isRequired,
-  // dispatch: PropTypes.func.isRequired,
-  artists: PropTypes.array.isRequired,
+  artists: PropTypes.array,
 };
 
 export default function ArtworkList() {

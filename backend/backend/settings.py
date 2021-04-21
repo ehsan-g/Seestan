@@ -48,7 +48,8 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    'DATETIME_FORMAT': "%b %e, %Y- %H:%M:%S",
 }
 
 # User Auth with: django-rest-framework-simplejwt
