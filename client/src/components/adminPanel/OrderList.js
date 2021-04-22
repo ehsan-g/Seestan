@@ -21,9 +21,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { visuallyHidden } from '@material-ui/utils';
+import FlightLandIcon from '@material-ui/icons/FlightLand';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Button from '@material-ui/core/Button';
@@ -32,16 +31,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import { useHistory } from 'react-router';
-import { toast } from 'react-toastify';
 import Message from '../Message';
 import Loader from '../Loader';
-import { fetchOrders, deleteUser } from '../../actions';
-import {
-  USER_UPDATE_RESET,
-  USER_LIST_RESET,
-} from '../../constants/userConstants';
+import { fetchOrders, deliverOrder, fetchOrderDetails } from '../../actions';
 
 function createData(
   _id,
@@ -93,16 +85,16 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'createAt',
-    numeric: true,
-    disablePadding: false,
-    label: 'تاریخ ثبت',
-  },
-  {
     id: '_id',
     numeric: true,
     disablePadding: true,
     label: 'آی‌دی',
+  },
+  {
+    id: 'createAt',
+    numeric: true,
+    disablePadding: false,
+    label: 'تاریخ ثبت',
   },
   {
     id: 'paymentMethod',
@@ -138,7 +130,7 @@ const headCells = [
     id: 'isDelivered',
     numeric: false,
     disablePadding: false,
-    label: 'وضعیت رسال',
+    label: 'وضعیت ارسال',
   },
 ];
 
@@ -240,7 +232,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, deliveryHandler } = props;
 
   return (
     <Toolbar
@@ -264,24 +256,18 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          کاربران
+          فروش آثار
         </Typography>
       )}
 
-      {numSelected > 0 ? (
-        <></>
-      ) : (
-        // <Tooltip title="پاک‌کردن">
-        //   <IconButton onClick={() => ()}>
-        //     <DeleteIcon />
-        //   </IconButton>
-        // </Tooltip>
-        <></>
-        // <Tooltip title="اضافه کزدن">
-        //   {/* <IconButton>
-        //     <AddCircleIcon />
-        //   </IconButton> */}
-        // </Tooltip>
+      {numSelected > 0 && (
+        <>
+          <Tooltip title="تايید ارسال">
+            <IconButton onClick={() => deliveryHandler()}>
+              <FlightLandIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       )}
     </Toolbar>
   );
@@ -289,6 +275,7 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  deliveryHandler: PropTypes.func.isRequired,
 };
 
 export default function UserList() {
@@ -303,9 +290,14 @@ export default function UserList() {
   const [rows, setRows] = useState([]);
 
   // Dialog from here
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const ordersList = useSelector((state) => state.ordersList);
   const { loading, error, orders } = ordersList;
-  console.log(orders);
 
   const createTheRows = () => {
     orders.forEach((theOrder) => {
@@ -317,26 +309,70 @@ export default function UserList() {
         theOrder.shippingPrice,
         theOrder.totalPrice,
         theOrder.isPaid ? (
-          <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+          <>
+            <Tooltip title={theOrder.paymentMethod}>
+              <IconButton>
+                <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+              </IconButton>
+            </Tooltip>
+          </>
         ) : (
-          <HighlightOffIcon sx={{ color: 'red' }} />
+          <>
+            <Tooltip title="Not Paid">
+              <IconButton>
+                <HighlightOffIcon sx={{ color: 'red' }} />
+              </IconButton>
+            </Tooltip>
+          </>
         ),
         theOrder.isDelivered ? (
-          <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+          <>
+            <Tooltip title={theOrder.deliveredAt}>
+              <IconButton>
+                <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+              </IconButton>
+            </Tooltip>
+          </>
         ) : (
-          <HighlightOffIcon sx={{ color: 'red' }} />
+          <>
+            <Tooltip title="Not delivered">
+              <IconButton>
+                <HighlightOffIcon sx={{ color: 'red' }} />
+              </IconButton>
+            </Tooltip>
+          </>
         )
       );
       rows.push(data);
     });
   };
 
+  const deliveryHandler = () => {
+    setOpen(true);
+  };
+
+  const confirmHandler = () => {
+    for (let i = 0; i < selected.length; i++) {
+      console.log(selected);
+      dispatch(fetchOrderDetails(selected[i]));
+      dispatch(deliverOrder(selected[i]));
+    }
+    setOpen(false);
+  };
+
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { success: successDelivery } = orderDeliver;
+
   useEffect(() => {
     if (!rows[0]) {
       dispatch(fetchOrders());
       setSelected([]);
+    } else if (successDelivery) {
+      setSelected([]);
+      setRows([]);
+      dispatch(fetchOrders());
     }
-  }, [dispatch, rows]);
+  }, [dispatch, rows, successDelivery]);
 
   if (orders && orders[0] && !rows[0]) {
     createTheRows();
@@ -411,7 +447,10 @@ export default function UserList() {
       ) : (
         <div className={classes.root}>
           <Paper className={classes.paper}>
-            <EnhancedTableToolbar numSelected={selected.length} />
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              deliveryHandler={deliveryHandler}
+            />
             <TableContainer>
               <Table
                 className={classes.table}
@@ -508,6 +547,27 @@ export default function UserList() {
           />
         </div>
       )}
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">پاک‌کردن</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              شما کاربران انتخابی را از سرور پاک خواهید کرد
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>خیر</Button>
+            <Button onClick={confirmHandler} autoFocus>
+              بله
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </>
   );
 }

@@ -66,7 +66,6 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
 }));
 
 export function AccountUserOrdersCard({ order }) {
-  console.log(order);
   const styles = useStyles();
 
   const shadowStyles = useOverShadowStyles();

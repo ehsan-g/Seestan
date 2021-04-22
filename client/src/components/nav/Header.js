@@ -143,7 +143,6 @@ export default function Header() {
   const menuId = 'primary-search-account-menu';
 
   const menuGotoUrl = (url) => (e) => {
-    console.log(url, e);
     history.push(url);
     history.go(0);
   };

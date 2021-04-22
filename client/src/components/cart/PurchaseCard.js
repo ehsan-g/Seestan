@@ -46,18 +46,14 @@ export default function PurchaseCard() {
   useEffect(() => {
     if (workId && (!artwork._id || !theCart.totalCartPrice)) {
       dispatch(fetchOneArtWork(workId));
-      console.log('nowhere');
     } else if (!workId && cartItems[0]) {
       // dispatch(fetchOneArtWork(cartItems[0].artworkId));
-      console.log('there');
     } else if (orderById.orderItems) {
-      console.log('here');
       dispatch(fetchOneArtWork(orderById.orderItems[0].artwork));
       dispatch(addToCart(orderById.orderItems[0].artwork));
     }
   }, [artwork, cartItems, dispatch, orderById, theCart, workId]);
 
-  console.log(orderById);
   theCart.shippingPrice = (Number(artwork.price) > 100000 ? 0 : 10000).toFixed(
     0
   );

@@ -78,6 +78,10 @@ import {
   ORDER_PAY_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_RESET,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_RESET,
 } from '../constants/orderConstants';
 
 export const headerStatus = (status) => async (dispatch) => {
@@ -125,7 +129,7 @@ export const fetchOneArtWork = (workId) => async (dispatch) => {
 };
 
 export const addToCart = (workId) => async (dispatch, getState) => {
-  const { data } = await artworksBase.get(`/api/artworks/${workId}`);
+  const { data } = await artworksBase.get(`/api/artworks/${workId}/`);
   dispatch({ type: CART_ADD_REQUEST });
   dispatch({
     type: CART_ADD_ITEM,
@@ -239,7 +243,7 @@ export const fetchArtistDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: ARTIST_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/artists/${id}`);
+    const { data } = await axios.get(`/api/artists/${id}/`);
     dispatch({
       type: ARTIST_DETAILS_SUCCESS,
       payload: data,
@@ -270,7 +274,7 @@ export const fetchUserDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/users/${id}`, config);
+    const { data } = await axios.get(`/api/users/${id}/`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -367,7 +371,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/orders/add`, order, config);
+    const { data } = await axios.post(`/api/orders/add/`, order, config);
 
     dispatch({
       type: ORDER_CREATE_SUCCESS,
@@ -397,7 +401,7 @@ export const fetchOrderDetails = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(`/api/orders/${id}`, config);
+    const { data } = await axios.get(`/api/orders/${id}/`, config);
 
     dispatch({
       type: ORDER_DETAILS_SUCCESS,
@@ -427,7 +431,7 @@ export const fetchUserOrderList = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(`/api/orders/myOrders`, config);
+    const { data } = await axios.get(`/api/orders/myOrders/`, config);
 
     dispatch({
       type: MY_ORDERS_SUCCESS,
@@ -465,7 +469,7 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `/api/orders/${id}/pay`,
+      `/api/orders/${id}/pay/`,
       paymentResult,
       config
     );
@@ -499,7 +503,7 @@ export const fetchUsers = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/users`, config);
+    const { data } = await axios.get(`/api/users/`, config);
     dispatch({
       type: USER_LIST_SUCCESS,
       payload: data,
@@ -524,7 +528,7 @@ export const deleteUser = (selectedUsers) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    const { data } = await axios.delete(`/api/users/delete`, {
+    const { data } = await axios.delete(`/api/users/delete/`, {
       headers: {
         'Content-type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
@@ -561,7 +565,7 @@ export const deleteArtwork = (selectedArtworks) => async (
       userLogin: { userInfo },
     } = getState();
 
-    const { data } = await axios.delete(`/api/artworks/delete`, {
+    const { data } = await axios.delete(`/api/artworks/delete/`, {
       headers: {
         'Content-type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
@@ -602,7 +606,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/users/update/${user._id}`,
+      `/api/users/update/${user._id}/`,
       user,
       config
     );
@@ -751,6 +755,36 @@ export const fetchOrders = () => async (dispatch, getState) => {
   } catch (e) {
     dispatch({
       type: ORDER_LIST_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
+
+export const deliverOrder = (orderId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_DELIVER_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data } = await axios.put(`/api/orders/${orderId}/deliver/`, config);
+
+    dispatch({
+      type: ORDER_DELIVER_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ORDER_DELIVER_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail

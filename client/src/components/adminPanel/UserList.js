@@ -319,7 +319,6 @@ export default function UserList() {
   };
   const deleteHandler = () => {
     const foundAdmin = selected.find((element) => element === 1);
-    console.log(rows);
     if (foundAdmin) {
       alert('شما اجازه پاک کردن سوپر یوزر را ندارید');
     } else {

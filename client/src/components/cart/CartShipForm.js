@@ -60,7 +60,6 @@ function CartShipForm() {
   const [step, setStep] = useState(0);
 
   const onSubmit = async (values) => {
-    console.log(values);
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await sleep(300);
     dispatch(

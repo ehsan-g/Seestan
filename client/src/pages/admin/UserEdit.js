@@ -39,7 +39,6 @@ export default function UserEdit() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-  console.log(isAdmin);
   const dispatch = useDispatch();
   const { userId } = useParams();
 

@@ -9,9 +9,6 @@ export default function UploadImage() {
   const maxNumber = 1;
   const onImageChange = (imageList) => {
     // data for submit
-    if (imageList[0]) {
-      console.log(imageList[0].file.name);
-    }
     setImages(imageList);
   };
 
