@@ -6,8 +6,6 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Header from '../components/nav/Header';
 
 const useStyles = makeStyles((theme) => ({
   root: {

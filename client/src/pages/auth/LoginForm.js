@@ -75,7 +75,7 @@ export default function EnterForm() {
       return function cleanup() {
         dispatch(headerStatus(true));
       };
-  }, [dispatch]);
+  }, [dispatch, location]);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { error, loading, userInfo } = userLogin;

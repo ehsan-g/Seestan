@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -10,22 +10,14 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import SelectInput from '@material-ui/core/Select/SelectInput';
-import {
-  savePaymentMethod,
-  cartStep,
-  createOrder,
-  payOrder,
-} from '../../actions';
+import { savePaymentMethod, createOrder } from '../../actions';
 import Message from '../Message';
 import Loader from '../Loader';
 
 const options = ['پرداخت با شاپرک', 'PayPal Payment', 'Mint NFT'];
 
 export default function PlaceOrderButton() {
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const theCart = useSelector((state) => state.theCart);
@@ -38,7 +30,7 @@ export default function PlaceOrderButton() {
   } = theCart;
 
   const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, loading, error } = orderCreate;
+  const { loading, error } = orderCreate;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;

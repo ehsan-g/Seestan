@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from artworks.models import Artwork, Artist
 from rest_framework import status
 from artworks.serializer import UserSerializer
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
 # from ..forms import ClassificationForm
 
 # # form views
@@ -21,9 +24,27 @@ def fetchArtWorks(request):
     query = request.query_params.get('keyword')
     if query == None:
         query = ''
+    # we could use any value instead of title
     artworks = Artwork.objects.filter(title__icontains=query)
+
+    # pagination
+    page = request.query_params.get('page')
+    p = Paginator(artworks, 2)
+
+    try:
+        artworks = p.page(page)
+    except PageNotAnInteger:  # first render we have no page
+        artworks = p.page(2)
+    except EmptyPage:  # page does not exist return the last page
+        artworks = p.page(p.num_pages)
+
+    if page == None:
+        page = 1
+
+    page = int(page)
+
     serializer = ArtworkSerializer(artworks, many=True)
-    return Response(serializer.data)
+    return Response({'artworks': serializer.data, 'page': page, 'pages': p.num_pages})
 
 
 @api_view(['GET'])

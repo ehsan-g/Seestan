@@ -2,41 +2,11 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unused-state */
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import { fetchOneArtWork } from '../actions/index.js';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    color: theme.palette.text.secondary,
-    width: '100%',
-    padding: theme.spacing(2),
-    margin: theme.spacing(2),
-  },
-  tabs: {
-    borderBottom: '1px solid #666666',
-    '& .MuiTabs-indicator': {
-      backgroundColor: '#b77990',
-    },
-    '&:hover': {
-      color: '#40a9ff',
-      opacity: 1,
-    },
-    '&.Mui-selected': {
-      color: '#1890ff',
-      fontWeight: theme.typography.fontWeightMedium,
-    },
-    '&.Mui-focusVisible': {
-      backgroundColor: '#d1eaff',
-    },
-  },
-}));
 
 function a11yProps(index) {
   return {
@@ -46,7 +16,6 @@ function a11yProps(index) {
 }
 
 export default function TheTab(props) {
-  const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);

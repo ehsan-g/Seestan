@@ -8,7 +8,6 @@ import CardContent from '@material-ui/core/CardContent';
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { Typography } from '@material-ui/core';
-import Loader from '../Loader';
 import Message from '../Message';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({

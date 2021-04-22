@@ -88,7 +88,7 @@ export const headerStatus = (status) => async (dispatch) => {
 
 export const fetchAllArtWorks = (keyword = '') => async (dispatch) => {
   try {
-    const response = await artworksBase.get(`/api/artworks?keyword=${keyword}`);
+    const response = await artworksBase.get(`/api/artworks${keyword}`);
     dispatch({ type: ARTWORK_LIST_REQUEST });
     dispatch({
       type: ARTWORK_LIST_SUCCESS,

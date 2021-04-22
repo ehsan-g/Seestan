@@ -25,7 +25,7 @@ export default function AccountUserOrders() {
     return () => {
       dispatch(cleanMyOrders());
     };
-  }, [dispatch]);
+  }, [dispatch, loading, theMyOrders]);
 
   const handleChange = (order) => (event, isExpanded) => {
     setExpanded(isExpanded ? `panel${order._id}` : false);

@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { Form } from 'react-final-form';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Button, Grid, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { cartStep } from '../../actions/index';
 import PlaceOrderButton from './PlaceOrderButton';
-import Message from '../Message';
 
 function CartPlaceOrder() {
   const history = useHistory();

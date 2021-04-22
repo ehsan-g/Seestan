@@ -22,7 +22,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import { visuallyHidden } from '@material-ui/utils';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -307,7 +306,7 @@ export default function ArtworkList() {
   const { loading, error, artworks } = artworksList;
 
   const artistList = useSelector((state) => state.artistList);
-  const { loading: loadingArtists, error: errorArtists, artists } = artistList;
+  const { artists } = artistList;
 
   const artworkDeleteList = useSelector((state) => state.artworkDeleteList);
   const { success: successDelete } = artworkDeleteList;

@@ -85,12 +85,12 @@ function CartPayOrder() {
                       );
 
                       // OPTIONAL: Call your server to save the transaction
-                      // return fetch('/paypal-transaction-complete', {
-                      //   method: 'post',
-                      //   body: JSON.stringify({
-                      //     orderID: data.orderID,
-                      //   }),
-                      // });
+                      return fetch('/paypal-transaction-complete', {
+                        method: 'post',
+                        body: JSON.stringify({
+                          orderID: data.orderID,
+                        }),
+                      });
                     }}
                   />
                 )}

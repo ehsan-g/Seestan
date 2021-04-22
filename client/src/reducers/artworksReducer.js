@@ -14,9 +14,17 @@ export const artworksReducer = (state = { artworks: [] }, action) => {
     case ARTWORK_LIST_REQUEST:
       return { loading: true, artworks: [] };
     case ARTWORK_LIST_SUCCESS:
-      return { loading: false, artworks: action.payload };
+      return {
+        loading: false,
+        artworks: action.payload.artworks,
+        page: action.payload.page,
+        pages: action.payload.pages,
+      };
     case ARTWORK_LIST_FAIL:
-      return { loading: false, error: action.payload };
+      return {
+        loading: false,
+        error: action.payload,
+      };
     case ARTWORK_LIST_RESET:
       return { artworks: [] };
     default:

@@ -15,7 +15,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import SearchIcon from '@material-ui/icons/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import { BrowserRouter as useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import RegisterForm from '../../pages/auth/RegisterForm';
 import EnterForm from '../../pages/auth/LoginForm';
 import { logout, fetchAllArtWorks } from '../../actions/index';
@@ -112,7 +112,6 @@ export default function Header() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const preventDefault = (event) => event.preventDefault();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   // Modal register
@@ -174,7 +173,8 @@ export default function Header() {
   const changeHandler = (event) => {
     if (event.target.value) {
       history.push(`/?keyword=${event.target.value}`);
-      dispatch(fetchAllArtWorks(event.target.value));
+      const theKeyword = `?keyword=${event.target.value}`;
+      dispatch(fetchAllArtWorks(theKeyword));
       setKeyword(event.target.value);
     } else {
       history.push(history.push(history.location.pathname));

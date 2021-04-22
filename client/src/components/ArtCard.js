@@ -7,11 +7,10 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import axios from 'axios';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function ArtCard({ artwork }) {
   const [theArtist, setTheArtist] = useState('');
-  const history = useHistory();
 
   useEffect(() => {
     const fetchArtistLocally = async () => {

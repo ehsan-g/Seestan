@@ -12,7 +12,7 @@ import Message from '../Message';
 import Loader from '../Loader';
 import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     '& label.Mui-focused': {
       color: '#b77990',

@@ -21,9 +21,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { visuallyHidden } from '@material-ui/utils';
+import FlightLandIcon from '@material-ui/icons/FlightLand';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import Button from '@material-ui/core/Button';
@@ -32,25 +31,29 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import { useHistory } from 'react-router';
-import { toast } from 'react-toastify';
 import Message from '../Message';
 import Loader from '../Loader';
-import { fetchUsers, deleteUser } from '../../actions';
-import {
-  USER_UPDATE_RESET,
-  USER_LIST_RESET,
-} from '../../constants/userConstants';
+import { fetchOrders, deliverOrder, fetchOrderDetails } from '../../actions';
 
-function createData(_id, firstName, lastName, email, isAdmin, editIcon) {
+function createData(
+  _id,
+  createAt,
+  paymentMethod,
+  taxPrice,
+  shippingPrice,
+  totalPrice,
+  isPaid,
+  isDelivered
+) {
   return {
     _id,
-    firstName,
-    lastName,
-    email,
-    isAdmin,
-    editIcon,
+    createAt,
+    paymentMethod,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    isPaid,
+    isDelivered,
   };
 }
 
@@ -88,34 +91,46 @@ const headCells = [
     label: 'آی‌دی',
   },
   {
-    id: 'first_name',
-    numeric: false,
+    id: 'createAt',
+    numeric: true,
     disablePadding: false,
-    label: 'نام',
+    label: 'تاریخ ثبت',
   },
   {
-    id: 'last_name',
+    id: 'paymentMethod',
     numeric: false,
     disablePadding: false,
-    label: 'نام‌خانوادگی',
+    label: 'طریقه پرداخت',
   },
   {
-    id: 'email',
+    id: 'taxPrice',
     numeric: false,
     disablePadding: false,
-    label: 'ایمیل',
+    label: 'مالیات',
   },
   {
-    id: 'is_Admin',
+    id: 'shippingPrice',
     numeric: false,
     disablePadding: false,
-    label: 'مدیر',
+    label: 'خمل و نقل',
   },
   {
-    id: 'editIcon',
+    id: 'totalPrice',
     numeric: false,
     disablePadding: false,
-    label: 'ویرایش',
+    label: 'مبلغ کل',
+  },
+  {
+    id: 'isPaid',
+    numeric: false,
+    disablePadding: false,
+    label: 'وضعیت پرداخت',
+  },
+  {
+    id: 'isDelivered',
+    numeric: false,
+    disablePadding: false,
+    label: 'وضعیت ارسال',
   },
 ];
 
@@ -217,7 +232,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, deleteHandler } = props;
+  const { numSelected, deliveryHandler } = props;
 
   return (
     <Toolbar
@@ -241,23 +256,18 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          کاربران
+          فروش آثار
         </Typography>
       )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="پاک‌کردن">
-          <IconButton onClick={() => deleteHandler()}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <></>
-        // <Tooltip title="اضافه کزدن">
-        //   {/* <IconButton>
-        //     <AddCircleIcon />
-        //   </IconButton> */}
-        // </Tooltip>
+      {numSelected > 0 && (
+        <>
+          <Tooltip title="تايید ارسال">
+            <IconButton onClick={() => deliveryHandler()}>
+              <FlightLandIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       )}
     </Toolbar>
   );
@@ -265,13 +275,12 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  deleteHandler: PropTypes.func.isRequired,
+  deliveryHandler: PropTypes.func.isRequired,
 };
 
 export default function UserList() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [selected, setSelected] = useState([]);
@@ -286,74 +295,88 @@ export default function UserList() {
   const handleClose = () => {
     setOpen(false);
   };
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
 
-  const userDeleteList = useSelector((state) => state.userDeleteList);
-  const { success: successDelete } = userDeleteList;
+  const ordersList = useSelector((state) => state.ordersList);
+  const { loading, error, orders } = ordersList;
 
-  const userUpdate = useSelector((state) => state.userUpdate);
-  const { success: successUpdate } = userUpdate;
-
-  const onEdit = (id) => {
-    history.push(`/admin/user/${id}/edit`);
-  };
   const createTheRows = () => {
-    users.forEach((user) => {
+    orders.forEach((theOrder) => {
       const data = createData(
-        user._id,
-        user.firstName,
-        user.lastName,
-        user.email,
-        user.isAdmin ? (
-          <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+        theOrder._id,
+        theOrder.createAt,
+        theOrder.paymentMethod,
+        theOrder.taxPrice,
+        theOrder.shippingPrice,
+        theOrder.totalPrice,
+        theOrder.isPaid ? (
+          <>
+            <Tooltip title={theOrder.paymentMethod}>
+              <IconButton>
+                <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+              </IconButton>
+            </Tooltip>
+          </>
         ) : (
-          <HighlightOffIcon sx={{ color: 'red' }} />
+          <>
+            <Tooltip title="Not Paid">
+              <IconButton>
+                <HighlightOffIcon sx={{ color: 'red' }} />
+              </IconButton>
+            </Tooltip>
+          </>
         ),
-        <IconButton onClick={() => onEdit(user._id)}>
-          <EditOutlinedIcon />
-        </IconButton>
+        theOrder.isDelivered ? (
+          <>
+            <Tooltip title={theOrder.deliveredAt}>
+              <IconButton>
+                <CheckCircleOutlineIcon sx={{ color: 'green' }} />
+              </IconButton>
+            </Tooltip>
+          </>
+        ) : (
+          <>
+            <Tooltip title="Not delivered">
+              <IconButton>
+                <HighlightOffIcon sx={{ color: 'red' }} />
+              </IconButton>
+            </Tooltip>
+          </>
+        )
       );
       rows.push(data);
     });
   };
-  const deleteHandler = () => {
-    const foundAdmin = selected.find((element) => element === 1);
-    if (foundAdmin) {
-      alert('شما اجازه پاک کردن سوپر یوزر را ندارید');
-    } else {
-      setOpen(true);
-    }
+
+  const deliveryHandler = () => {
+    setOpen(true);
   };
 
   const confirmHandler = () => {
     for (let i = 0; i < selected.length; i++) {
-      const found = rows.find((element) => element._id === selected[i]);
-      const elementIndex = rows.indexOf(found);
-      rows.splice(elementIndex, 1);
+      dispatch(fetchOrderDetails(selected[i]));
+      dispatch(deliverOrder(selected[i]));
     }
-    dispatch(deleteUser(selected));
     setOpen(false);
   };
 
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { success: successDelivery } = orderDeliver;
+
   useEffect(() => {
-    if (!rows[0] || successDelete) {
-      dispatch(fetchUsers());
+    if (!rows[0]) {
+      dispatch(fetchOrders());
       setSelected([]);
-    } else if (successUpdate) {
-      dispatch({ type: USER_UPDATE_RESET });
-      dispatch({ type: USER_LIST_RESET });
-
+    } else if (successDelivery) {
+      setSelected([]);
       setRows([]);
-      dispatch(fetchUsers());
-      createTheRows();
-      toast.success(`ذخیره شد`);
+      dispatch(fetchOrders());
     }
-  }, [dispatch, successDelete, successUpdate, rows]);
+  }, [dispatch, rows, successDelivery]);
 
-  if (users && users[0] && !rows[0]) {
+  if (orders && orders[0] && !rows[0]) {
     createTheRows();
   }
+
   //  Dialog to here
 
   const handleRequestSort = (event, property) => {
@@ -425,7 +448,7 @@ export default function UserList() {
           <Paper className={classes.paper}>
             <EnhancedTableToolbar
               numSelected={selected.length}
-              deleteHandler={deleteHandler}
+              deliveryHandler={deliveryHandler}
             />
             <TableContainer>
               <Table
@@ -480,11 +503,17 @@ export default function UserList() {
                           >
                             {row._id}
                           </TableCell>
-                          <TableCell align="right">{row.firstName}</TableCell>
-                          <TableCell align="right">{row.lastName}</TableCell>
-                          <TableCell align="right">{row.email}</TableCell>
-                          <TableCell align="right">{row.isAdmin}</TableCell>
-                          <TableCell align="right">{row.editIcon}</TableCell>
+                          <TableCell align="right">{row.createAt}</TableCell>
+                          <TableCell align="right">
+                            {row.paymentMethod}
+                          </TableCell>
+                          <TableCell align="right">{row.taxPrice}</TableCell>
+                          <TableCell align="right">
+                            {row.shippingPrice}
+                          </TableCell>
+                          <TableCell align="right">{row.totalPrice}</TableCell>
+                          <TableCell align="right">{row.isPaid}</TableCell>
+                          <TableCell align="right">{row.isDelivered}</TableCell>
                         </TableRow>
                       );
                     })}

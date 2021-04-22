@@ -24,7 +24,6 @@ import {
   fetchArtistDetails,
   fetchOneArtWork,
 } from '../../actions/index.js';
-import UploadTheImage from '../../components/UploadTheImage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
