@@ -1,27 +1,24 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import { Grid, Button } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Avatar from '@material-ui/core/Avatar';
-import { Button, Typography } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import SearchIcon from '@material-ui/icons/Search';
-import { BrowserRouter as Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import { BrowserRouter as useLocation, useHistory } from 'react-router-dom';
 import RegisterForm from '../../pages/auth/RegisterForm';
 import EnterForm from '../../pages/auth/LoginForm';
-import history from '../../history';
-import { logout } from '../../actions/index';
+import { logout, fetchAllArtWorks } from '../../actions/index';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -113,15 +110,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const preventDefault = (event) => event.preventDefault();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  // Modal register
+  const [rOpen, setRegOpen] = useState(false);
+  const [eOpen, setEnterOpen] = useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (history.location.pathname.includes('/register')) setEnterOpen(false);
+  }, [history.location]);
+
+  const headerStatus = useSelector((state) => state.headerStatus);
+  const { IsHeader } = headerStatus;
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -140,17 +148,22 @@ export default function Header() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   const menuId = 'primary-search-account-menu';
 
-  const menuGotoUrl = (url) => (e) => {
+  const menuGotoUrl = (url) => () => {
     history.push(url);
     history.go(0);
   };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
 
-  const [theAnchorEl, setTheAnchorEl] = React.useState(null);
+  const [theAnchorEl, setTheAnchorEl] = useState(null);
   const theOpen = Boolean(theAnchorEl);
+  const [keyword, setKeyword] = useState('');
   const TheHandleClick = (event) => {
     setTheAnchorEl(event.currentTarget);
   };
@@ -158,10 +171,16 @@ export default function Header() {
     setTheAnchorEl(null);
   };
 
-  const dispatch = useDispatch();
-  const logoutHandler = () => {
-    dispatch(logout());
+  const changeHandler = (event) => {
+    if (event.target.value) {
+      history.push(`/?keyword=${event.target.value}`);
+      dispatch(fetchAllArtWorks(event.target.value));
+      setKeyword(event.target.value);
+    } else {
+      history.push(history.push(history.location.pathname));
+    }
   };
+
   const renderUserMenu = (
     <>
       <Button
@@ -228,9 +247,9 @@ export default function Header() {
 
       <MenuItem>
         {userInfo && userInfo.token !== undefined ? (
-          <div>{renderUserMenu}</div>
+          <Grid>{renderUserMenu}</Grid>
         ) : (
-          <div>
+          <Grid>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -242,7 +261,7 @@ export default function Header() {
               <MenuItem>ورود / ثبت‌نام</MenuItem>
               <PermIdentityIcon />
             </IconButton>
-          </div>
+          </Grid>
         )}
       </MenuItem>
     </Menu>
@@ -269,20 +288,8 @@ export default function Header() {
     </Menu>
   );
 
-  // Modal register
-  const [rOpen, setRegOpen] = React.useState(false);
-  const [eOpen, setEnterOpen] = React.useState(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname.includes('/register')) setEnterOpen(false);
-  }, [location]);
-
-  const headerStatus = useSelector((state) => state.headerStatus);
-  const { IsHeader } = headerStatus;
-
   return (
-    <div className={classes.grow}>
+    <Grid className={classes.grow}>
       {!IsHeader ? null : (
         <>
           <AppBar
@@ -292,27 +299,28 @@ export default function Header() {
           >
             {renderMobileMenu}
             <Toolbar>
-              <div className={classes.grow} />
-              <div>
+              <Grid className={classes.grow} />
+              <Grid>
                 <Button href="/" color="inherit">
                   <Avatar alt="Logo" variant="square" src="/static/logo.png" />
                 </Button>
-              </div>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
+              </Grid>
+              <Grid className={classes.search}>
+                <Grid className={classes.searchIcon}>
                   <SearchIcon style={{ margin: '10px' }} />
-                </div>
+                </Grid>
                 <InputBase
                   placeholder="جستجو نام هنرمند، گالری، اثر، استایل و غیره"
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
                   }}
+                  onChange={(event) => changeHandler(event)}
                   inputProps={{ 'aria-label': 'search' }}
                 />
-              </div>
+              </Grid>
 
-              <div className={classes.sectionDesktop}>
+              <Grid className={classes.sectionDesktop}>
                 {userInfo && userInfo.token !== undefined ? (
                   <>{renderUserMenu}</>
                 ) : (
@@ -341,8 +349,8 @@ export default function Header() {
                 <Button href="/" color="inherit">
                   خرید
                 </Button>
-              </div>
-              <div className={classes.sectionMobile}>
+              </Grid>
+              <Grid className={classes.sectionMobile}>
                 <IconButton
                   aria-label="show more"
                   aria-controls={mobileMenuId}
@@ -352,14 +360,14 @@ export default function Header() {
                 >
                   <MoreIcon />
                 </IconButton>
-              </div>
+              </Grid>
             </Toolbar>
           </AppBar>
           {renderMenu}
         </>
       )}
 
-      <div>
+      <Grid>
         <Modal
           aria-labelledby="spring-modal-title"
           aria-describedby="spring-modal-description"
@@ -372,9 +380,9 @@ export default function Header() {
             timeout: 500,
           }}
         >
-          <div className={classes.paper}>
+          <Grid className={classes.paper}>
             <RegisterForm />
-          </div>
+          </Grid>
         </Modal>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -388,11 +396,11 @@ export default function Header() {
             timeout: 500,
           }}
         >
-          <div className={classes.paper}>
+          <Grid className={classes.paper}>
             <EnterForm />
-          </div>
+          </Grid>
         </Modal>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 }

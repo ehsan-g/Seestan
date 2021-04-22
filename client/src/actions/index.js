@@ -77,20 +77,18 @@ import {
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
   ORDER_PAY_FAIL,
-  ORDER_PAY_RESET,
   ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_FAIL,
-  ORDER_DELIVER_RESET,
 } from '../constants/orderConstants';
 
 export const headerStatus = (status) => async (dispatch) => {
   dispatch({ type: 'HEADER_HIDDEN', payload: status });
 };
 
-export const fetchAllArtWorks = () => async (dispatch) => {
+export const fetchAllArtWorks = (keyword = '') => async (dispatch) => {
   try {
-    const response = await artworksBase.get('/api/artworks/');
+    const response = await artworksBase.get(`/api/artworks?keyword=${keyword}`);
     dispatch({ type: ARTWORK_LIST_REQUEST });
     dispatch({
       type: ARTWORK_LIST_SUCCESS,

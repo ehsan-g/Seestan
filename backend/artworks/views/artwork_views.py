@@ -18,7 +18,10 @@ from artworks.serializer import UserSerializer
 
 @api_view(['GET'])
 def fetchArtWorks(request):
-    artworks = Artwork.objects.all()
+    query = request.query_params.get('keyword')
+    if query == None:
+        query = ''
+    artworks = Artwork.objects.filter(title__icontains=query)
     serializer = ArtworkSerializer(artworks, many=True)
     return Response(serializer.data)
 

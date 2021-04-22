@@ -10,6 +10,7 @@ import { Grid, Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import Skeleton from '@material-ui/core/Skeleton';
+import { useHistory } from 'react-router';
 import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
@@ -36,19 +37,24 @@ const useStyles = makeStyles((theme) => ({
 
 function Artworks() {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   useEffect(() => {
     dispatch(cleanTheCart());
     dispatch({ type: ARTWORK_DETAILS_RESET });
     return () => {
       dispatch(cleanTheCart());
     };
-  }, []);
+  }, [dispatch]);
 
   const artworksList = useSelector((state) => state.artworks);
   const { error, loading, artworks } = artworksList;
+
+  const keyword = history.location.search.slice(9); // to remove ?keyword=
+
   useEffect(() => {
-    dispatch(fetchAllArtWorks());
-  }, [dispatch]);
+    dispatch(fetchAllArtWorks(keyword));
+  }, [dispatch, keyword]);
 
   const classes = useStyles();
 
