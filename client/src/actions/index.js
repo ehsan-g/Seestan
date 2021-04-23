@@ -152,8 +152,16 @@ export const cleanTheCart = () => async (dispatch) => {
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
   localStorage.removeItem('paymentMethod');
+  localStorage.removeItem('__paypal_storage__'); // created when checking out by PayPal
   dispatch({
     type: CART_REMOVE_ITEMS,
+  });
+};
+
+export const cleanMyOrders = () => async (dispatch) => {
+  localStorage.removeItem('myOrders');
+  dispatch({
+    type: MY_ORDERS_REMOVE_ALL,
   });
 };
 
@@ -194,7 +202,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET });
-  dispatch({ type: MY_ORDERS_REMOVE_ALL });
+  cleanMyOrders();
 };
 
 export const register = (firstName, lastName, email, password) => async (
@@ -444,13 +452,6 @@ export const fetchUserOrderList = () => async (dispatch, getState) => {
           : e.message,
     });
   }
-};
-
-export const cleanMyOrders = () => async (dispatch) => {
-  localStorage.removeItem('myOrders');
-  dispatch({
-    type: MY_ORDERS_REMOVE_ALL,
-  });
 };
 
 export const payOrder = (id, paymentResult) => async (dispatch, getState) => {

@@ -23,7 +23,7 @@ export default function AccountUserOrders() {
       dispatch(fetchUserOrderList());
     }
     return () => {
-      dispatch(cleanMyOrders());
+      // dispatch(cleanMyOrders());
     };
   }, [dispatch, loading, theMyOrders]);
 

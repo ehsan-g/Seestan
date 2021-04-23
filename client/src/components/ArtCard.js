@@ -12,16 +12,19 @@ import { Link } from 'react-router-dom';
 export default function ArtCard({ artwork }) {
   const [theArtist, setTheArtist] = useState('');
 
+  // to prevent the following when searching: Can't perform a React state update on an unmounted component
+  // isSubscribed condition and clean up helps not setting state when component is unmounted
   useEffect(() => {
+    let isSubscribed = true;
     const fetchArtistLocally = async () => {
       const { data } = await axios.get(`/api/artists/${artwork.artist}`);
-      if (data) {
+      if (isSubscribed) {
         setTheArtist(data);
       }
     };
     fetchArtistLocally();
     return () => {
-      setTheArtist(''); // to prevent this when searching: Can't perform a React state update on an unmounted component
+      isSubscribed = false;
     };
   }, [artwork]);
 

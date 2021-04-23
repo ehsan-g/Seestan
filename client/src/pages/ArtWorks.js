@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import Skeleton from '@material-ui/core/Skeleton';
 import { useHistory } from 'react-router';
+import Pagination from '@material-ui/lab/Pagination';
 import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
@@ -48,15 +49,26 @@ function Artworks() {
   }, [dispatch]);
 
   const artworksList = useSelector((state) => state.artworks);
-  const { error, loading, artworks } = artworksList;
+  const { error, loading, artworks, page, pages } = artworksList;
 
-  const keyword = history.location.search.slice(9); // to remove ?keyword=
+  const keyword = history.location.search;
+  console.log(keyword);
+
+  if (keyword.includes('keyword')) {
+    keyword.slice(9); // to remove ?keyword=
+  }
 
   useEffect(() => {
     dispatch(fetchAllArtWorks(keyword));
   }, [dispatch, keyword]);
 
   const classes = useStyles();
+
+  const handlePageChange = (e) => {
+    // setPages(e.target.page)
+    history.push(`/?keyword=${keyword}&page=${page + 1}`);
+    console.log(e);
+  };
 
   return (
     <div style={{ minHeight: '100vh', marginTop: 100 }}>
@@ -75,7 +87,7 @@ function Artworks() {
                   variant="masonry"
                   cols={3}
                   gap={50}
-                  style={{ paddingBottom: 80 }}
+                  // style={{ paddingBottom: 80 }}
                 >
                   {artworks.map((artwork) =>
                     artwork ? (
@@ -90,6 +102,17 @@ function Artworks() {
                   )}
                 </ImageList>
               </Box>
+              <Grid>
+                {pages > 1 && (
+                  <Pagination
+                    count={pages}
+                    page={page}
+                    onChange={(e) => handlePageChange(e)}
+                    variant="outlined"
+                    color="secondary"
+                  />
+                )}
+              </Grid>
             </Grid>
             <Grid item xs>
               <Paper sx={{ width: '100%', backgroundColor: '#f6e4bc' }}>

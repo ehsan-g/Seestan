@@ -29,12 +29,12 @@ def fetchArtWorks(request):
 
     # pagination
     page = request.query_params.get('page')
-    p = Paginator(artworks, 2)
+    p = Paginator(artworks, 8)
 
     try:
         artworks = p.page(page)
     except PageNotAnInteger:  # first render we have no page
-        artworks = p.page(2)
+        artworks = p.page(1)
     except EmptyPage:  # page does not exist return the last page
         artworks = p.page(p.num_pages)
 

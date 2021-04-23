@@ -163,6 +163,7 @@ export default function Header() {
   const [theAnchorEl, setTheAnchorEl] = useState(null);
   const theOpen = Boolean(theAnchorEl);
   const [keyword, setKeyword] = useState('');
+
   const TheHandleClick = (event) => {
     setTheAnchorEl(event.currentTarget);
   };
@@ -172,7 +173,7 @@ export default function Header() {
 
   const changeHandler = (event) => {
     if (event.target.value) {
-      history.push(`/?keyword=${event.target.value}`);
+      history.push(`/?keyword=${event.target.value}&page=1`);
       const theKeyword = `?keyword=${event.target.value}`;
       dispatch(fetchAllArtWorks(theKeyword));
       setKeyword(event.target.value);
