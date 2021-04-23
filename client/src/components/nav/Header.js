@@ -178,7 +178,7 @@ export default function Header() {
       dispatch(fetchAllArtWorks(theKeyword));
       setKeyword(event.target.value);
     } else {
-      history.push(history.push(history.location.pathname));
+      history.push(history.push(history.location.pathname)); // to send back to the same page
     }
   };
 

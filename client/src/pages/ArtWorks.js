@@ -1,9 +1,10 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ImageList from '@material-ui/core/ImageList';
 import { Grid, Box } from '@material-ui/core';
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Artworks() {
+  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -49,14 +51,9 @@ function Artworks() {
   }, [dispatch]);
 
   const artworksList = useSelector((state) => state.artworks);
-  const { error, loading, artworks, page, pages } = artworksList;
+  const { error, loading, artworks, pages } = artworksList;
 
-  const keyword = history.location.search;
-  console.log(keyword);
-
-  if (keyword.includes('keyword')) {
-    keyword.slice(9); // to remove ?keyword=
-  }
+  let keyword = history.location.search;
 
   useEffect(() => {
     dispatch(fetchAllArtWorks(keyword));
@@ -64,10 +61,12 @@ function Artworks() {
 
   const classes = useStyles();
 
-  const handlePageChange = (e) => {
-    // setPages(e.target.page)
-    history.push(`/?keyword=${keyword}&page=${page + 1}`);
-    console.log(e);
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    if (keyword) {
+      keyword = keyword.split('?keyword=')[1].split('&')[0]; // example: ?keyword=اکبر&page=1  ===> اکبر
+    }
+    history.push(`/?keyword=${keyword}&page=${value}`);
   };
 
   return (
@@ -107,7 +106,7 @@ function Artworks() {
                   <Pagination
                     count={pages}
                     page={page}
-                    onChange={(e) => handlePageChange(e)}
+                    onChange={handlePageChange}
                     variant="outlined"
                     color="secondary"
                   />
