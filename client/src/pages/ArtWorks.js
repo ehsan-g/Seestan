@@ -18,6 +18,7 @@ import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { ARTWORK_DETAILS_RESET } from '../constants/artworkConstants';
+import Carousel from '../components/Carousel';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,6 +80,9 @@ function Artworks() {
         </Message>
       ) : (
         <>
+          <Paper elevation={0} sx={{ marginBottom: 5 }}>
+            <Carousel />
+          </Paper>
           <Grid container direction="row">
             <Grid item xs={9} className={classes.root}>
               <Box sx={{ minHeight: '100VH', overflow: 'hidden' }}>
@@ -113,7 +117,7 @@ function Artworks() {
                 )}
               </Grid>
             </Grid>
-            <Grid item xs>
+            <Grid item xs={3}>
               <Paper sx={{ width: '100%', backgroundColor: '#f6e4bc' }}>
                 'Filters Grid'
               </Paper>
