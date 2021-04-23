@@ -18,7 +18,6 @@ import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { ARTWORK_DETAILS_RESET } from '../constants/artworkConstants';
-import Carousel from '../components/Carousel';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,16 +79,13 @@ function Artworks() {
         </Message>
       ) : (
         <>
-          <Paper elevation={0} sx={{ marginBottom: 5 }}>
-            <Carousel />
-          </Paper>
           <Grid container direction="row">
             <Grid item xs={9} className={classes.root}>
               <Box sx={{ minHeight: '100VH', overflow: 'hidden' }}>
                 <ImageList
                   variant="masonry"
                   cols={3}
-                  gap={50}
+                  gap={30}
                   // style={{ paddingBottom: 80 }}
                 >
                   {artworks.map((artwork) =>

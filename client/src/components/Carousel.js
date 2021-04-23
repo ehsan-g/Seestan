@@ -118,12 +118,12 @@ function Slide({ slide, offset }) {
         '--dir': offset === 0 ? 0 : offset > 0 ? 1 : -1,
       }}
     >
-      <Grid
+      {/* <Grid
         className="slideBackground"
         style={{
           backgroundImage: `url('${slide.image}')`,
         }}
-      />
+      /> */}
       <Grid
         className="slideContent"
         style={{

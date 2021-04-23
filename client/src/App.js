@@ -3,6 +3,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
+import { Paper } from '@material-ui/core';
 import ArtWork from './pages/ArtWork';
 import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';
@@ -15,7 +16,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/nav/Footer';
 import AdminPanel from './pages/admin/AdminPanel';
 import UserEdit from './pages/admin/UserEdit';
-import ArtworkEdit from './pages/admin/ArtworkEdit.js';
+import ArtworkEdit from './pages/admin/ArtworkEdit';
+import Carousel from './components/Carousel';
 
 // Create an enhanced history that syncs navigation events with the store
 
@@ -23,6 +25,9 @@ const App = () => (
   <>
     <BrowserRouter>
       <Header />
+      <Paper elevation={0} sx={{ marginBottom: 5 }}>
+        <Carousel />
+      </Paper>
       {/*  use Toastontainer here to access it in the whole project */}
       <ToastContainer />
       <Container maxWidth="lg">
