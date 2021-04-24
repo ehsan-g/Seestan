@@ -5,16 +5,21 @@ ENV PATH="/scipts:${PATH}"
 
 # install project requirements and install alpine requirements / no cache = lightway / virtual dependecies
 # delete tmp after installation
-COPY ./backend/requirements.txt /requirements.txt
+COPY ./requirements.txt /requirements.txt
+
 RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
-RUN pip install -r /requirements.txt run apk del .tmp
+# to fix pillow building issue - next 2 lines
+RUN apk add build-base py-pip jpeg-dev zlib-dev
+ENV LIBRARY_PATH=/lib:/usr/lib
+RUN pip install -r /requirements.txt
+RUN apk del .tmp
 
 # create root app directory
 RUN mkdir /app
 # copy our content to this directory
 COPY ./backend /app
 WORKDIR /app
-COPY ./scipts /scripts
+COPY ./scripts /scripts
 
 # run all scripts
 RUN chmod +x /scripts/*
