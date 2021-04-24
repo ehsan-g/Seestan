@@ -11,13 +11,16 @@ import { Grid, Box } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
 import Skeleton from '@material-ui/core/Skeleton';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
+import Divider from '@material-ui/core/Divider';
 import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { ARTWORK_DETAILS_RESET } from '../constants/artworkConstants';
+import Carousel from '../components/Carousel';
+import SideFilter from '../components/SideFilter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,9 +82,18 @@ function Artworks() {
         </Message>
       ) : (
         <>
-          <Grid container direction="row">
+          <Hidden mdDown>
+            <Grid>
+              <Paper elevation={0} sx={{ marginBottom: 5 }}>
+                <Carousel />
+              </Paper>
+            </Grid>
+          </Hidden>
+          <Grid container direction="row" spacing={5}>
             <Grid item xs={9} className={classes.root}>
-              <Box sx={{ minHeight: '100VH', overflow: 'hidden' }}>
+              <Box sx={{ minHeight: '100VH', overflow: 'hidden', margin: 5 }}>
+                <Divider style={{ margin: 'auto' }} variant="middle" />
+
                 <ImageList
                   variant="masonry"
                   cols={3}
@@ -113,10 +125,14 @@ function Artworks() {
                 )}
               </Grid>
             </Grid>
-            <Grid item xs={3}>
-              <Paper sx={{ width: '100%', backgroundColor: '#f6e4bc' }}>
-                'Filters Grid'
-              </Paper>
+
+            <Grid item xs sx={{ marginTop: 5 }}>
+              <Divider style={{ margin: 'auto' }} variant="middle" />
+
+              <SideFilter name="مدیوم" />
+              <SideFilter name="سایز" />
+              <SideFilter name="قیمت" />
+              <SideFilter name="تعداد" />
             </Grid>
           </Grid>
           <div>

@@ -11,7 +11,7 @@ import Loader from '../Loader';
 import Message from '../Message';
 import { AccountUserOrdersCard } from './AccountUserOrdersCard';
 
-export default function AccountUserOrders() {
+export default function SideFilter() {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
 
@@ -27,11 +27,6 @@ export default function AccountUserOrders() {
     };
   }, [dispatch, loading, theMyOrders]);
 
-  const handleChange = (order) => (event, isExpanded) => {
-    setExpanded(isExpanded ? `panel${order._id}` : false);
-    // dispatch(fetchUserOrderList());
-  };
-
   const renderElement = () => (
     <>
       {!theMyOrders || !theMyOrders.map ? (
@@ -40,10 +35,7 @@ export default function AccountUserOrders() {
         <div>
           {theMyOrders.map((order) => (
             <div key={order._id}>
-              <Accordion
-                expanded={expanded === `panel${order._id}`}
-                onChange={handleChange(order)}
-              >
+              <Accordion>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel-bh-content"

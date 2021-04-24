@@ -29,7 +29,7 @@ def fetchArtWorks(request):
 
     # pagination
     page = request.query_params.get('page')
-    p = Paginator(artworks, 2)
+    p = Paginator(artworks, 8)
 
     try:
         artworks = p.page(page)

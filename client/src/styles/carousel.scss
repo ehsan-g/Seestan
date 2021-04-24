@@ -13,7 +13,7 @@
     appearance: none;
     background: transparent;
     border: none;
-    color: white;
+    color: rgb(0, 0, 0);
     position: absolute;
     font-size: 5rem;
     width: 5rem;
@@ -32,10 +32,10 @@
     }
 
     &:first-child {
-      left: 60%;
+      left: 70%;
     }
     &:last-child {
-      right: 60%;
+      right: 70%;
     }
   }
 }
@@ -102,22 +102,22 @@
   }
 }
 
-.slideBackground {
-  position: fixed;
-  top: 0;
-  left: -10%;
-  right: -10%;
-  bottom: 0;
-  max-height: 30vw;
-  background-size: cover;
-  background-position: center center;
-  z-index: -1;
-  // opacity: 0;
-  transition: opacity 0.3s linear, transform 0.3s ease-in-out;
-  pointer-events: none;
+// .slideBackground {
+//   position: fixed;
+//   top: 0;
+//   left: -10%;
+//   right: -10%;
+//   bottom: 0;
+//   max-height: 30vw;
+//   background-size: cover;
+//   background-position: center center;
+//   z-index: -1;
+//   // opacity: 0;
+//   transition: opacity 0.3s linear, transform 0.3s ease-in-out;
+//   pointer-events: none;
 
-  transform: translateX(calc(10% * var(--dir)));
-}
+//   transform: translateX(calc(10% * var(--dir)));
+// }
 
 .slide[data-active] {
   z-index: 2;
