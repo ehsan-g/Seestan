@@ -1,4 +1,4 @@
-# Dazain
+# Seestan
 Aristotle: “Art completes what nature cannot bring to finish. The artist gives us knowledge of nature's unrealized ends.”  
 
 ## Cart Features
