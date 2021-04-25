@@ -15,10 +15,10 @@ RUN pip install -r /requirements.txt
 RUN apk del .tmp
 
 # create root app directory
-RUN mkdir /app
+RUN mkdir /django
 # copy our content to this directory
-COPY ./backend /app
-WORKDIR /app
+COPY ./backend /django
+WORKDIR /django
 COPY ./scripts /scripts
 
 # run all scripts
