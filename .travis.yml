@@ -10,4 +10,4 @@ before_install": pip install docker-compose
 script:
   - docker-compose run backend sh -c "python manage.py test && flake8"
 
-  # travis test 5
+  # travis test 7
