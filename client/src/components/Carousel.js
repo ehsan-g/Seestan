@@ -9,31 +9,31 @@ const slides = [
     title: 'شب‌های روشن',
     subtitle: 'Peru',
     description: 'Adventure is never far away',
-    image: '/images/canvas17.png',
+    image: '/media/canvas17.png',
   },
   {
     title: 'پروانه‌های خاموش',
     subtitle: 'France',
     description: 'Let your dreams come true',
-    image: '/images/canvas8.png',
+    image: '/media/canvas8.png',
   },
   {
     title: 'ستاره‌های سربی',
     subtitle: 'Australia',
     description: 'A piece of heaven',
-    image: '/images/canvas7.png',
+    image: '/media/canvas7.png',
   },
   {
     title: 'مشهد دو نفر',
     subtitle: 'Australia',
     description: 'A piece of heaven',
-    image: '/images/canvas4.png',
+    image: '/media/canvas4.png',
   },
   {
     title: 'خدحافظی',
     subtitle: 'Australia',
     description: 'A piece of heaven',
-    image: '/images/canvas10.png',
+    image: '/media/canvas10.png',
   },
 ];
 

@@ -4,11 +4,34 @@ version: '3.7'
 services:
     backend:
         build:
-            context: backend
-        ports:
-            - "8000:8000"
+            context: ./backend
+        
         volumes: 
             - ./backend:/django
-        command: sh -c "python manage.py runserver 0.0.0.0:8000"
+        # command: sh -c "python manage.py runserver 0.0.0.0:8000"
+        command: sh -c "python manage.py collectstatic"
+        command: gunicorn backend.wsgi --bind 0.0.0.0:8000
+        ports:
+            - "4001:8000"
         environment: 
             - DEBUG=1
+
+    client:
+        build:
+            context: ./client
+        volumes: 
+            - react_build:/react/build
+
+    nginx:
+        build:
+            context: ./nginx
+        ports:
+            - "80:8080"
+        volumes:
+            - react_build:/var/www/react
+        depends_on: 
+            - backend
+            - client
+volumes:
+    react_build:
+

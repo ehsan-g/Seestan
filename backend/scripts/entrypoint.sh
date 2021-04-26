@@ -3,5 +3,4 @@
 set -e
 
 python manage.py collectstatic --noinput
-
-uwisgi --socket :8000 --master --enable-threads --module backend.wsgi
+gunicorn backend.wsgi --bind 0.0.0.0:8000

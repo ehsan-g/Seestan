@@ -14,25 +14,28 @@ ENV LIBRARY_PATH=/lib:/usr/lib
 RUN pip install -r /requirements.txt
 RUN apk del .tmp
 
-# create root app directory
 RUN mkdir /django
-# copy our content to this directory
-COPY ./backend /django
+COPY . /django/
 WORKDIR /django
-COPY ./scripts /scripts
+
+# entry point
+# COPY ./scripts /scripts
 
 # run all scripts
-RUN chmod +x /scripts/*
+# RUN chmod +x /scripts/*
 
 # static folders - p means create all sub dir to get to the end of this dir (media / static)
-RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/static
+RUN mkdir -p /vol/web/static/media
+COPY /static /vol/web/static
+COPY /static/media /vol/web/static/media
 
-# to prevent using root user / privilage to use /vol
-#  755 full access
+
+# to prevent using root user / privilage to use /vol - 755 full access
 RUN adduser -D user
 RUN chown -R user:user /vol
 RUN chmod -R 755 /vol/web
 USER user
 
-CMD ["entrypoint.sh"]
+# for uwsgi
+# CMD ["entrypoint.sh"]

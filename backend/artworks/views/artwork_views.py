@@ -25,7 +25,8 @@ def fetchArtWorks(request):
     if query == None:
         query = ''
     # we could use any value instead of title
-    artworks = Artwork.objects.filter(title__icontains=query)
+    artworks = Artwork.objects.filter(
+        title__icontains=query).order_by('createdAt')
 
     # pagination
     page = request.query_params.get('page')
