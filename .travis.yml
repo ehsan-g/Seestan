@@ -8,4 +8,4 @@ before_install":
 script:
   - docker run ehsang/seestan npm run test -- --coverage
 
-  # travis test
+  # travis test 2
