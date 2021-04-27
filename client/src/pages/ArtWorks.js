@@ -97,7 +97,7 @@ function Artworks() {
                 <ImageList
                   variant="masonry"
                   cols={3}
-                  gap={30}
+                  gap={35}
                   // style={{ paddingBottom: 80 }}
                 >
                   {artworks.map((artwork) =>

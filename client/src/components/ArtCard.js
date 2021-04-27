@@ -29,64 +29,71 @@ export default function ArtCard({ artwork }) {
   }, [artwork]);
 
   return (
-    <ImageListItem
-      style={{
-        color: '#666666',
-        hover: 'none',
-        textDecoration: 'none',
-      }}
-    >
-      <Link
-        style={{ position: 'absolute', width: '100%', height: '100%' }}
-        to={`/artworks/${artwork._id}`}
-      />
-      <img
-        srcSet={`${artwork.image}?w=161&fit=crop&auto=format 1x,
+    <>
+      <ImageListItem
+        style={{
+          color: '#666666',
+          hover: 'none',
+          textDecoration: 'none',
+          margin: 0,
+        }}
+      >
+        <ImageListItemBar
+          style={{ background: 'transparent' }}
+          position="bottom"
+          actionPosition="left"
+          actionIcon={
+            <IconButton
+              onClick={() => alert('در حال حاضر راه اندازی نشده است')}
+              aria-label={`star ${artwork.title}`}
+            >
+              <FavoriteBorder style={{ color: 'white' }} />
+            </IconButton>
+          }
+        />
+        <Link
+          style={{ position: 'absolute', width: '100%', height: '100%' }}
+          to={`/artworks/${artwork._id}`}
+        />
+        <img
+          srcSet={`${artwork.image}?w=161&fit=crop&auto=format 1x,
                   ${artwork.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
-        alt={artwork.name}
-        loading="lazy"
-      />
-
-      <ImageListItemBar
-        style={{ background: 'transparent' }}
-        position="bottom"
-        actionPosition="right"
-        actionIcon={
-          <IconButton
-            onClick={() => alert('در حال حاضر راه اندازی نشده است')}
-            aria-label={`star ${artwork.title}`}
-          >
-            <FavoriteBorder style={{ color: 'white' }} />
-          </IconButton>
-        }
-      />
+          alt={artwork.name}
+          loading="lazy"
+        />
+      </ImageListItem>
       <Grid
         container
-        direction="row"
+        direction="column"
         justifyContent="flex-start"
         alignItems="flex-start"
+        sx={{ marginBottom: 5 }}
       >
-        <Typography variant="h6">
-          {theArtist.firstName} {theArtist.lastName}
-        </Typography>
-        <ImageListItemBar
-          title={artwork.title}
-          sx={{ width: '100%' }}
-          subtitle={
-            <span
-              style={{
-                lineHeight: 2,
-                display: 'flex',
-                position: 'absolute',
-              }}
-            >
-              {artwork.price} تومان
-            </span>
-          }
-          position="below"
-          style={{ background: 'transparent' }}
-        />
+        <Grid item>
+          <Typography variant="h6">
+            {theArtist.firstName} {theArtist.lastName}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <ImageListItemBar
+            title={artwork.title}
+            sx={{ width: '100%' }}
+            subtitle={
+              <span
+                style={{
+                  lineHeight: 2,
+                  display: 'flex',
+                  position: 'absolute',
+                }}
+              >
+                {artwork.price} تومان
+              </span>
+            }
+            position="below"
+            style={{ background: 'transparent' }}
+          />
+        </Grid>
       </Grid>
-    </ImageListItem>
+    </>
   );
 }
