@@ -68,7 +68,6 @@ export default function ArtCard({ artwork }) {
         justifyContent="flex-start"
         alignItems="flex-start"
         sx={{ marginBottom: 5 }}
-        xs
       >
         <Typography variant="h6">
           {theArtist.firstName} {theArtist.lastName}
