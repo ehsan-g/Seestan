@@ -141,7 +141,7 @@ export default function RegisterForm() {
     <div className={classes.root}>
       <CssBaseline />
       <Typography variant="h6" align="center">
-        به دنیای دازاین خوش آمدید. مثلا...
+        با وارد کردن مشخصات خود ادامه دهید
       </Typography>
       <Form
         onSubmit={onSubmit}

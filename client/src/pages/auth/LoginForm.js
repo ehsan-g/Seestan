@@ -101,7 +101,7 @@ export default function EnterForm() {
   return (
     <div className={classes.root}>
       <Typography variant="h6" align="center">
-        .به دنیای دازاین خوش آمدید. مثلا...
+        با وارد کردن مشخصات خود ادامه دهید
       </Typography>
 
       <Form
