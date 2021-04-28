@@ -22,15 +22,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'CHANGETHIS')
+# SECRET_KEY = os.getenv('SECRET_KEY', 'ChangeME')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', 1)))
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 # DEBUG = True
+# DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
-ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
-if ALLOWED_HOSTS_ENV:
-    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
+# if ALLOWED_HOSTS_ENV:
+#     ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
 # Application definition
 
@@ -166,18 +169,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/static/'
+MEDIA_URL = '/static/media/'
 
 # render image by link
-MEDIA_URL = '/media/'
+MEDIA_ROOT = '/vol/web/media'
+STATIC_ROOT = '/vol/web/static'
 
-# upload image/static path config
-MEDIA_ROOT = 'static/media/'
-STATIC_ROOT = 'static/static/'
 # static path
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
 
 
 CORS_ALLOW_ALL_ORIGINS = True
