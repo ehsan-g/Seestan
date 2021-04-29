@@ -322,7 +322,7 @@ export default function ArtworkList() {
   const { success: successUpdate } = artworkUpdate;
 
   const onEdit = (id) => {
-    history.push(`/admin/artwork/${id}/edit`);
+    history.push(`/admin-panel/artwork/${id}/edit`);
   };
 
   const createTheRows = () => {

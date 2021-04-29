@@ -34,7 +34,7 @@ const App = () => (
             <Route exact path="/sell" component={Sell} />
             <Route path="/artworks/:workId" component={ArtWork} />
             <Route
-              path="/admin/artwork/:artworkId/edit"
+              path="/admin-panel/artwork/:artworkId/edit"
               component={ArtworkEdit}
             />
             <Route path="/cart/shippingAddress/:workId?" component={Cart} />

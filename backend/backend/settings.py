@@ -181,9 +181,10 @@ USE_TZ = True
 # ]
 
 MEDIA_URL = '/media/'
-STATIC_URL = '/django_static/'
+STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR / 'django_static/media'
 STATIC_ROOT = BASE_DIR / 'django_static/static'
+
 
 CORS_ALLOW_ALL_ORIGINS = True
 

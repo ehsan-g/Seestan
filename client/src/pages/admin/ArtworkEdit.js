@@ -90,7 +90,7 @@ export default function ArtworkEdit() {
 
   useEffect(() => {
     if (successUpdate) {
-      history.push('/admin/artworks');
+      history.push('/admin-panel/artworks');
     } else if (!artwork.title || artwork._id !== Number(artworkId)) {
       dispatch(fetchOneArtWork(artworkId));
       dispatch(fetchUsers());
@@ -708,7 +708,7 @@ export default function ArtworkEdit() {
   };
   return (
     <div className={classes.root}>
-      <Link to="/admin/artworks">برگشت</Link>
+      <Link to="/admin-panel/artworks">برگشت</Link>
       {loadingUpdate && <Loader />}
       {errorUpdate && <Message severity="error">{errorUpdate}</Message>}
       <Typography variant="h6" align="center" sx={{ padding: 2 }}>
