@@ -1,0 +1,38 @@
+# docker compose used for local development
+version: '3.7'
+
+services:
+    backend:
+        restart: unless-stopped
+        build:
+            context: ./backend
+            dockerfile: ./docker/backend/Dockerfile
+        ports:
+            - "8000:8000"
+        volumes: 
+            - static_volume:/app/backend/server/django_static
+        entrypoint: /app/docker/backend/wsgi-entrypoint.sh          
+        env_file:
+            - ./backend/.env
+
+    client:
+        build:
+            context: ./client
+            dockerfile: ./docker/client/Dockerfile
+
+    nginx:
+        restart: unless-stopped
+        build:
+            context: ./nginx
+            dockerfile: ./docker/nginx/Dockerfile
+        ports:
+            - "80:80"
+        volumes:
+            - static_volume:/app/backend/server/django_static
+            - ./docker/nginx/development:/etc/nginx/conf.d
+        depends_on: 
+            - backend
+            - client
+
+volumes:
+    static_volume: {}
