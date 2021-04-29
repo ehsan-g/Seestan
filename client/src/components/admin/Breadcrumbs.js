@@ -9,7 +9,7 @@ export default function AdminBreadcrumbs() {
     <Link
       key="1"
       color="inherit"
-      to="/admin/users"
+      to="/admin-panel/users"
       style={{ textDecoration: 'none', color: '#5f5f5f' }}
     >
       کاربران
@@ -18,7 +18,7 @@ export default function AdminBreadcrumbs() {
     <Link
       key="2"
       color="inherit"
-      to="/admin/artworks"
+      to="/admin-panel/artworks"
       style={{ textDecoration: 'none', color: '#5f5f5f' }}
     >
       آثار
@@ -26,7 +26,7 @@ export default function AdminBreadcrumbs() {
     <Link
       key="3"
       color="inherit"
-      to="/admin/orders"
+      to="/admin-panel/orders"
       style={{ textDecoration: 'none', color: '#5f5f5f' }}
     >
       فروش آثار
@@ -34,7 +34,7 @@ export default function AdminBreadcrumbs() {
     <Typography
       key="1"
       color="inherit"
-      to="/admin/artists"
+      to="/admin-panel/artists"
       style={{ textDecoration: 'none', color: '#d0d0d0' }}
     >
       هنرمندان

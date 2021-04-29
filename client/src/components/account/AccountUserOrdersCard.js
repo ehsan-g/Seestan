@@ -71,7 +71,7 @@ export function AccountUserOrdersCard({ order }) {
   return (
     <Card className={cx(styles.root, shadowStyles.root)}>
       <img
-        src={`static/media/${order.orderItems[0].image}`}
+        src={`media/${order.orderItems[0].image}`}
         alt={order.orderItems[0].name}
         loading="lazy"
         className={styles.media}

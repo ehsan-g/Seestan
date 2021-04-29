@@ -5,34 +5,31 @@ services:
     backend:
         restart: unless-stopped
         build:
-            context: ./backend
+            context: .
             dockerfile: ./docker/backend/Dockerfile
         ports:
             - "8000:8000"
         volumes: 
-            - static_volume:/app/backend/server/django_static
+            - static_volume:/app/backend/django_static/static
+            - media_volume:/app/backend/django_static/media
         entrypoint: /app/docker/backend/wsgi-entrypoint.sh          
         env_file:
             - ./backend/.env
 
-    client:
-        build:
-            context: ./client
-            dockerfile: ./docker/client/Dockerfile
-
-    nginx:
+    nginx: 
         restart: unless-stopped
         build:
-            context: ./nginx
+            context: .
             dockerfile: ./docker/nginx/Dockerfile
         ports:
-            - "80:80"
+            - 80:80
         volumes:
-            - static_volume:/app/backend/server/django_static
+            - static_volume:/app/backend/server/django_static/static
+            - media_volume:/app/backend/server/django_static/media
             - ./docker/nginx/development:/etc/nginx/conf.d
         depends_on: 
             - backend
-            - client
 
 volumes:
-    static_volume: {}
+    static_volume:
+    media_volume:

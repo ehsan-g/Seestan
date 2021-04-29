@@ -211,7 +211,9 @@ export default function Header() {
       >
         <MenuItem onClick={menuGotoUrl('/profile')}>صفحه کاربری</MenuItem>
         {userInfo && userInfo.token !== undefined && userInfo.isAdmin && (
-          <MenuItem onClick={menuGotoUrl('/admin/users')}>داشبورد</MenuItem>
+          <MenuItem onClick={menuGotoUrl('/admin-panel/users')}>
+            داشبورد
+          </MenuItem>
         )}
 
         <MenuItem onClick={logoutHandler}>خروج</MenuItem>

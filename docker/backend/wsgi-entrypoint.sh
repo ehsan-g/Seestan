@@ -1,6 +1,6 @@
-!/bin/sh
+#!/bin/sh
 
-until cd /app/backend/server
+until cd /app/backend
 do
     echo "Waiting for server volume..."
 done
@@ -13,7 +13,7 @@ done
 
 ./manage.py collectstatic --noinput
 
-gunicorn server.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
+gunicorn backend.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
 
 #####################################################################################
 # Options to DEBUG Django server

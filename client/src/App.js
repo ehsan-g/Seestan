@@ -43,8 +43,8 @@ const App = () => (
             <Route exact path="/login" component={EnterForm} />
             <Route exact path="/register" component={RegisterForm} />
             <Route exact path="/profile" component={UserProfile} />
-            <Route path="/admin/user/:userId/edit" component={UserEdit} />
-            <Route exact path="/admin/:route" component={AdminPanel} />
+            <Route path="/admin-panel/user/:userId/edit" component={UserEdit} />
+            <Route exact path="/admin-panel/:route" component={AdminPanel} />
           </Switch>
         </React.StrictMode>
       </Container>
