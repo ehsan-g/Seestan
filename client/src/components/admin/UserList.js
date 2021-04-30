@@ -295,7 +295,7 @@ export default function UserList() {
   const { success: successUpdate } = userUpdate;
 
   const onEdit = (id) => {
-    history.push(`/admin/user/${id}/edit`);
+    history.push(`/admin-panel/user/${id}/edit`);
   };
   const createTheRows = () => {
     users.forEach((user) => {

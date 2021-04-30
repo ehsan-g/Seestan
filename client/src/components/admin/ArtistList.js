@@ -323,7 +323,7 @@ export default function UserList() {
   }, [dispatch, successDelete, successUpdate]);
 
   const onEdit = (id) => {
-    history.push(`/admin/user/${id}/edit`);
+    history.push(`/admin-panel/user/${id}/edit`);
   };
 
   if ((users && users[0] && !rows[0]) || successUpdate) {

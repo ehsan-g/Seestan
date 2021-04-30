@@ -374,7 +374,7 @@ export default function ArtworkList() {
       createTheRows();
     } else if (successCreate) {
       dispatch({ type: ARTWORK_CREATE_RESET });
-      history.push(`/admin/artwork/${createdArtwork._id}/edit`);
+      history.push(`/admin-panel/artwork/${createdArtwork._id}/edit`);
     }
   }, [dispatch, successDelete, successUpdate, rows, successCreate]);
 

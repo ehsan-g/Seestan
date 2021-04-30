@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from artworks.models import Artwork, Order, ShippingAddress, OrderItem
 from rest_framework import status
 from datetime import datetime
-
+from django.utils import timezone
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -95,11 +95,11 @@ def updateOrderToPaid(request, pk):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def updateOrderToDelivered(request, pk):
     order = Order.objects.get(_id=pk)
     order.isDelivered = True
-    order.deliveredAt = datetime.now()
+    order.deliveredAt = timezone.now()
     order.save()
     return Response('order was delivered')
 

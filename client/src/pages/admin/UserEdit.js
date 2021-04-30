@@ -54,7 +54,7 @@ export default function UserEdit() {
 
   useEffect(() => {
     if (successUpdate) {
-      history.push('/admin/users');
+      history.push('/admin-panel/users');
     } else if (!user.firstName || user._id !== Number(userId)) {
       dispatch(fetchUserDetails(userId));
     } else {
@@ -142,7 +142,7 @@ export default function UserEdit() {
 
   return (
     <div className={classes.root}>
-      <Link to="/admin/users">برگشت</Link>
+      <Link to="/admin-panel/users">برگشت</Link>
       {loadingUpdate && <Loader />}
       {errorUpdate && <Message severity="error">{errorUpdate}</Message>}
       <Typography variant="h6" align="center" sx={{ padding: 2 }}>

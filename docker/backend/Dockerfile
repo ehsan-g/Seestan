@@ -3,7 +3,7 @@
 FROM python:3.8.3-alpine
 
 WORKDIR /app
-ADD ./backend/requirements.txt /app/backend/
+COPY ./backend/requirements.txt /app/backend/
 
 RUN pip install --upgrade pip
 RUN pip install gunicorn
@@ -13,10 +13,10 @@ ENV LIBRARY_PATH=/lib:/usr/lib
 
 RUN pip install -r backend/requirements.txt
 
-ADD ./docker /app/docker
-ADD ./backend /app/backend
-ADD ./backend/django_static/static /app/backend/django_static/static
-ADD ./backend/django_static/media /app/backend/django_static/media
+COPY ./docker /app/docker
+COPY ./backend /app/backend
+# COPY ./backend/django_static/static /app/backend/django_static/static
+# COPY ./backend/django_static/media /app/backend/django_static/media
 
 RUN chmod +x /app/docker/backend/wsgi-entrypoint.sh
 
