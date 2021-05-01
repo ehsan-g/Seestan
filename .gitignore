@@ -7,5 +7,3 @@ backend/.env
 myenv
 v1.pem
 init-letsencrypt.sh
-ssss
-extra
