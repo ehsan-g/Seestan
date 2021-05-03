@@ -82,13 +82,6 @@ function Artworks() {
         </Message>
       ) : (
         <>
-          <Hidden mdDown>
-            <Grid>
-              <Paper elevation={0} sx={{ marginBottom: 5 }}>
-                <Carousel />
-              </Paper>
-            </Grid>
-          </Hidden>
           <Grid container direction="row" spacing={5}>
             <Grid item xs={9} className={classes.root}>
               <Box sx={{ minHeight: '100VH', overflow: 'hidden', margin: 5 }}>

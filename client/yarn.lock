@@ -1168,6 +1168,11 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@brainhubeu/react-carousel@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@brainhubeu/react-carousel/-/react-carousel-2.0.3.tgz#639da2bbb20bb988aab2156d3cfa744f05e145f3"
+  integrity sha512-wwcAdWx5K6pPpVC4oZmXZeazCxFItfyizQoG1DI1QjlC2ragMEhexFSNGjB61q0foqCM3Vxim+mKHdbbmw52AQ==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.npmjs.org/@cnakazawa/watch/-/watch-1.0.4.tgz"
@@ -3342,6 +3347,11 @@ auto-bind@^2.1.1:
   integrity sha512-NUwV1i9D3vxxY1KnfZgSZ716d6ovY7o8LfOwLhGIPFBowIb6Ln6DBW64+jCqPzUznel2hRSkQnYQqvh7/ldw8A==
   dependencies:
     "@types/react" "^16.8.12"
+
+auto-bind@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-4.0.0.tgz#e3589fc6c2da8f7ca43ba9f84fa52a744fc997fb"
+  integrity sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==
 
 autoprefixer@^9.6.1:
   version "9.8.6"
@@ -10843,7 +10853,7 @@ react-masonry-component@^6.2.1:
 
 react-material-ui-carousel@^2.2.4:
   version "2.2.4"
-  resolved "https://registry.npmjs.org/react-material-ui-carousel/-/react-material-ui-carousel-2.2.4.tgz"
+  resolved "https://registry.yarnpkg.com/react-material-ui-carousel/-/react-material-ui-carousel-2.2.4.tgz#874c5571482291b0a562f38918a7639edefc8a09"
   integrity sha512-yQWLEdB46bBMbGRlR6c2HCEerKzS3cSSZo+8dZOtwXDZluFuiRgR0wPozt1cWcuxzFzC1u7YZ6BVB+8fyVBd2w==
   dependencies:
     auto-bind "^2.1.1"

@@ -1,154 +1,347 @@
-/* eslint-disable no-nested-ternary */
+/* eslint-disable no-shadow */
+/* eslint-disable prefer-const */
+/* eslint-disable no-plusplus */
+/* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, useRef, useReducer } from 'react';
-import { Grid, Button } from '@material-ui/core';
-import '../styles/carousel.scss';
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
+import Carousel from 'react-material-ui-carousel';
+import autoBind from 'auto-bind';
+import '../styles/Carousel.scss';
 
-const slides = [
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Grid,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormLabel,
+  Slider,
+  IconButton,
+} from '@material-ui/core';
+
+function Banner(props) {
+  if (props.newProp) console.log(props.newProp);
+  const contentPosition = props.contentPosition
+    ? props.contentPosition
+    : 'left';
+  const totalItems = props.length ? props.length : 3;
+  const mediaLength = totalItems - 1;
+
+  let items = [];
+  const content = (
+    <Grid item xs={12 / totalItems} key="content">
+      <CardContent className="Content">
+        <Typography className="Title">{props.item.Name}</Typography>
+
+        <Typography className="Caption">{props.item.Caption}</Typography>
+
+        <Button variant="outlined" className="ViewButton">
+          View Now
+        </Button>
+      </CardContent>
+    </Grid>
+  );
+
+  for (let i = 0; i < mediaLength; i++) {
+    const item = props.item.Items[i];
+
+    const media = (
+      <Grid item xs={12 / totalItems} key={item.Name}>
+        <CardMedia className="Media" image={item.Image} title={item.Name}>
+          <Typography className="MediaCaption">{item.Name}</Typography>
+        </CardMedia>
+      </Grid>
+    );
+
+    items.push(media);
+  }
+
+  if (contentPosition === 'left') {
+    items.unshift(content);
+  } else if (contentPosition === 'right') {
+    items.push(content);
+  } else if (contentPosition === 'middle') {
+    items.splice(items.length / 2, 0, content);
+  }
+
+  return (
+    <Card raised className="Banner">
+      <Grid container spacing={0} className="BannerGrid">
+        {items}
+      </Grid>
+    </Card>
+  );
+}
+
+const items = [
   {
-    title: 'شب‌های روشن',
-    subtitle: 'Peru',
-    description: 'Adventure is never far away',
-    image: '/media/canvas17.png',
+    Name: 'Electronics',
+    Caption: 'Electrify your friends!',
+    contentPosition: 'left',
+    Items: [
+      {
+        title: 'شب‌های روشن',
+        subtitle: 'Peru',
+        description: 'Adventure is never far away',
+        Image: '/media/canvas17.png',
+      },
+      {
+        title: 'شب‌های روشن',
+        subtitle: 'Peru',
+        description: 'Adventure is never far away',
+        Image: '/media/canvas17.png',
+      },
+    ],
   },
   {
-    title: 'پروانه‌های خاموش',
-    subtitle: 'France',
-    description: 'Let your dreams come true',
-    image: '/media/canvas8.png',
+    Name: 'Home Appliances',
+    Caption: 'Say no to manual home labour!',
+    contentPosition: 'middle',
+    Items: [
+      {
+        title: 'مشهد دو نفر',
+        subtitle: 'Australia',
+        description: 'A piece of heaven',
+        Image: '/media/canvas4.png',
+      },
+      {
+        title: 'مشهد دو نفر',
+        subtitle: 'Australia',
+        description: 'A piece of heaven',
+        Image: '/media/canvas4.png',
+      },
+    ],
   },
   {
-    title: 'ستاره‌های سربی',
-    subtitle: 'Australia',
-    description: 'A piece of heaven',
-    image: '/media/canvas7.png',
-  },
-  {
-    title: 'مشهد دو نفر',
-    subtitle: 'Australia',
-    description: 'A piece of heaven',
-    image: '/media/canvas4.png',
-  },
-  {
-    title: 'خدحافظی',
-    subtitle: 'Australia',
-    description: 'A piece of heaven',
-    image: '/media/canvas10.png',
+    Name: 'Decoratives',
+    Caption: 'Give style and color to your living room!',
+    contentPosition: 'right',
+    Items: [
+      {
+        Name: 'Living Room Lamp',
+        Image: 'https://source.unsplash.com/featured/?lamp',
+      },
+      {
+        Name: 'Floral Vase',
+        Image: 'https://source.unsplash.com/featured/?vase',
+      },
+    ],
   },
 ];
 
-function useTilt(active) {
-  const ref = useRef(null);
+class BannerExample extends React.Component {
+  constructor(props) {
+    super(props);
 
-  useEffect(() => {
-    if (!ref.current || !active) {
-      return;
-    }
-
-    const state = {
-      rect: undefined,
-      mouseX: undefined,
-      mouseY: undefined,
+    this.state = {
+      autoPlay: true,
+      animation: 'fade',
+      indicators: true,
+      timeout: 500,
+      navButtonsAlwaysVisible: false,
+      navButtonsAlwaysInvisible: false,
+      cycleNavigation: true,
     };
 
-    const el = ref.current;
-
-    const handleMouseMove = (e) => {
-      if (!el) {
-        return;
-      }
-      if (!state.rect) {
-        state.rect = el.getBoundingClientRect();
-      }
-      state.mouseX = e.clientX;
-      state.mouseY = e.clientY;
-      const px = (state.mouseX - state.rect.left) / state.rect.width;
-      const py = (state.mouseY - state.rect.top) / state.rect.height;
-
-      el.style.setProperty('--px', px);
-      el.style.setProperty('--py', py);
-    };
-
-    el.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      el.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [active]);
-
-  return ref;
-}
-
-const initialState = {
-  slideIndex: 0,
-};
-
-const slidesReducer = (state, event) => {
-  if (event.type === 'NEXT') {
-    return {
-      ...state,
-      slideIndex: (state.slideIndex + 1) % slides.length,
-    };
+    autoBind(this);
   }
-  if (event.type === 'PREV') {
-    return {
-      ...state,
-      slideIndex:
-        state.slideIndex === 0 ? slides.length - 1 : state.slideIndex - 1,
-    };
+
+  toggleAutoPlay() {
+    this.setState({
+      autoPlay: !this.state.autoPlay,
+    });
   }
-};
 
-function Slide({ slide, offset }) {
-  const active = offset === 0 ? true : null;
-  const ref = useTilt(active);
+  toggleIndicators() {
+    this.setState({
+      indicators: !this.state.indicators,
+    });
+  }
 
-  return (
-    <Grid
-      ref={ref}
-      className="slide"
-      data-active={active}
-      style={{
-        '--offset': offset,
-        '--dir': offset === 0 ? 0 : offset > 0 ? 1 : -1,
-      }}
-    >
-      {/* <Grid
-        className="slideBackground"
-        style={{
-          backgroundImage: `url('${slide.image}')`,
-        }}
-      /> */}
-      <Grid
-        className="slideContent"
-        style={{
-          backgroundImage: `url('${slide.image}')`,
-        }}
-      >
-        <Grid className="slideContentInner">
-          <h2 className="slideTitle">{slide.title}</h2>
-          <h3 className="slideSubtitle">{slide.subtitle}</h3>
-          <p className="slideDescription">{slide.description}</p>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
+  toggleNavButtonsAlwaysVisible() {
+    this.setState({
+      navButtonsAlwaysVisible: !this.state.navButtonsAlwaysVisible,
+    });
+  }
+
+  toggleNavButtonsAlwaysInvisible() {
+    this.setState({
+      navButtonsAlwaysInvisible: !this.state.navButtonsAlwaysInvisible,
+    });
+  }
+
+  toggleCycleNavigation() {
+    this.setState({
+      cycleNavigation: !this.state.cycleNavigation,
+    });
+  }
+
+  changeAnimation(event) {
+    this.setState({
+      animation: event.target.value,
+    });
+  }
+
+  changeTimeout(event, value) {
+    this.setState({
+      timeout: value,
+    });
+  }
+
+  render() {
+    return (
+      <div style={{ marginTop: '50px', color: '#494949' }}>
+        <Carousel
+          className="Example"
+          autoPlay={this.state.autoPlay}
+          animation={this.state.animation}
+          indicators={this.state.indicators}
+          timeout={this.state.timeout}
+          cycleNavigation={this.state.cycleNavigation}
+          navButtonsAlwaysVisible={this.state.navButtonsAlwaysVisible}
+          navButtonsAlwaysInvisible={this.state.navButtonsAlwaysInvisible}
+          next={(now, previous) =>
+            console.log(
+              `Next User Callback: Now displaying child${now}. Previously displayed child${previous}`
+            )
+          }
+          prev={(now, previous) =>
+            console.log(
+              `Prev User Callback: Now displaying child${now}. Previously displayed child${previous}`
+            )
+          }
+          onChange={(now, previous) =>
+            console.log(
+              `OnChange User Callback: Now displaying child${now}. Previously displayed child${previous}`
+            )
+          }
+          fullHeightHover={false}
+          navButtonsProps={{
+            style: { backgroundColor: 'cornflowerblue', borderRadius: 0 },
+          }}
+          navButtonsWrapperProps={{ style: { bottom: '0', top: 'unset' } }}
+          indicatorContainerProps={{ style: { margin: '20px' } }}
+          NextIcon="next"
+        >
+          {items.map((item, index) => (
+            <Banner
+              item={item}
+              key={index}
+              contentPosition={item.contentPosition}
+            />
+          ))}
+        </Carousel>
+
+        <FormLabel component="legend">Options</FormLabel>
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={this.toggleAutoPlay}
+              checked={this.state.autoPlay}
+              value="autoplay"
+              color="primary"
+            />
+          }
+          label="Auto-play"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={this.toggleIndicators}
+              checked={this.state.indicators}
+              value="indicators"
+              color="primary"
+            />
+          }
+          label="Indicators"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={this.toggleNavButtonsAlwaysVisible}
+              checked={this.state.navButtonsAlwaysVisible}
+              value="NavButtonsAlwaysVisible"
+              color="primary"
+            />
+          }
+          label="NavButtonsAlwaysVisible"
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={this.toggleNavButtonsAlwaysInvisible}
+              checked={this.state.navButtonsAlwaysInvisible}
+              value="NavButtonsAlwaysInvisible"
+              color="primary"
+            />
+          }
+          label="NavButtonsAlwaysInvisible"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={this.toggleCycleNavigation}
+              checked={this.state.cycleNavigation}
+              value="CycleNavigation"
+              color="primary"
+            />
+          }
+          label="CycleNavigation"
+        />
+
+        <FormControlLabel
+          control={
+            <RadioGroup
+              name="animation"
+              value={this.state.animation}
+              onChange={this.changeAnimation}
+              row
+              style={{ marginLeft: '10px' }}
+            >
+              <FormControlLabel
+                value="fade"
+                control={<Radio color="primary" />}
+                label="Fade"
+              />
+              <FormControlLabel
+                value="slide"
+                control={<Radio color="primary" />}
+                label="Slide"
+              />
+            </RadioGroup>
+          }
+        />
+
+        <FormControlLabel
+          control={
+            <div style={{ width: 300 }}>
+              <Typography id="discrete-slider" gutterBottom>
+                Animation Duration (Timeout) in ms
+              </Typography>
+              <Slider
+                defaultValue={500}
+                getAriaValueText={() => `${this.state.timeout}ms`}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={100}
+                marks
+                min={100}
+                max={2000}
+                onChange={this.changeTimeout}
+              />
+            </div>
+          }
+        />
+      </div>
+    );
+  }
 }
 
-export default function App() {
-  const [state, dispatch] = useReducer(slidesReducer, initialState);
-
-  return (
-    <Grid className="slides">
-      <Button color="primary" onClick={() => dispatch({ type: 'PREV' })}>
-        ‹
-      </Button>
-
-      {[...slides, ...slides, ...slides].map((slide, i) => {
-        const offset = slides.length + (state.slideIndex - i);
-        return <Slide slide={slide} offset={offset} key={i} />;
-      })}
-      <Button onClick={() => dispatch({ type: 'NEXT' })}>›</Button>
-    </Grid>
-  );
-}
+export default BannerExample;

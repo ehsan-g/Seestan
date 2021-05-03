@@ -18,6 +18,8 @@ import Footer from './components/nav/Footer';
 import AdminPanel from './pages/admin/AdminPanel';
 import UserEdit from './pages/admin/UserEdit';
 import ArtworkEdit from './pages/admin/ArtworkEdit';
+import Carousel from './components/Carousel';
+import Carousel2 from './components/Carousel2';
 
 // Create an enhanced history that syncs navigation events with the store
 
@@ -25,6 +27,12 @@ const App = () => (
   <>
     <BrowserRouter>
       <Header />
+     
+      <Hidden mdDown>
+        <Paper elevation={0} sx={{ direction: 'ltr', marginBottom: 5 }}>
+          <Carousel />
+        </Paper>
+      </Hidden>
       {/*  use Toastontainer here to access it in the whole project */}
       <ToastContainer />
       <Container maxWidth="lg">
