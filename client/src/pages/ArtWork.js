@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { useEffect, useState } from 'react';
+import Hidden from '@material-ui/core/Hidden';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -20,6 +21,7 @@ import Loader from '../components/Loader';
 import { fetchOneArtWork, addToCart, fetchArtistDetails } from '../actions';
 import Dialog from '../components/Dialog';
 import TheTab from '../components/TheTab';
+import Carousel2 from '../components/Carousel2';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -241,6 +243,11 @@ function Artwork() {
             </Paper>
           </Grid>
         </Grid>
+        <Hidden mdDown>
+          <Paper elevation={0} sx={{ direction: 'ltr', marginBottom: 5 }}>
+            <Carousel2 />
+          </Paper>
+        </Hidden>
       </>
     );
   };

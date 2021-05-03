@@ -27,7 +27,6 @@ const App = () => (
   <>
     <BrowserRouter>
       <Header />
-     
       <Hidden mdDown>
         <Paper elevation={0} sx={{ direction: 'ltr', marginBottom: 5 }}>
           <Carousel />
