@@ -49,7 +49,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas2.png',
+      image: '/media/canvas9.png',
     },
   },
   {
@@ -65,7 +65,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas2.png',
+      image: '/media/canvas14.png',
     },
   },
   {
@@ -73,7 +73,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas2.png',
+      image: '/media/canvas11.png',
     },
   },
   {
@@ -81,7 +81,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas2.png',
+      image: '/media/canvas12.png',
     },
   },
 ];

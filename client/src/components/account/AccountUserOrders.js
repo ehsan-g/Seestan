@@ -1,19 +1,19 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserOrderList, cleanMyOrders } from '../../actions/index';
+import { fetchUserOrderList } from '../../actions/index';
 import Loader from '../Loader';
 import Message from '../Message';
 import { AccountUserOrdersCard } from './AccountUserOrdersCard';
 
 export default function SideFilter() {
   const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState(false);
+  // const [expanded, setExpanded] = useState(false);
 
   const myOrders = useSelector((state) => state.myOrders);
   const { theMyOrders, loading, error } = myOrders;

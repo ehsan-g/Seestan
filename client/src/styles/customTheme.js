@@ -15,6 +15,10 @@ const customTheme = createMuiTheme({
     },
   },
 
+  typography: {
+    fontFamily: 'Farhang',
+  },
+
   components: {
     direction: 'rtl',
     // Style sheet name => example Link component ⚛️

@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 
 export default function SideFilter({ name }) {
-  const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState(false);
+  // const dispatch = useDispatch();
+  // const [expanded, setExpanded] = useState(false);
 
   return (
     <>
