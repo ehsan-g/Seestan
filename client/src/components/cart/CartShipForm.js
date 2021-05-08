@@ -16,7 +16,7 @@ import {
 const useStyles = makeStyles(() => ({
   root: {
     '& label.Mui-focused': {
-      color: '#b77990',
+      color: 'secondary',
       borderColor: 'cyan',
     },
     '& .MuiFilledInput': {

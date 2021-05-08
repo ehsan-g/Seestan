@@ -16,12 +16,6 @@ import {
   Typography,
   Grid,
   Button,
-  Checkbox,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  FormLabel,
-  Slider,
 } from '@material-ui/core';
 
 function Banner(props) {
@@ -80,70 +74,62 @@ function Banner(props) {
 
 const items = [
   {
-    Name: 'Electronics',
-    Caption: 'Electrify your friends!',
+    Name: 'اولی',
+    Caption: 'آن وقت که ایجور بود',
     contentPosition: 'left',
     Items: [
       {
         title: 'شب‌های روشن',
-        subtitle: 'Peru',
-        description: 'Adventure is never far away',
-        Image: '/media/canvas17.png',
+        Image: '/media/canvas17.jpg',
       },
       {
         title: 'شب‌های روشن',
-        subtitle: 'Peru',
-        description: 'Adventure is never far away',
-        Image: '/media/canvas17.png',
+        Image: '/media/canvas19.jpg',
       },
     ],
   },
   {
-    Name: 'Home Appliances',
-    Caption: 'Say no to manual home labour!',
+    Name: 'عجب عنوانی شذ',
+    Caption: 'کیک و بستنی',
     contentPosition: 'middle',
     Items: [
       {
         title: 'مشهد دو نفر',
-        subtitle: 'Australia',
-        description: 'A piece of heaven',
-        Image: '/media/canvas4.png',
+        Image: '/media/canvas4.jpg',
       },
       {
         title: 'مشهد دو نفر',
-        subtitle: 'Australia',
-        description: 'A piece of heaven',
-        Image: '/media/canvas4.png',
+        Image: '/media/canvas12.jpg',
       },
     ],
   },
   {
-    Name: 'Decoratives',
-    Caption: 'Give style and color to your living room!',
+    Name: 'سروناز',
+    Caption: 'کی هست حالا این',
     contentPosition: 'right',
     Items: [
       {
-        Name: 'Living Room Lamp',
-        Image: 'https://source.unsplash.com/featured/?lamp',
+        title: 'Living Room Lamp',
+        Image: '/media/canvas5.jpg',
       },
       {
-        Name: 'Floral Vase',
-        Image: 'https://source.unsplash.com/featured/?vase',
+        title: 'Floral Vase',
+        Image: '/media/canvas7.jpg',
       },
     ],
   },
 ];
 
-class BannerExample extends React.Component {
+class Caroousel extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       autoPlay: true,
-      animation: 'fade',
-      indicators: true,
-      timeout: 500,
-      navButtonsAlwaysVisible: false,
+      animation: 'slide',
+      indicators: false,
+      timeout: 100,
+      navButtonsAlwaysVisible: true,
       navButtonsAlwaysInvisible: false,
       cycleNavigation: true,
     };
@@ -222,11 +208,15 @@ class BannerExample extends React.Component {
           }
           fullHeightHover={false}
           navButtonsProps={{
-            style: { backgroundColor: 'cornflowerblue', borderRadius: 0 },
+            style: {
+              backgroundColor: 'transparent',
+              borderRadius: 0,
+              color: 'white',
+            },
           }}
-          navButtonsWrapperProps={{ style: { bottom: '0', top: 'unset' } }}
+          navButtonsWrapperProps={{ style: { top: '50%' } }}
           indicatorContainerProps={{ style: { margin: '20px' } }}
-          NextIcon="next"
+          // NextIcon="next"
         >
           {items.map((item, index) => (
             <Banner
@@ -236,111 +226,9 @@ class BannerExample extends React.Component {
             />
           ))}
         </Carousel>
-
-        <FormLabel component="legend">Options</FormLabel>
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={this.toggleAutoPlay}
-              checked={this.state.autoPlay}
-              value="autoplay"
-              color="primary"
-            />
-          }
-          label="Auto-play"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={this.toggleIndicators}
-              checked={this.state.indicators}
-              value="indicators"
-              color="primary"
-            />
-          }
-          label="Indicators"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={this.toggleNavButtonsAlwaysVisible}
-              checked={this.state.navButtonsAlwaysVisible}
-              value="NavButtonsAlwaysVisible"
-              color="primary"
-            />
-          }
-          label="NavButtonsAlwaysVisible"
-        />
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={this.toggleNavButtonsAlwaysInvisible}
-              checked={this.state.navButtonsAlwaysInvisible}
-              value="NavButtonsAlwaysInvisible"
-              color="primary"
-            />
-          }
-          label="NavButtonsAlwaysInvisible"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={this.toggleCycleNavigation}
-              checked={this.state.cycleNavigation}
-              value="CycleNavigation"
-              color="primary"
-            />
-          }
-          label="CycleNavigation"
-        />
-
-        <FormControlLabel
-          control={
-            <RadioGroup
-              name="animation"
-              value={this.state.animation}
-              onChange={this.changeAnimation}
-              row
-              style={{ marginLeft: '10px' }}
-            >
-              <FormControlLabel
-                value="fade"
-                control={<Radio color="primary" />}
-                label="Fade"
-              />
-              <FormControlLabel
-                value="slide"
-                control={<Radio color="primary" />}
-                label="Slide"
-              />
-            </RadioGroup>
-          }
-        />
-
-        <FormControlLabel
-          control={
-            <div style={{ width: 300 }}>
-              <Typography id="discrete-slider" gutterBottom>
-                Animation Duration (Timeout) in ms
-              </Typography>
-              <Slider
-                defaultValue={500}
-                getAriaValueText={() => `${this.state.timeout}ms`}
-                aria-labelledby="discrete-slider"
-                valueLabelDisplay="auto"
-                step={100}
-                marks
-                min={100}
-                max={2000}
-                onChange={this.changeTimeout}
-              />
-            </div>
-          }
-        />
       </div>
     );
   }
 }
 
-export default BannerExample;
+export default Caroousel;

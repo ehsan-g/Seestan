@@ -182,8 +182,15 @@ function Artwork() {
                 <Typography color="#666666" variant="subtitle1">
                   {theArt.unit === '0' && ' in '}
                   {theArt.unit === '1' && ' cm '}
-                  <span style={{ position: 'absolute', direction: 'ltr' }}>
-                    `{theArt.width} x {theArt.height}`
+                  {!theArt.unit && ' cm '}
+                  <span
+                    style={{
+                      position: 'absolute',
+                      direction: 'ltr',
+                      paddingRight: 2,
+                    }}
+                  >
+                    {theArt.width} x {theArt.height}
                   </span>
                 </Typography>
                 {theArt.editionNum > 0 && (
@@ -243,16 +250,12 @@ function Artwork() {
               <TheTab theArt={theArt} />
             </Paper>
           </Grid>
-        </Grid>
-        <Grid>
           <Hidden mdDown>
-            <Paper elevation={0} sx={{ direction: 'ltr', marginBottom: 5 }}>
-              {/* <Carousel2 /> */}
-            </Paper>
-          </Hidden>
-          <Hidden mdDown>
-            <Paper elevation={0} sx={{ direction: 'ltr', marginBottom: 5 }}>
-              {/* <Carousel3 /> */}
+            <Paper
+              elevation={0}
+              sx={{ direction: 'ltr', marginBottom: 5, maxWidth: '100%' }}
+            >
+              <Carousel2 />
             </Paper>
           </Hidden>
         </Grid>

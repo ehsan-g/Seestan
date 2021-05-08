@@ -9,7 +9,7 @@ import '../styles/Carousel2.scss';
 
 2. if you want to change the dimensions of the slides you will need to edit the slideWidth variable here 👇 and the $slide-width variable in the CSS.
 *********************************** */
-const slideWidth = 30;
+const slideWidth = 25;
 
 const _items = [
   {
@@ -17,7 +17,7 @@ const _items = [
       title: 'Efren Reyes',
       desc:
         'Known as "The Magician", Efren Reyes is well regarded by many professionals as the greatest all around player of all time.',
-      image: '/media/canvas10.png',
+      image: '/media/canvas10.jpg',
     },
   },
   {
@@ -25,7 +25,7 @@ const _items = [
       title: "Ronnie O'Sullivan",
       desc:
         "Ronald Antonio O'Sullivan is a six-time world champion and is the most successful player in the history of snooker.",
-      image: '/media/canvas12.png',
+      image: '/media/canvas12.jpg',
     },
   },
   {
@@ -33,7 +33,7 @@ const _items = [
       title: 'Shane Van Boening',
       desc:
         'The "South Dakota Kid" is hearing-impaired and uses a hearing aid, but it has not limited his ability.',
-      image: '/media/canvas8.png',
+      image: '/media/canvas8.jpg',
     },
   },
   {
@@ -41,7 +41,7 @@ const _items = [
       title: 'Mike Sigel',
       desc:
         'Mike Sigel or "Captain Hook" as many like to call him is an American professional pool player with over 108 tournament wins.',
-      image: '/media/canvas6.png',
+      image: '/media/canvas6.jpg',
     },
   },
   {
@@ -49,7 +49,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas9.png',
+      image: '/media/canvas9.jpg',
     },
   },
   {
@@ -57,7 +57,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas2.png',
+      image: '/media/canvas3.jpg',
     },
   },
   {
@@ -65,7 +65,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas14.png',
+      image: '/media/canvas19.jpg',
     },
   },
   {
@@ -73,7 +73,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas11.png',
+      image: '/media/canvas11.jpg',
     },
   },
   {
@@ -81,7 +81,7 @@ const _items = [
       title: 'Willie Mosconi',
       desc:
         'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-      image: '/media/canvas12.png',
+      image: '/media/canvas12.jpg',
     },
   },
 ];
@@ -160,10 +160,10 @@ export default function Carousel() {
     }
   };
 
-  const handleDotClick = (idx) => {
-    if (idx < activeIdx) prevClick(activeIdx - idx);
-    if (idx > activeIdx) nextClick(idx - activeIdx);
-  };
+  // const handleDotClick = (idx) => {
+  //   if (idx < activeIdx) prevClick(activeIdx - idx);
+  //   if (idx > activeIdx) nextClick(idx - activeIdx);
+  // };
 
   useEffect(() => {
     if (isTicking) sleep(300).then(() => setIsTicking(false));
@@ -200,7 +200,7 @@ export default function Carousel() {
         >
           <i className="carousel__btn-arrow carousel__btn-arrow--right" />
         </button>
-        <div className="carousel__dots">
+        {/* <div className="carousel__dots">
           {items.slice(0, length).map((pos, i) => (
             <button
               key={i}
@@ -208,7 +208,7 @@ export default function Carousel() {
               className={i === activeIdx ? 'dot active' : 'dot'}
             />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

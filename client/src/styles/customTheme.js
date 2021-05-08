@@ -5,10 +5,10 @@ const customTheme = createMuiTheme({
 
   palette: {
     primary: {
-      main: '#b77990',
+      main: '#7954A1',
     },
     secondary: {
-      main: '#b77990',
+      main: '#7954A1',
     },
     background: {
       default: '#ffffff',
@@ -80,7 +80,7 @@ const customTheme = createMuiTheme({
           minWidth: '41px',
           '&:hover': {
             color: 'white',
-            backgroundColor: '#b77990',
+            backgroundColor: '#secondary',
             textDecoration: 'none',
           },
         },
@@ -113,7 +113,7 @@ const customTheme = createMuiTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: '#b77990',
+          color: 'secondary',
           right: 30,
           transformOrigin: 'top right',
           // transition: 'transform 0.6s cubic-bezier(0.61, 1, 0.88, 1)',

@@ -82,16 +82,32 @@ function Artworks() {
         </Message>
       ) : (
         <>
+          <Hidden mdDown>
+            <Grid sx={{ marginBottom: 60 }}>
+              <Paper
+                elevation={0}
+                sx={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                }}
+              >
+                <Carousel />
+              </Paper>
+            </Grid>
+          </Hidden>
+
           <Grid container direction="row" spacing={5}>
             <Grid item xs={9} className={classes.root}>
-              <Box sx={{ minHeight: '100VH', overflow: 'hidden', margin: 5 }}>
+              <Box sx={{ overflow: 'hidden', margin: 5 }}>
                 <Divider style={{ margin: 'auto' }} variant="middle" />
 
                 <ImageList
                   variant="masonry"
                   cols={3}
                   gap={35}
-                  // style={{ paddingBottom: 80 }}
+                  style={{ paddingBottom: 80 }}
                 >
                   {artworks.map((artwork) =>
                     artwork ? (

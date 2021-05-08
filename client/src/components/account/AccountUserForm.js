@@ -15,7 +15,7 @@ import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants';
 const useStyles = makeStyles(() => ({
   root: {
     '& label.Mui-focused': {
-      color: '#b77990',
+      color: 'secondary',
       borderColor: 'cyan',
     },
     '& .MuiFilledInput': {

@@ -26,11 +26,6 @@ const App = () => (
   <>
     <BrowserRouter>
       <Header />
-      <Hidden mdDown>
-        <Paper elevation={0} sx={{ direction: 'ltr', marginBottom: 0 }}>
-          <Carousel />
-        </Paper>
-      </Hidden>
       {/*  use Toastontainer here to access it in the whole project */}
       <ToastContainer />
       <Container maxWidth="lg">

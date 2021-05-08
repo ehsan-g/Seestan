@@ -305,7 +305,7 @@ export default function Header() {
               <Grid className={classes.grow} />
               <Grid>
                 <Button href="/" color="inherit">
-                  <Avatar alt="Logo" variant="square" src="/static/logo.png" />
+                  <Avatar alt="S" variant="square" src="/public/logo192.png" />
                 </Button>
               </Grid>
               <Grid className={classes.search}>

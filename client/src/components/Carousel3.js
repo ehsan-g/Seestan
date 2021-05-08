@@ -1,148 +1,135 @@
+/* eslint-disable no-script-url */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import '../styles/Carousel3.css';
+// import Modal from "react-responsive-modal";
+import '../styles/Carousel3.scss';
 
-class Carousel3 extends Component {
-  render() {
-    const items = [
-      {
-        player: {
-          title: 'Efren Reyes',
-          desc:
-            'Known as "The Magician", Efren Reyes is well regarded by many professionals as the greatest all around player of all time.',
-          image: '/media/canvas10.png',
+export default class Carousel3 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      slides: [
+        {
+          img: '/media/canvas11.jpg',
         },
-      },
-      {
-        player: {
-          title: "Ronnie O'Sullivan",
-          desc:
-            "Ronald Antonio O'Sullivan is a six-time world champion and is the most successful player in the history of snooker.",
-          image: '/media/canvas12.png',
+        {
+          img: '/media/canvas9.jpg',
         },
-      },
-      {
-        player: {
-          title: 'Shane Van Boening',
-          desc:
-            'The "South Dakota Kid" is hearing-impaired and uses a hearing aid, but it has not limited his ability.',
-          image: '/media/canvas8.png',
+        {
+          img: '/media/canvas3.jpg',
         },
-      },
-      {
-        player: {
-          title: 'Mike Sigel',
-          desc:
-            'Mike Sigel or "Captain Hook" as many like to call him is an American professional pool player with over 108 tournament wins.',
-          image: '/media/canvas6.png',
+        {
+          img: '/media/canvas13.jpg',
         },
-      },
-      {
-        player: {
-          title: 'Willie Mosconi',
-          desc:
-            'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-          image: '/media/canvas9.png',
+        {
+          img: '/media/canvas16.jpg',
         },
-      },
-      {
-        player: {
-          title: 'Willie Mosconi',
-          desc:
-            'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-          image: '/media/canvas2.png',
-        },
-      },
-      {
-        player: {
-          title: 'Willie Mosconi',
-          desc:
-            'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-          image: '/media/canvas14.png',
-        },
-      },
-      {
-        player: {
-          title: 'Willie Mosconi',
-          desc:
-            'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-          image: '/media/canvas11.png',
-        },
-      },
-      {
-        player: {
-          title: 'Willie Mosconi',
-          desc:
-            'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-          image: '/media/canvas12.png',
-        },
-      },
-    ];
-    const settings = {
-      dots: true,
-      autoplay: true,
-      infinite: true,
-      slidesToShow: 5,
-      slidesToScroll: 1,
+      ],
+      open: false,
+      index: '',
+      elements: null,
     };
+  }
+
+  // componentDidUpdate() {
+  // let elements = document.querySelectorAll(".slide");
+  // console.log(elements);
+  //   elements.addEventListener("mousedown", this.clickHandler, false);
+  //   elements.addEventListener("mousemove", this.clickHandler, false);
+  //   elements.addEventListener("mouseup", this.clickHandler, false);
+  // }
+
+  onOpenModal = (e) => {
+    e.preventDefault();
+    this.setState({ open: true, index: e.target.dataset.index });
+    console.log(e.target.dataset.index);
+  };
+
+  onCloseModal = () => {
+    this.setState({ open: false });
+  };
+
+  slideClicked = (e) => {
+    e.preventDefault();
+    console.log(e.type);
+  };
+
+  // nextClick = currentSlideIndex => {
+  //   if (currentSlideIndex === 0) {
+  //     document.querySelector(".slick-prev").setAttribute("aria-disabled", true);
+  //   }
+  // };
+  render() {
+    const { open } = this.state;
+    const SlickArrowLeft = ({ currentSlide, slideCount, ...props }) => (
+      <button
+        {...props}
+        className={`slick-prev slick-arrow${
+          currentSlide === 0 ? ' slick-disabled' : ''
+        }`}
+        aria-hidden="true"
+        aria-disabled={currentSlide === 0}
+        type="button"
+      >
+        Previous
+      </button>
+    );
+    const SlickArrowRight = ({ currentSlide, slideCount, ...props }) => (
+      <button
+        {...props}
+        className={`slick-next slick-arrow${
+          currentSlide === slideCount - 1 ? ' slick-disabled' : ''
+        }`}
+        aria-hidden="true"
+        aria-disabled={currentSlide === slideCount - 1}
+        type="button"
+      >
+        Next
+      </button>
+    );
+
+    const settings = {
+      arrows: true,
+      centerMode: true,
+      edgeFriction: 1,
+      infinite: false,
+      swipeToSlide: true,
+      variableWidth: true,
+      accessibility: true,
+      prevArrow: <SlickArrowLeft />,
+      nextArrow: <SlickArrowRight />,
+      focusOnSelect: true,
+      draggable: true,
+
+      // afterChange: this.nextClick
+    };
+
     return (
-      <div className="container">
+      <div className="slides">
+        <h2> Multiple items </h2>
         <Slider {...settings}>
-          <div>
-            <img
-              srcSet={`${this.items[0].player.image}?w=161&fit=crop&auto=format 1x,
-              ${this.items[0].player.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
-              alt=""
-              loading="lazy"
-            />
-          </div>
-          <div>
-            <img
-              srcSet={`$/media/canvas6.png?w=161&fit=crop&auto=format 1x,
-               /media/canvas6.png?w=161&fit=crop&auto=format&dpr=2 2x`}
-              alt=""
-              loading="lazy"
-            />
-          </div>
-          <div>
-            <img
-              srcSet={`$/media/canvas6.png?w=161&fit=crop&auto=format 1x,
-               /media/canvas6.png?w=161&fit=crop&auto=format&dpr=2 2x`}
-              alt=""
-              loading="lazy"
-            />
-          </div>
-          <div>
-            <img
-              srcSet={`$/media/canvas6.png?w=161&fit=crop&auto=format 1x,
-               /media/canvas6.png?w=161&fit=crop&auto=format&dpr=2 2x`}
-              alt=""
-              loading="lazy"
-            />
-          </div>
-          <div>
-            <img
-              srcSet={`$/media/canvas6.png?w=161&fit=crop&auto=format 1x,
-               /media/canvas6.png?w=161&fit=crop&auto=format&dpr=2 2x`}
-              alt=""
-              loading="lazy"
-            />
-          </div>
-          <div>
-            <img
-              srcSet={`$/media/canvas6.png?w=161&fit=crop&auto=format 1x,
-               /media/canvas6.png?w=161&fit=crop&auto=format&dpr=2 2x`}
-              alt=""
-              loading="lazy"
-            />
-          </div>
+          {this.state.slides.map((slide, index) => (
+            <div key={index}>
+              <a
+                href="javascript:void(0)"
+                className="slide"
+                onClick={this.onOpenModal}
+                tabIndex="0"
+              >
+                <img src={slide.img} data-index={index} alt="" />
+                <p>Slide {index}</p>
+              </a>
+            </div>
+          ))}
         </Slider>
+        {/* <Modal open={open} onClose={this.onCloseModal} center>
+          <h2>Simple centered modal {this.state.index}</h2>
+        </Modal> */}
       </div>
     );
   }
 }
-
-export default Carousel3;

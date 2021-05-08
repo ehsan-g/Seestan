@@ -49,13 +49,13 @@ export default function BottomAppBar() {
                 alignItems="flex-end"
               >
                 <Avatar
-                  alt="Logo"
+                  alt="S"
                   variant="square"
-                  src="/static/logo.png"
+                  src="/static/logo192.png"
                   // className={classes.large}
                 />
                 <Typography variant="caption" display="inline">
-                  نوکرم
+                  سیستان
                 </Typography>
               </Grid>
               <Grid item xs container direction="row" justify="center">

@@ -31,49 +31,51 @@ export default function UserProfile() {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid item>
+    <>
+      <Grid>
         <Button href="/" color="inherit">
-          <Avatar alt="Logo" variant="square" src="/static/logo.png" />
+          {'< صقحه اصلی'}
         </Button>
       </Grid>
-      <Grid item xs={8}>
-        <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList
-                onChange={handleChange}
-                aria-label="lab API tabs example"
-                centered
-              >
-                <Tab icon={<SettingsIcon />} label="تنظیمات" value="1" />
-                <Tab
-                  icon={<FavoriteIcon />}
-                  label="مورد علاقه"
-                  disabled
-                  value="2"
-                />
-                <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="3" />
-              </TabList>
-            </Box>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={8}>
+          <Box sx={{ width: '100%', typography: 'body1' }}>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <TabList
+                  onChange={handleChange}
+                  aria-label="lab API tabs example"
+                  centered
+                >
+                  <Tab icon={<SettingsIcon />} label="تنظیمات" value="1" />
+                  <Tab
+                    icon={<FavoriteIcon />}
+                    label="مورد علاقه"
+                    disabled
+                    value="2"
+                  />
+                  <Tab icon={<ShoppingBasketIcon />} label="خریدها" value="3" />
+                </TabList>
+              </Box>
 
-            <Box>
-              <TabPanel value="1">
-                <AccountUserTab />
-              </TabPanel>
-              <TabPanel value="2">ki</TabPanel>
-              <TabPanel value="3">
-                <AccountUserOrders />
-              </TabPanel>
-            </Box>
-          </TabContext>
-        </Box>
+              <Box>
+                <TabPanel value="1">
+                  <AccountUserTab />
+                </TabPanel>
+                <TabPanel value="2">ki</TabPanel>
+                <TabPanel value="3">
+                  <AccountUserOrders />
+                </TabPanel>
+              </Box>
+            </TabContext>
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 }

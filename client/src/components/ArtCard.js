@@ -29,12 +29,21 @@ export default function ArtCard({ artwork }) {
   }, [artwork]);
 
   return (
-    <>
+    <Grid
+      container
+      direction="row"
+      sx={{
+        marginBottom: 5,
+        opacity: 0.6,
+        ':hover': {
+          opacity: 1,
+        },
+      }}
+    >
       <ImageListItem
         style={{
           color: '#666666',
-          hover: 'none',
-          textDecoration: 'none',
+
           margin: 0,
         }}
       >
@@ -62,34 +71,17 @@ export default function ArtCard({ artwork }) {
           loading="lazy"
         />
       </ImageListItem>
-      <Grid
-        container
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ marginBottom: 5 }}
-      >
+      <Grid container>
         <Typography variant="h6">
           {theArtist.firstName} {theArtist.lastName}
         </Typography>
-        <ImageListItemBar
-          title={artwork.title}
-          sx={{ width: '100%' }}
-          subtitle={
-            <span
-              style={{
-                lineHeight: 2,
-                display: 'flex',
-                position: 'absolute',
-              }}
-            >
-              {artwork.price} تومان
-            </span>
-          }
-          position="below"
-          style={{ background: 'transparent' }}
-        />
+        <Typography variant="subtitle1" sx={{ width: '100%', margin: 0 }}>
+          {artwork.title}
+        </Typography>
+        <Typography variant="subtitle1" sx={{ width: '100%', margin: 0 }}>
+          {artwork.price} تومان
+        </Typography>
       </Grid>
-    </>
+    </Grid>
   );
 }
