@@ -18,5 +18,3 @@ COPY ./docker /app/docker
 COPY ./backend /app/backend
 
 RUN chmod +x /app/docker/backend/wsgi-entrypoint.sh
-
-

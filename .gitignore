@@ -5,6 +5,6 @@ client/node_modules
 package.json
 backend/.env
 myenv
-v1.pem
+# v1.pem
 macv1.pem
 init-letsencrypt.sh
