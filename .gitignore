@@ -6,4 +6,5 @@ package.json
 backend/.env
 myenv
 v1.pem
+macv1.pem
 init-letsencrypt.sh
