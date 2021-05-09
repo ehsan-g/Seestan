@@ -30,7 +30,7 @@ function Banner(props) {
   const content = (
     <Grid item xs={12 / totalItems} key="content">
       <CardContent className="Content">
-        <Typography className="Title">{props.item.Name}</Typography>
+        <Typography className="Title">{props.item.title}</Typography>
 
         <Typography className="Caption">{props.item.Caption}</Typography>
 
@@ -45,9 +45,9 @@ function Banner(props) {
     const item = props.item.Items[i];
 
     const media = (
-      <Grid item xs={12 / totalItems} key={item.Name}>
-        <CardMedia className="Media" image={item.Image} title={item.Name}>
-          <Typography className="MediaCaption">{item.Name}</Typography>
+      <Grid item xs={12 / totalItems} key={item.title}>
+        <CardMedia className="Media" image={item.Image} title={item.title}>
+          <Typography className="MediaCaption">{item.title}</Typography>
         </CardMedia>
       </Grid>
     );
@@ -74,7 +74,7 @@ function Banner(props) {
 
 const items = [
   {
-    Name: 'اولی',
+    title: 'اولی',
     Caption: 'آن وقت که ایجور بود',
     contentPosition: 'left',
     Items: [
@@ -83,18 +83,18 @@ const items = [
         Image: '/media/canvas17.jpg',
       },
       {
-        title: 'شب‌های روشن',
+        title: 'در این روزها',
         Image: '/media/canvas19.jpg',
       },
     ],
   },
   {
-    Name: 'عجب عنوانی شذ',
+    title: 'عجب عنوانی شذ',
     Caption: 'کیک و بستنی',
     contentPosition: 'middle',
     Items: [
       {
-        title: 'مشهد دو نفر',
+        title: 'این عنوان است',
         Image: '/media/canvas4.jpg',
       },
       {
@@ -104,7 +104,7 @@ const items = [
     ],
   },
   {
-    Name: 'سروناز',
+    title: 'سروناز',
     Caption: 'کی هست حالا این',
     contentPosition: 'right',
     Items: [
@@ -221,7 +221,7 @@ class Caroousel extends React.Component {
           {items.map((item, index) => (
             <Banner
               item={item}
-              key={index}
+              key={item.title}
               contentPosition={item.contentPosition}
             />
           ))}

@@ -50,14 +50,6 @@ const useStyles = makeStyles((theme) => ({
       fontSize: 1,
     },
   },
-  searchIcon: {
-    width: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'right',
-  },
 
   inputRoot: {
     color: 'inherit',
@@ -72,12 +64,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    margin: '5px !important',
-    // vertical padding + font size from searchIcon
-    // paddingLeft: `calc(1em + ${theme.spacing(1)})`,
-    // transition: theme.transitions.create('width'),
-    width: '80% !important',
+    // padding: '1px !important',
+    marginLeft: '10px !important',
     [theme.breakpoints.up('md')]: {
       width: '20ch',
     },
@@ -308,19 +296,27 @@ export default function Header() {
                   <Avatar alt="S" variant="square" src="/public/logo192.png" />
                 </Button>
               </Grid>
-              <Grid className={classes.search}>
-                <Grid className={classes.searchIcon}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+                className={classes.search}
+              >
+                <Grid item xs={9}>
+                  <InputBase
+                    placeholder="جستجو نام هنرمند، گالری، اثر، استایل و غیره"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                    }}
+                    onChange={(event) => changeHandler(event)}
+                    inputProps={{ 'aria-label': 'search' }}
+                  />
+                </Grid>
+                <Grid item xs sx={{ direction: 'ltr' }}>
                   <SearchIcon style={{ margin: '10px' }} />
                 </Grid>
-                <InputBase
-                  placeholder="جستجو نام هنرمند، گالری، اثر، استایل و غیره"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  onChange={(event) => changeHandler(event)}
-                  inputProps={{ 'aria-label': 'search' }}
-                />
               </Grid>
 
               <Grid className={classes.sectionDesktop}>

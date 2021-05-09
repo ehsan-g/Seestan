@@ -7,13 +7,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ImageList from '@material-ui/core/ImageList';
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Hidden from '@material-ui/core/Hidden';
-import Skeleton from '@material-ui/core/Skeleton';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import Divider from '@material-ui/core/Divider';
+import ImageListItem from '@material-ui/core/ImageListItem';
+import IconButton from '@material-ui/core/IconButton';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import ArtCard from '../components/ArtCard';
 import { fetchAllArtWorks, cleanTheCart } from '../actions';
 import Loader from '../components/Loader';
@@ -21,6 +24,7 @@ import Message from '../components/Message';
 import { ARTWORK_DETAILS_RESET } from '../constants/artworkConstants';
 import Carousel from '../components/Carousel';
 import SideFilter from '../components/SideFilter';
+import Artist from '../components/TheArtist.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,28 +102,27 @@ function Artworks() {
             </Grid>
           </Hidden>
 
-          <Grid container direction="row" spacing={5}>
-            <Grid item xs={9} className={classes.root}>
-              <Box sx={{ overflow: 'hidden', margin: 5 }}>
-                <Divider style={{ margin: 'auto' }} variant="middle" />
+          <Grid container direction="row" spacing={0}>
+            <Grid item xs sx={{ marginTop: 5 }}>
+              <Divider style={{ margin: 'auto' }} variant="middle" />
 
+              <SideFilter name="مدیوم" />
+              <SideFilter name="سایز" />
+              <SideFilter name="قیمت" />
+              <SideFilter name="تعداد" />
+            </Grid>
+            <Grid item xs={9} className={classes.root}>
+              <Box sx={{ overflowY: 'scroll' }}>
+                <Divider style={{ margin: 30 }} variant="middle" />
                 <ImageList
                   variant="masonry"
                   cols={3}
-                  gap={35}
-                  style={{ paddingBottom: 80 }}
+                  gap={12}
+                  sx={{ paddingRight: 5 }}
                 >
-                  {artworks.map((artwork) =>
-                    artwork ? (
-                      <ArtCard key={artwork._id} artwork={artwork} />
-                    ) : (
-                      <Skeleton
-                        variant="rectangular"
-                        width={210}
-                        height={218}
-                      />
-                    )
-                  )}
+                  {artworks.map((artwork) => (
+                    <ArtCard artwork={artwork} />
+                  ))}
                 </ImageList>
               </Box>
               <Grid>
@@ -134,19 +137,10 @@ function Artworks() {
                 )}
               </Grid>
             </Grid>
-
-            <Grid item xs sx={{ marginTop: 5 }}>
-              <Divider style={{ margin: 'auto' }} variant="middle" />
-
-              <SideFilter name="مدیوم" />
-              <SideFilter name="سایز" />
-              <SideFilter name="قیمت" />
-              <SideFilter name="تعداد" />
-            </Grid>
           </Grid>
-          <div>
+          <Grid>
             <Hidden mdUp>
-              <Grid>
+              <Grid container>
                 <Paper className={classes.responsive} elevation={0}>
                   {artworks.map((artwork) => (
                     <Grid key={artwork._id}>
@@ -158,7 +152,7 @@ function Artworks() {
                 </Paper>
               </Grid>
             </Hidden>
-          </div>
+          </Grid>
         </>
       )}
     </div>

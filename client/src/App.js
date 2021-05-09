@@ -3,8 +3,6 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
-import { Paper } from '@material-ui/core';
-import Hidden from '@material-ui/core/Hidden';
 import ArtWork from './pages/ArtWork';
 import ArtWorks from './pages/ArtWorks';
 import Header from './components/nav/Header';
@@ -18,7 +16,6 @@ import Footer from './components/nav/Footer';
 import AdminPanel from './pages/admin/AdminPanel';
 import UserEdit from './pages/admin/UserEdit';
 import ArtworkEdit from './pages/admin/ArtworkEdit';
-import Carousel from './components/Carousel';
 
 // Create an enhanced history that syncs navigation events with the store
 

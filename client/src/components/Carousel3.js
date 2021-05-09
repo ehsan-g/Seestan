@@ -1,9 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-script-url */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Slider from 'react-slick';
 // import Modal from "react-responsive-modal";
 import '../styles/Carousel3.scss';
@@ -64,7 +64,7 @@ export default class Carousel3 extends Component {
   //   }
   // };
   render() {
-    const { open } = this.state;
+    // const { open } = this.state;
     const SlickArrowLeft = ({ currentSlide, slideCount, ...props }) => (
       <button
         {...props}

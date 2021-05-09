@@ -30,23 +30,14 @@ export default function ArtCard({ artwork }) {
 
   return (
     <Grid
-      container
-      direction="row"
       sx={{
-        marginBottom: 5,
         opacity: 0.6,
         ':hover': {
           opacity: 1,
         },
       }}
     >
-      <ImageListItem
-        style={{
-          color: '#666666',
-
-          margin: 0,
-        }}
-      >
+      <ImageListItem style={{ color: '#666666' }}>
         <ImageListItemBar
           style={{ background: 'transparent' }}
           actionPosition="left"
@@ -54,7 +45,7 @@ export default function ArtCard({ artwork }) {
             <IconButton
               onClick={() => alert('در حال حاضر راه اندازی نشده است')}
               aria-label={`star ${artwork.title}`}
-              style={{ zIndex: 10 }}
+              style={{ zIndex: 10, bottom: '90px' }}
             >
               <FavoriteBorder style={{ color: 'white' }} />
             </IconButton>
@@ -67,11 +58,9 @@ export default function ArtCard({ artwork }) {
         <img
           srcSet={`${artwork.image}?w=161&fit=crop&auto=format 1x,
                   ${artwork.image}?w=161&fit=crop&auto=format&dpr=2 2x`}
-          alt={artwork.name}
+          alt={artwork.title}
           loading="lazy"
         />
-      </ImageListItem>
-      <Grid container>
         <Typography variant="h6">
           {theArtist.firstName} {theArtist.lastName}
         </Typography>
@@ -81,7 +70,7 @@ export default function ArtCard({ artwork }) {
         <Typography variant="subtitle1" sx={{ width: '100%', margin: 0 }}>
           {artwork.price} تومان
         </Typography>
-      </Grid>
+      </ImageListItem>
     </Grid>
   );
 }
