@@ -9,9 +9,8 @@ services:
         ports:
             - "8000:8000"   
         volumes:
-            - static_volume:/app/backend/server/django_static
-            - static:/app/backend/server/django_static/static
-            - media_volume:/app/backend/server/django_static/media
+            - media_volume:/app/backend/django_static/media
+            - static_volume:/app/backend/django_static/static
         entrypoint: /app/docker/backend/wsgi-entrypoint.sh
         env_file:
             - ./backend/.env
@@ -41,3 +40,5 @@ services:
 volumes:
     static_volume:
     media_volume:
+    
+    

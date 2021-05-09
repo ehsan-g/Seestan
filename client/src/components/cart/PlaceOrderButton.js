@@ -15,7 +15,7 @@ import { savePaymentMethod, createOrder } from '../../actions';
 import Message from '../Message';
 import Loader from '../Loader';
 
-const options = ['پرداخت با شاپرک', 'PayPal Payment', 'Mint NFT'];
+const options = ['PayPal Payment', 'Mint NFT'];
 
 export default function PlaceOrderButton() {
   const dispatch = useDispatch();
@@ -125,7 +125,7 @@ export default function PlaceOrderButton() {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      disabled={(index === 0, 2)}
+                      disabled={index === 1}
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
                     >
